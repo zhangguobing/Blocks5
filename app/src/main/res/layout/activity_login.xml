@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include layout="@layout/layout_title_bar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/login_bg_image">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:layout_marginTop="25dp">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:overScrollMode="never"/>
+
+            <TextView
+                android:id="@+id/tv_switch_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="切换密码登录"
+                android:padding="8dp"
+                android:layout_marginRight="30dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/gray"
+                android:textSize="13sp"/>
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                style="@style/Widget.Blocks5.Button.Hollow.Dark"
+                android:text="登 录"/>
+
+            <TextView
+                android:id="@+id/tv_forget_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="忘记密码"
+                android:padding="8dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:textColor="@color/white"
+                android:textSize="13sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:text="改变世界一点点"
+            android:padding="8dp"
+            android:textColor="@color/gray"
+            android:textSize="12sp"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

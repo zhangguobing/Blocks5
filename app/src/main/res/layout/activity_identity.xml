@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <include layout="@layout/layout_title_bar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:paddingLeft="15dp"
+            android:text="姓名"
+            android:textColor="@color/primary_text"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_identity_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="请输入姓名"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:padding="15dp"
+            android:textColor="@color/primary_text"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <View style="@style/Divider_Horizontal_Gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:paddingLeft="15dp"
+            android:text="身份证号"
+            android:textColor="@color/primary_text"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_identity_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="请输入身份证号"
+            android:padding="15dp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:maxLength="18"
+            android:textColor="@color/primary_text"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <View style="@style/Divider_Horizontal_Gray" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_identity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:text="认证"
+        style="@style/Widget.Blocks5.Button.Solid.Red" />
+
+    <TextView
+        android:id="@+id/tv_identity_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"/>
+
+</LinearLayout>

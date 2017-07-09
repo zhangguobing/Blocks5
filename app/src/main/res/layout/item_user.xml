@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@mipmap/ic_user_avatar_black"/>
+
+    <TextView
+        android:id="@+id/user_nickname_and_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/primary_text"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/user_avatar"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:drawableRight="@mipmap/ic_male"
+        tools:text="哈哈"/>
+
+    <ImageButton
+        android:id="@+id/ib_focus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_centerVertical="true"
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_focus" />
+
+    <View style="@style/Divider_Horizontal_Gray"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

@@ -1,0 +1,123 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zjonline.blocks5">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+    <application
+        android:name=".Blocks5App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppStartLoadTranslucent">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.loginAuth.LoginActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:label="验证码登录"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.loginAuth.RegisterActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:label="注册"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.loginAuth.ForgetPwdActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:label="忘记密码"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.loginAuth.RegisterNextActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:label="下一步"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.home.HomeActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".album.AlbumActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+        <activity android:name=".base.WebActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+        <activity android:name=".ui.home.ScanBarCodeActivity"
+            android:screenOrientation="portrait"
+            android:label="扫描二维码"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".ui.activity.AddActivityActivity"
+            android:screenOrientation="portrait"
+            android:label="创建活动"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".ui.user.ProfileActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            android:label="个人资料"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".ui.setting.SettingActivity"
+            android:screenOrientation="portrait"
+            android:label="设置" />
+        <activity android:name=".ui.setting.IdentityActivity"
+            android:screenOrientation="portrait"
+            android:label="实名认证" />
+        <activity android:name=".ui.search.SearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.user.UserDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.ActivityDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="活动详情"/>
+        <activity android:name=".ui.activity.HowSignInActivity"
+            android:screenOrientation="portrait"
+            android:label="如何签到"/>
+        <activity android:name=".ui.common.GalleryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Gallery"/>
+        <activity android:name=".ui.activity.CreatedActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.JoinActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.CreatedListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.JoinListActivity"
+            android:screenOrientation="portrait" />
+
+
+        <provider
+            android:name=".album.provider.CameraFileProvider"
+            android:authorities="${applicationId}.album.camera.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/album_camera_provider"/>
+        </provider>
+
+    </application>
+
+</manifest>

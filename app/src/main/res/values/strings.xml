@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Blocks5</string>
+
+    <!-- 吐司提示的文本 -->
+    <string name="toast_error_network">当前网络环境较差，请稍后重试!</string>
+    <string name="toast_error_not_have_network">当前没有网络，请检测设备后重试!</string>
+    <string name="toast_error_server">抱歉！服务器出错了!</string>
+    <string name="toast_error_unknown">抱歉！系统出现未知错误!</string>
+    <string name="toast_error_credentials_have_expired">您的身份认证已过期,请重新登录!</string>
+    <string name="toast_error_not_login">您当前还未登录,请先登录!</string>
+    <string name="toast_error_not_have_more">没有更多了</string>
+
+    <!-- Button -->
+    <string name="button_register">注册</string>
+    <string name="button_login">登录</string>
+
+    <!-- TextView的文本 -->
+    <string name="label_being_loading">正在加载&#8230;</string>
+    <string name="label_being_something">请稍候&#8230;</string>
+    <string name="label_being_login">正在登录,请稍候&#8230;</string>
+    <string name="label_identity_notice">BLOCKS5公告:\n\n1.实名认证是为了增加举办和参加活动的安全性。\n\n2.平台承诺：严格遵守国家法律法规，绝对不会泄露用户任何隐私。\n\n3.实名认证成功的用户，会增加相应的信用。</string>
+    <string name="label_activity_barcode_intro">签到步骤:\n\n1.在活动开始时间前半个小时到活动结束内。\n\n2.楼主打开“签到列表”页面。\n\n3.让参加的用户扫码楼主页面内的二维码，即“签到”，活动状态会变成完成状态，奖励楼主相应的信用。\n\n4.否则活动状态为活动未完成，会扣除楼主相应的信用。</string>
+
+    <string name="album_title_not_found_image">Not Found Image</string>
+    <string name="album_not_found_picture">Did not find the picture</string>
+    <string name="album_take_picture">Take Picture</string>
+    <string name="album_title">Image</string>
+    <string name="album_all_image">All Images</string>
+    <string name="album_check_limit">You can only select %1$d images</string>
+    <string name="album_check_limit_camera">You can only select %1$d images, anti-election after the operation.</string>
+    <string name="album_check_little">You have not choose photos.</string>
+    <string name="album_menu_finish">Finish</string>
+    <string name="album_check">Selected</string>
+    <string name="album_dialog_permission_failed">Access to failure</string>
+    <string name="album_permission_storage_failed_hint">Failed to get read photo album permissions, please authorize in the Settings before use.</string>
+    <string name="album_permission_camera_failed_hint">Failed to get camera permissions, please authorize in the Settings before use.</string>
+    <string name="album_dialog_sure">OK</string>
+
+    <string name="permission_rationale_camera">扫码二维码需要你提供拍照权限</string>
+    <string name="mis_permission_dialog_title">权限拒绝</string>
+    <string name="mis_permission_dialog_ok">好</string>
+    <string name="mis_permission_dialog_cancel">拒绝</string>
+
+    <string name="format_male_female_people_num">男%1$s人，女%2$s人</string>
+
+    <!--<string name="id_can_input">xX1234567890</string>-->
+
+</resources>

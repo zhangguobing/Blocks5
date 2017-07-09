@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title_bar" />
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:tr_pureScrollMode_on="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_activity_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingLeft="15dp"
+                        android:text="类型"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:background="@null"
+                        android:gravity="end"
+                        android:hint="请选择类型"
+                        android:padding="15dp"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingLeft="15dp"
+                        android:text="名称"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/et_activity_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:background="@null"
+                        android:gravity="end"
+                        android:hint="请输入名称"
+                        android:padding="15dp"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingLeft="15dp"
+                        android:text="区域"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_select_area"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:background="@null"
+                        android:gravity="end"
+                        android:hint="请选择区域"
+                        android:padding="15dp"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingLeft="15dp"
+                        android:text="人数"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_people_num"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:background="@null"
+                        android:gravity="end"
+                        android:hint="请选择人数"
+                        android:padding="15dp"
+                        android:inputType="number"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="25dp"
+                        android:background="@color/red" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:paddingLeft="15dp"
+                                android:text="开始时间"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_start_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:background="@null"
+                                android:gravity="end"
+                                android:hint="开始时间"
+                                android:padding="15dp"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
+
+                        <View style="@style/Divider_Horizontal_Gray" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:paddingLeft="15dp"
+                                android:text="结束时间"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_end_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:background="@null"
+                                android:gravity="end"
+                                android:hint="结束时间"
+                                android:padding="15dp"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
+
+                        <View style="@style/Divider_Horizontal_Gray" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingLeft="15dp"
+                        android:text="总费用"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/et_total_price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:background="@null"
+                        android:gravity="end"
+                        android:hint="总费用"
+                        android:inputType="number"
+                        android:padding="15dp"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingLeft="15dp"
+                        android:text="平摊方式"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_price_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
+
+                        <!--<RadioButton-->
+                            <!--android:id="@+id/radio_male_female"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@drawable/bg_radio_button_2"-->
+                            <!--android:button="@null"-->
+                            <!--android:padding="8dp"-->
+                            <!--android:text="男女AA"-->
+                            <!--android:textColor="@color/textview"-->
+                            <!--android:textSize="15sp" />-->
+
+                        <!--<RadioButton-->
+                            <!--android:id="@+id/radio_male"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="15dp"-->
+                            <!--android:background="@drawable/bg_radio_button_2"-->
+                            <!--android:button="@null"-->
+                            <!--android:padding="8dp"-->
+                            <!--android:text="男生AA"-->
+                            <!--android:textColor="@color/textview"-->
+                            <!--android:textSize="15sp" />-->
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="费用说明"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/et_price_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="start"
+                        android:hint="请输入说明"
+                        android:minHeight="90dp"
+                        android:padding="15dp"
+                        android:textColor="@color/primary_text"
+                        android:textColorHint="@color/gray"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上传封面"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_upload_cover"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_open_ablum" />
+
+                </RelativeLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上传图片(1-3张)"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_upload_pictures"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_open_ablum" />
+
+                </RelativeLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="楼主多说几句"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/et_activity_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="start"
+                        android:hint="请输入留言"
+                        android:minHeight="90dp"
+                        android:padding="15dp"
+                        android:textColor="@color/primary_text"
+                        android:textColorHint="@color/gray"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="同伴加入，需要实名"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/primary_text"
+                        android:textSize="15sp" />
+
+                    <com.zjonline.blocks5.widget.SwitchButton
+                        android:id="@+id/sb_need_identity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                </RelativeLayout>
+
+                <View style="@style/Divider_Horizontal_Gray" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_create_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="创建活动"
+        style="@style/Widget.Blocks5.Button.Solid.Red" />
+
+</LinearLayout>
