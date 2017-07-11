@@ -1,13 +1,13 @@
-package com.zjonline.blocks5.ui.search.adapter;
+package com.bing.blocks5.ui.search.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseAdapter;
-import com.zjonline.blocks5.model.Activity;
-import com.zjonline.blocks5.ui.search.adapter.holder.ActivityViewHolder;
-import com.zjonline.blocks5.util.Objects;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BaseAdapter;
+import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
+import com.bing.blocks5.util.Objects;
 
 /**
  * author：zhangguobing on 2017/7/2 14:11

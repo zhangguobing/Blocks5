@@ -1,12 +1,11 @@
-package com.zjonline.blocks5.base;
+package com.bing.blocks5.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.api.ResponseError;
-import com.zjonline.blocks5.util.ToastUtil;
+import com.bing.blocks5.api.ResponseError;
+import com.bing.blocks5.util.ToastUtil;
 
 /**
  * author：zhangguobing on 2017/6/19 11:07

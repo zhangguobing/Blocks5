@@ -22,7 +22,7 @@
     android:background="@color/album_ColorPrimaryBlack"
     tools:ignore="MergeRootFrame,Overdraw,UnusedAttribute">
 
-    <com.zjonline.blocks5.album.widget.photoview.FixViewPager
+    <com.bing.blocks5.album.widget.photoview.FixViewPager
         android:id="@+id/view_pager"
         style="@style/album_MatchParent"/>
 

@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.base;
+package com.bing.blocks5.base;
 
 /**
  * Created by zhangguobing on 2017/6/5.

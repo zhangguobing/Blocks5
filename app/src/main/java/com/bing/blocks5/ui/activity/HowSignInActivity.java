@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.activity;
+package com.bing.blocks5.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.zxing.client.android.encode.QREncode;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseActivity;
-import com.zjonline.blocks5.base.ContentView;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BaseActivity;
+import com.bing.blocks5.base.ContentView;
 
 import butterknife.Bind;
 

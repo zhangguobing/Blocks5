@@ -1,20 +1,19 @@
-package com.zjonline.blocks5.ui.loginAuth;
+package com.bing.blocks5.ui.loginAuth;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.base.BasePresenterActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.presenter.LoginAuthPresenter;
-import com.zjonline.blocks5.util.CountDownTimerUtils;
-import com.zjonline.blocks5.util.ToastUtil;
-import com.zjonline.blocks5.util.ValidatorUtil;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BasePresenterActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.presenter.LoginAuthPresenter;
+import com.bing.blocks5.util.CountDownTimerUtils;
+import com.bing.blocks5.util.ToastUtil;
+import com.bing.blocks5.util.ValidatorUtil;
 
 import butterknife.Bind;
 import butterknife.OnClick;

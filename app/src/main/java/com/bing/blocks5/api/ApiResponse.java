@@ -14,26 +14,11 @@
  * limitations under the License.
  */
 
-package com.zjonline.blocks5.api;
+package com.bing.blocks5.api;
 
 import android.support.annotation.Nullable;
 
-import com.google.gson.JsonParseException;
-import com.orhanobut.logger.Logger;
-import com.zjonline.blocks5.Constants;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.util.GsonHelper;
-import com.zjonline.blocks5.util.StringFetcher;
-
-import org.apache.http.conn.ConnectTimeoutException;
-
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-
-import retrofit2.HttpException;
-import retrofit2.Response;
+import com.bing.blocks5.Constants;
 
 /**
  * Common class used by API responses.

@@ -1,8 +1,7 @@
-package com.zjonline.blocks5.api.service;
+package com.bing.blocks5.api.service;
 
-import com.zjonline.blocks5.api.ApiResponse;
-import com.zjonline.blocks5.model.LoginBean;
-import com.zjonline.blocks5.model.User;
+import com.bing.blocks5.api.ApiResponse;
+import com.bing.blocks5.model.User;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

@@ -1,8 +1,8 @@
-package com.zjonline.blocks5.api.service;
+package com.bing.blocks5.api.service;
 
-import com.zjonline.blocks5.api.ApiResponse;
-import com.zjonline.blocks5.model.Activity;
-import com.zjonline.blocks5.ui.activity.request.CreateActivityParams;
+import com.bing.blocks5.api.ApiResponse;
+import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.ui.activity.request.CreateActivityParams;
 
 import java.util.List;
 
@@ -60,4 +60,6 @@ public interface ActivityService {
     //开始某个活动
     @GET("activities/{id}/start")
     Observable<ApiResponse> startActivity(@Path("id") int activity_id,@Query("token") String token);
+
+
 }

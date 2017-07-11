@@ -13,32 +13,44 @@ import com.bing.blocks5.presenter.ActivityUserPresenter;
 import com.bing.blocks5.ui.activity.ActivityDetailActivity;
 import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
+import com.bing.blocks5.widget.BottomSpaceItemDecoration;
+import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 
 import java.util.List;
 
 /**
  * author：zhangguobing on 2017/7/11 14:24
  * email：bing901222@qq.com
- * 活动收藏列表页
  */
 
-public class FavouriteActivity extends BaseListActivity<Activity,ActivityViewHolder,ActivityUserPresenter.ActivityUserUiCallbacks>
+public class HistoryActivity extends BaseListActivity<Activity,ActivityViewHolder,ActivityUserPresenter.ActivityUserUiCallbacks>
      implements ActivityUserPresenter.HistoryCollectUi{
 
+
     public static void create(Context context){
-        Intent intent = new Intent(context,FavouriteActivity.class);
+        Intent intent = new Intent(context,HistoryActivity.class);
         context.startActivity(intent);
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        mRecyclerView.addItemDecoration(new BottomSpaceItemDecoration(DensityUtil.dp2px(this,20)));
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        getCallbacks().getHistoryOrCollectActivity(true,mPage,mPageSize);
+        getCallbacks().getHistoryOrCollectActivity(false,mPage,mPageSize);
     }
 
     @Override
     protected void refreshPage() {
-        getCallbacks().getHistoryOrCollectActivity(true,mPage = 1,mPageSize);
+        getCallbacks().getHistoryOrCollectActivity(false,mPage = 1,mPageSize);
+    }
+
+    protected void nextPage() {
+        getCallbacks().getHistoryOrCollectActivity(true,mPage++,mPageSize);
     }
 
     @Override

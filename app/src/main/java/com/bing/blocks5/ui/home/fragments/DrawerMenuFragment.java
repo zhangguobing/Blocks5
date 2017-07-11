@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.home.fragments;
+package com.bing.blocks5.ui.home.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,16 +16,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zjonline.blocks5.AppCookie;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.model.LoginBean;
-import com.zjonline.blocks5.ui.activity.CreatedActivity;
-import com.zjonline.blocks5.ui.activity.JoinActivity;
-import com.zjonline.blocks5.ui.common.GalleryActivity;
-import com.zjonline.blocks5.ui.home.HomeActivity;
-import com.zjonline.blocks5.ui.setting.SettingActivity;
-import com.zjonline.blocks5.ui.user.ProfileActivity;
-import com.zjonline.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.R;
+import com.bing.blocks5.model.LoginBean;
+import com.bing.blocks5.ui.activity.CreatedActivity;
+import com.bing.blocks5.ui.activity.JoinActivity;
+import com.bing.blocks5.ui.common.GalleryActivity;
+import com.bing.blocks5.ui.home.HomeActivity;
+import com.bing.blocks5.ui.setting.SettingActivity;
+import com.bing.blocks5.ui.user.FavouriteActivity;
+import com.bing.blocks5.ui.user.HistoryActivity;
+import com.bing.blocks5.ui.user.ProfileActivity;
+import com.bing.blocks5.util.ImageLoadUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -85,9 +87,13 @@ public class DrawerMenuFragment extends Fragment {
     }
 
     @OnClick({R.id.ll_profile,R.id.ll_setting,R.id.iv_avatar,
-         R.id.ll_my_created_activity,R.id.ll_my_join_activity})
+         R.id.ll_my_created_activity,R.id.ll_my_join_activity,
+            R.id.ll_collect,R.id.ll_history})
     public void onClick(View view){
         switch (view.getId()){
+            case R.id.iv_avatar:
+                showGallery(view);
+                break;
             case R.id.ll_profile:
                 ProfileActivity.create(getActivity());
                 hideSlideMenu();
@@ -96,15 +102,20 @@ public class DrawerMenuFragment extends Fragment {
                 SettingActivity.create(getActivity());
                 hideSlideMenu();
                 break;
-            case R.id.iv_avatar:
-                showGallery(view);
-                break;
             case R.id.ll_my_created_activity:
                 CreatedActivity.create(getContext(),AppCookie.getUserInfo().getId(),"我创建的活动");
                 hideSlideMenu();
                 break;
             case R.id.ll_my_join_activity:
                 JoinActivity.create(getContext(),AppCookie.getUserInfo().getId(),"我参加的活动");
+                hideSlideMenu();
+                break;
+            case R.id.ll_collect:
+                FavouriteActivity.create(getContext());
+                hideSlideMenu();
+                break;
+            case R.id.ll_history:
+                HistoryActivity.create(getContext());
                 hideSlideMenu();
                 break;
         }

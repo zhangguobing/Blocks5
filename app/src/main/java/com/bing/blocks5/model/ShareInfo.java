@@ -1,4 +1,4 @@
-package com.bing.blocks5.util;
+package com.bing.blocks5.model;
 
 /**
  * author：zhangguobing on 2017/7/11 13:44

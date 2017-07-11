@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.base;
+package com.bing.blocks5.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,12 +9,12 @@ import android.view.View;
 
 import com.aitangba.swipeback.SwipeBackActivity;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.zjonline.blocks5.Blocks5App;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.util.ActivityStack;
-import com.zjonline.blocks5.util.HideKeyBoardUtil;
-import com.zjonline.blocks5.util.ViewUtil;
-import com.zjonline.blocks5.widget.TitleBar;
+import com.bing.blocks5.Blocks5App;
+import com.bing.blocks5.R;
+import com.bing.blocks5.util.ActivityStack;
+import com.bing.blocks5.util.HideKeyBoardUtil;
+import com.bing.blocks5.util.ViewUtil;
+import com.bing.blocks5.widget.TitleBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

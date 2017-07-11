@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.activity.request;
+package com.bing.blocks5.ui.activity.request;
 
 /**
  * author：zhangguobing on 2017/7/1 16:34

@@ -1,6 +1,6 @@
-package com.zjonline.blocks5.api;
+package com.bing.blocks5.api;
 
-import com.zjonline.blocks5.Constants;
+import com.bing.blocks5.Constants;
 
 public class HttpStatus {
     private int status_code;

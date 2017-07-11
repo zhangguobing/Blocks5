@@ -1,15 +1,14 @@
-package com.zjonline.blocks5.base;
+package com.bing.blocks5.base;
 
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
-import com.zjonline.blocks5.AppConfig;
-import com.zjonline.blocks5.AppCookie;
-import com.zjonline.blocks5.api.ApiClient;
-import com.zjonline.blocks5.api.ResponseError;
+import com.bing.blocks5.AppConfig;
+import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.api.ApiClient;
+import com.bing.blocks5.api.ResponseError;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 

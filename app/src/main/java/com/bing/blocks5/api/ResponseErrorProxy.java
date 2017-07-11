@@ -1,11 +1,11 @@
-package com.zjonline.blocks5.api;
+package com.bing.blocks5.api;
 
 import com.google.gson.JsonParseException;
 import com.orhanobut.logger.Logger;
-import com.zjonline.blocks5.AppConfig;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.util.GsonHelper;
-import com.zjonline.blocks5.util.StringFetcher;
+import com.bing.blocks5.AppConfig;
+import com.bing.blocks5.R;
+import com.bing.blocks5.util.GsonHelper;
+import com.bing.blocks5.util.StringFetcher;
 
 import org.apache.http.conn.ConnectTimeoutException;
 
@@ -19,9 +19,9 @@ import retrofit2.HttpException;
 import rx.Observable;
 import rx.functions.Func1;
 
-import static com.zjonline.blocks5.Constants.HttpCode.HTTP_UNKNOWN_ERROR;
-import static com.zjonline.blocks5.Constants.HttpCode.HTTP_NETWORK_ERROR;
-import static com.zjonline.blocks5.Constants.HttpCode.HTTP_SERVER_ERROR;
+import static com.bing.blocks5.Constants.HttpCode.HTTP_UNKNOWN_ERROR;
+import static com.bing.blocks5.Constants.HttpCode.HTTP_NETWORK_ERROR;
+import static com.bing.blocks5.Constants.HttpCode.HTTP_SERVER_ERROR;
 
 
 public class ResponseErrorProxy implements InvocationHandler {

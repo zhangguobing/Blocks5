@@ -28,18 +28,6 @@
         android:drawableRight="@mipmap/ic_male"
         tools:text="哈哈"/>
 
-    <ImageButton
-        android:id="@+id/ib_focus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@null"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_centerVertical="true"
-        android:contentDescription="@null"
-        android:src="@mipmap/ic_focus" />
-
     <View style="@style/Divider_Horizontal_Gray"
         android:layout_alignParentBottom="true"/>
 

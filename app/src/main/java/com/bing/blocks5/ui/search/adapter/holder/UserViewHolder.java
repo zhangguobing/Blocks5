@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.search.adapter.holder;
+package com.bing.blocks5.ui.search.adapter.holder;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -6,11 +6,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zjonline.blocks5.AppCookie;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseViewHolder;
-import com.zjonline.blocks5.model.User;
-import com.zjonline.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BaseViewHolder;
+import com.bing.blocks5.model.User;
+import com.bing.blocks5.util.ImageLoadUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

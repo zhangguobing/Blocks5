@@ -1,11 +1,11 @@
-package com.zjonline.blocks5.ui.home.adapter;
+package com.bing.blocks5.ui.home.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseAdapter;
-import com.zjonline.blocks5.ui.home.viewholder.StringViewHolder;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BaseAdapter;
+import com.bing.blocks5.ui.home.viewholder.StringViewHolder;
 
 /**
  * author：zhangguobing on 2017/6/22 20:49

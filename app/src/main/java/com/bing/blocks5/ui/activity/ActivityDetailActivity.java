@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.activity;
+package com.bing.blocks5.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,48 +6,46 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.flyco.dialog.listener.OnOperItemClickL;
+import com.bing.blocks5.model.ShareInfo;
+import com.bing.blocks5.util.ShareUtil;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.base.BasePresenterActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.model.Activity;
-import com.zjonline.blocks5.model.Config;
-import com.zjonline.blocks5.presenter.ActivityPresenter;
-import com.zjonline.blocks5.repository.ConfigManager;
-import com.zjonline.blocks5.ui.home.ScanBarCodeActivity;
-import com.zjonline.blocks5.ui.user.UserDetailActivity;
-import com.zjonline.blocks5.util.ActivityDataConvert;
-import com.zjonline.blocks5.util.ImageLoadUtil;
-import com.zjonline.blocks5.util.ToastUtil;
-import com.zjonline.blocks5.widget.SwitchButton;
-import com.zjonline.blocks5.widget.TitleBar;
-import com.zjonline.blocks5.widget.bottomsharedialog.BottomShareDialog;
-import com.zjonline.blocks5.widget.bottomsharedialog.Item;
-import com.zjonline.blocks5.widget.bottomsharedialog.OnItemClickListener;
-import com.zjonline.blocks5.widget.toprightmenu.MenuItem;
-import com.zjonline.blocks5.widget.toprightmenu.TopRightMenu;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BasePresenterActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.model.Config;
+import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.repository.ConfigManager;
+import com.bing.blocks5.ui.home.ScanBarCodeActivity;
+import com.bing.blocks5.ui.user.UserDetailActivity;
+import com.bing.blocks5.util.ActivityDataConvert;
+import com.bing.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.util.ToastUtil;
+import com.bing.blocks5.widget.SwitchButton;
+import com.bing.blocks5.widget.TitleBar;
+import com.bing.blocks5.widget.bottomsharedialog.BottomShareDialog;
+import com.bing.blocks5.widget.toprightmenu.MenuItem;
+import com.bing.blocks5.widget.toprightmenu.TopRightMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.sharesdk.framework.ShareSDK;
 
 /**
  * author：zhangguobing on 2017/7/4 09:25
@@ -98,6 +96,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresen
 
     private String mActivityId;
     private int mUserId;
+    private Activity mActivity;
 
     public static void create(Context context, String activity_id){
         Intent intent = new Intent(context,ActivityDetailActivity.class);
@@ -219,7 +218,20 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresen
                 .orientation(BottomShareDialog.VERTICAL)
                 .inflateMenu(R.menu.share, null)
                 .itemClick(item -> {
-
+                     ShareInfo info = new ShareInfo();
+                     info.setTitle(mActivity.getTitle());
+                     info.setImage_url(mActivity.getCover_url());
+                     info.setText(mActivity.getContent());
+                     info.setUrl("http://www.baidu.com");
+                     if(item.getId() == R.id.wechat){
+                         ShareUtil.shareWechat(info);
+                     }else if(item.getId() == R.id.moments){
+                         ShareUtil.shareWechatMoments(info);
+                     }else if(item.getId() == R.id.qq){
+                         ShareUtil.shareQQ(info);
+                     }else if(item.getId() == R.id.qzone){
+                         ShareUtil.shareQzone(info);
+                     }
                 }).show();
     }
 
@@ -266,6 +278,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresen
         mNeedIdentitySwitch.setChecked("0".equals(activity.getNeed_identity()));
         mJoinBtn.setEnabled(activity.getState() == 1);
         mUserId = activity.getUser_id();
+        mActivity = activity;
     }
 
     @Override

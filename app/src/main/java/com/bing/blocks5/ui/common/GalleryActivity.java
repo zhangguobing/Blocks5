@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.common;
+package com.bing.blocks5.ui.common;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.ui.common.adapter.GalleryAdapter;
+import com.bing.blocks5.R;
+import com.bing.blocks5.ui.common.adapter.GalleryAdapter;
 
 /**
  * author：zhangguobing on 2017/7/5 14:35

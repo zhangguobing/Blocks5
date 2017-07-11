@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.setting;
+package com.bing.blocks5.ui.setting;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,20 +9,17 @@ import android.widget.TextView;
 
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
-import com.zjonline.blocks5.AppCookie;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.SplashActivity;
-import com.zjonline.blocks5.api.ApiClient;
-import com.zjonline.blocks5.base.BaseActivity;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.base.BasePresenterActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.model.User;
-import com.zjonline.blocks5.model.event.UserChangeEvent;
-import com.zjonline.blocks5.presenter.UserPresenter;
-import com.zjonline.blocks5.util.ActivityDataConvert;
-import com.zjonline.blocks5.util.ActivityStack;
-import com.zjonline.blocks5.util.EventUtil;
+import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.R;
+import com.bing.blocks5.SplashActivity;
+import com.bing.blocks5.api.ApiClient;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BasePresenterActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.model.User;
+import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.util.ActivityDataConvert;
+import com.bing.blocks5.util.ActivityStack;
 
 import butterknife.Bind;
 import butterknife.OnClick;

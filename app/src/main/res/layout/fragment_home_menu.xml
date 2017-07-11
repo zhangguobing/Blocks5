@@ -246,6 +246,7 @@
             android:background="@color/white"/>
 
         <LinearLayout
+            android:id="@+id/ll_collect"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -271,6 +272,7 @@
             android:background="@color/white"/>
 
         <LinearLayout
+            android:id="@+id/ll_history"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center"

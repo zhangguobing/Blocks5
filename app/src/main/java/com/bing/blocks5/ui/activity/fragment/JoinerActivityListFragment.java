@@ -1,17 +1,17 @@
-package com.zjonline.blocks5.ui.activity.fragment;
+package com.bing.blocks5.ui.activity.fragment;
 
 import android.os.Bundle;
 
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
-import com.zjonline.blocks5.base.BaseAdapter;
-import com.zjonline.blocks5.base.BaseListFragment;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.model.Activity;
-import com.zjonline.blocks5.presenter.ActivityPresenter;
-import com.zjonline.blocks5.ui.activity.ActivityDetailActivity;
-import com.zjonline.blocks5.ui.search.adapter.ActivityListAdapter;
-import com.zjonline.blocks5.ui.search.adapter.holder.ActivityViewHolder;
-import com.zjonline.blocks5.widget.BottomSpaceItemDecoration;
+import com.bing.blocks5.base.BaseAdapter;
+import com.bing.blocks5.base.BaseListFragment;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.ui.activity.ActivityDetailActivity;
+import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
+import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
+import com.bing.blocks5.widget.BottomSpaceItemDecoration;
 
 import java.util.List;
 
@@ -56,6 +56,11 @@ public class JoinerActivityListFragment extends BaseListFragment<Activity,Activi
     @Override
     protected void refreshPage() {
         getCallbacks().getActivityListByJoinIdAndState(mJoinUserId,mState,mPage = 1);
+    }
+
+    @Override
+    protected void nextPage() {
+        getCallbacks().getActivityListByJoinIdAndState(mJoinUserId,mState,mPage);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.user;
+package com.bing.blocks5.ui.user;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,22 +13,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.base.BasePresenterActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.model.User;
-import com.zjonline.blocks5.presenter.UserPresenter;
-import com.zjonline.blocks5.ui.activity.CreatedActivity;
-import com.zjonline.blocks5.ui.activity.CreatedListActivity;
-import com.zjonline.blocks5.ui.activity.JoinActivity;
-import com.zjonline.blocks5.ui.activity.JoinListActivity;
-import com.zjonline.blocks5.ui.common.GalleryActivity;
-import com.zjonline.blocks5.util.ImageLoadUtil;
-import com.zjonline.blocks5.util.ToastUtil;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BasePresenterActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.model.User;
+import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.ui.activity.CreatedListActivity;
+import com.bing.blocks5.ui.activity.JoinListActivity;
+import com.bing.blocks5.ui.common.GalleryActivity;
+import com.bing.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.util.ToastUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;

@@ -4,7 +4,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.zjonline.blocks5.widget.TitleBar
+    <com.bing.blocks5.widget.TitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:layout_gravity="bottom"
                 android:contentDescription="@null"/>
 
-            <com.zjonline.blocks5.widget.BlocksEditText
+            <com.bing.blocks5.widget.BlocksEditText
                 android:id="@+id/et_nick_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                 android:layout_gravity="bottom"
                 android:contentDescription="@null"/>
 
-            <com.zjonline.blocks5.widget.BlocksEditText
+            <com.bing.blocks5.widget.BlocksEditText
                 android:id="@+id/et_pwd"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -139,7 +139,7 @@
                 android:layout_gravity="bottom"
                 android:contentDescription="@null"/>
 
-            <com.zjonline.blocks5.widget.BlocksEditText
+            <com.bing.blocks5.widget.BlocksEditText
                 android:id="@+id/et_confirm_pwd"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

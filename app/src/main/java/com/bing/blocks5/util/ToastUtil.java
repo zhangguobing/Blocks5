@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.util;
+package com.bing.blocks5.util;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zjonline.blocks5.Blocks5App;
-import com.zjonline.blocks5.R;
+import com.bing.blocks5.Blocks5App;
+import com.bing.blocks5.R;
 
 /**
  * author：zhangguobing on 2017/6/14 09:18

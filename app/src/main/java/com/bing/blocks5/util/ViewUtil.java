@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.util;
+package com.bing.blocks5.util;
 
 import android.content.Context;
 import android.view.View;

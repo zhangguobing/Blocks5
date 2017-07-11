@@ -7,6 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".base.WebActivity">
 
-    <include layout="@layout/layout_title_bar"/>
+    <include layout="@layout/layout_web_titlebar"/>
 
 </LinearLayout>

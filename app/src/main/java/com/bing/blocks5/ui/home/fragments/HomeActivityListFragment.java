@@ -1,21 +1,21 @@
-package com.zjonline.blocks5.ui.home.fragments;
+package com.bing.blocks5.ui.home.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
-import com.zjonline.blocks5.Blocks5App;
-import com.zjonline.blocks5.base.BaseAdapter;
-import com.zjonline.blocks5.base.BaseListFragment;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.model.Activity;
-import com.zjonline.blocks5.presenter.ActivityPresenter;
-import com.zjonline.blocks5.ui.activity.ActivityDetailActivity;
-import com.zjonline.blocks5.ui.search.adapter.ActivityListAdapter;
-import com.zjonline.blocks5.ui.search.adapter.holder.ActivityViewHolder;
-import com.zjonline.blocks5.widget.MultiStateView;
-import com.zjonline.blocks5.widget.BottomSpaceItemDecoration;
+import com.bing.blocks5.Blocks5App;
+import com.bing.blocks5.base.BaseAdapter;
+import com.bing.blocks5.base.BaseListFragment;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.ui.activity.ActivityDetailActivity;
+import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
+import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
+import com.bing.blocks5.widget.MultiStateView;
+import com.bing.blocks5.widget.BottomSpaceItemDecoration;
 
 import java.util.List;
 
@@ -90,12 +90,17 @@ public class HomeActivityListFragment extends BaseListFragment<Activity,Activity
         getCallbacks().getActivityList(activity_type_id,mPage = 1);
     }
 
+    @Override
+    protected void nextPage() {
+        getCallbacks().getActivityList(activity_type_id,mPage);
+    }
+
     private void lazyLoad(){
         if(!mInit) return;
         if(isLoad) return;
         isLoad = true;
         activity_type_id = getArguments().getInt(KEY_ACTIVITY_TYPE_ID);
-        getCallbacks().getActivityList(activity_type_id,mPage);
+        getCallbacks().getActivityList(activity_type_id,mPage = 1);
     }
 
     @Override

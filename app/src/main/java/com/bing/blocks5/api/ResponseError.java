@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.api;
+package com.bing.blocks5.api;
 
 public class ResponseError extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.activity;
+package com.bing.blocks5.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,13 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.zjonline.blocks5.AppCookie;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.ui.activity.fragment.CreatorActivityListFragment;
-import com.zjonline.blocks5.ui.home.adapter.FragmentAdapter;
-import com.zjonline.blocks5.widget.TitleBar;
+import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BaseActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.ui.activity.fragment.CreatorActivityListFragment;
+import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
+import com.bing.blocks5.widget.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;

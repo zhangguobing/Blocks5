@@ -37,4 +37,12 @@
 
     <dimen name="switch_button_width">50dp</dimen>
     <dimen name="switch_button_height">30dp</dimen>
+
+    <!-- BottomShareDialog-->
+    <dimen name="bottom_dialog_padding">10dp</dimen>
+    <dimen name="bottom_dialog_top_padding">4dp</dimen>
+    <dimen name="bottom_dialog_top_icon">38dp</dimen>
+    <dimen name="bottom_dialog_left_icon">32dp</dimen>
+    <dimen name="bottom_dialog_small_font_size">12sp</dimen>
+    <dimen name="bottom_dialog_small_normal_size">14sp</dimen>
 </resources>

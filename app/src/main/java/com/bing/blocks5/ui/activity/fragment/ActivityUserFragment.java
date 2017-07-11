@@ -1,20 +1,20 @@
-package com.zjonline.blocks5.ui.activity.fragment;
+package com.bing.blocks5.ui.activity.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.squareup.otto.Subscribe;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseAdapter;
-import com.zjonline.blocks5.base.BaseListFragment;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.model.ActivityUser;
-import com.zjonline.blocks5.model.event.ActivityUserFilterEvent;
-import com.zjonline.blocks5.presenter.ActivityUserPresenter;
-import com.zjonline.blocks5.ui.activity.adapter.ActivityUserAdapter;
-import com.zjonline.blocks5.ui.activity.adapter.holder.ActivityUserViewHolder;
-import com.zjonline.blocks5.ui.user.UserDetailActivity;
-import com.zjonline.blocks5.util.EventUtil;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BaseAdapter;
+import com.bing.blocks5.base.BaseListFragment;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.model.ActivityUser;
+import com.bing.blocks5.model.event.ActivityUserFilterEvent;
+import com.bing.blocks5.presenter.ActivityUserPresenter;
+import com.bing.blocks5.ui.activity.adapter.ActivityUserAdapter;
+import com.bing.blocks5.ui.activity.adapter.holder.ActivityUserViewHolder;
+import com.bing.blocks5.ui.user.UserDetailActivity;
+import com.bing.blocks5.util.EventUtil;
 
 import java.util.List;
 
@@ -55,6 +55,11 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventUtil.register(this);
+    }
+
+    @Override
+    protected boolean getEnableLoadMore() {
+        return false;
     }
 
     @Override

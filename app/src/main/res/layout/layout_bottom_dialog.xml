@@ -42,15 +42,15 @@
         android:layout_height="0.5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@color/divide"/>
+        android:background="@color/divider"/>
 
     <TextView
         android:id="@+id/cancel"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_list_item"
+        android:background="@drawable/bg_item"
         android:gravity="center"
-        android:text="@string/cancel"
+        android:text="取消"
         android:textColor="#969696"
         android:textSize="15sp"/>
 

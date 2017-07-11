@@ -1,14 +1,14 @@
-package com.zjonline.blocks5.ui.activity.adapter.holder;
+package com.bing.blocks5.ui.activity.adapter.holder;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseViewHolder;
-import com.zjonline.blocks5.model.ActivityUser;
-import com.zjonline.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BaseViewHolder;
+import com.bing.blocks5.model.ActivityUser;
+import com.bing.blocks5.util.ImageLoadUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

@@ -462,7 +462,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
-                    <com.zjonline.blocks5.widget.SwitchButton
+                    <com.bing.blocks5.widget.SwitchButton
                         android:id="@+id/sb_need_identity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

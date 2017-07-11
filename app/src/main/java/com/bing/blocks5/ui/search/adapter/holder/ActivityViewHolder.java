@@ -1,17 +1,17 @@
-package com.zjonline.blocks5.ui.search.adapter.holder;
+package com.bing.blocks5.ui.search.adapter.holder;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseViewHolder;
-import com.zjonline.blocks5.model.Activity;
-import com.zjonline.blocks5.model.Config;
-import com.zjonline.blocks5.repository.ConfigManager;
-import com.zjonline.blocks5.util.ActivityDataConvert;
-import com.zjonline.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BaseViewHolder;
+import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.model.Config;
+import com.bing.blocks5.repository.ConfigManager;
+import com.bing.blocks5.util.ActivityDataConvert;
+import com.bing.blocks5.util.ImageLoadUtil;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
-package com.zjonline.blocks5.ui.user;
+package com.bing.blocks5.ui.user;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -11,26 +10,22 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.google.gson.Gson;
-import com.zjonline.blocks5.AppCookie;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.album.Album;
-import com.zjonline.blocks5.base.BaseActivity;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.base.BasePresenterActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.model.Config;
-import com.zjonline.blocks5.model.JsonBean;
-import com.zjonline.blocks5.model.User;
-import com.zjonline.blocks5.presenter.UserPresenter;
-import com.zjonline.blocks5.repository.ConfigManager;
-import com.zjonline.blocks5.util.GetJsonDataUtil;
-import com.zjonline.blocks5.util.ImageLoadUtil;
-import com.zjonline.blocks5.util.ToastUtil;
-import com.zjonline.blocks5.widget.TitleBar;
+import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.R;
+import com.bing.blocks5.album.Album;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BasePresenterActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.model.JsonBean;
+import com.bing.blocks5.model.User;
+import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.util.GetJsonDataUtil;
+import com.bing.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.util.ToastUtil;
+import com.bing.blocks5.widget.TitleBar;
 
 import org.json.JSONArray;
 

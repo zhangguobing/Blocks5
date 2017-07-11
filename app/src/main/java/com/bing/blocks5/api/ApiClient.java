@@ -1,13 +1,13 @@
-package com.zjonline.blocks5.api;
+package com.bing.blocks5.api;
 
-import com.zjonline.blocks5.AppConfig;
-import com.zjonline.blocks5.Blocks5App;
-import com.zjonline.blocks5.Constants;
-import com.zjonline.blocks5.api.service.ActivityService;
-import com.zjonline.blocks5.api.service.ActivityUserService;
-import com.zjonline.blocks5.api.service.LoginAuthService;
-import com.zjonline.blocks5.api.service.UserService;
-import com.zjonline.blocks5.util.GsonHelper;
+import com.bing.blocks5.AppConfig;
+import com.bing.blocks5.Blocks5App;
+import com.bing.blocks5.Constants;
+import com.bing.blocks5.api.service.ActivityService;
+import com.bing.blocks5.api.service.ActivityUserService;
+import com.bing.blocks5.api.service.LoginAuthService;
+import com.bing.blocks5.api.service.UserService;
+import com.bing.blocks5.util.GsonHelper;
 
 import java.io.File;
 import java.lang.reflect.Proxy;

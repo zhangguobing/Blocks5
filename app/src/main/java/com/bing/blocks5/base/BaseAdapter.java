@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.base;
+package com.bing.blocks5.base;
 
 import android.os.AsyncTask;
 import android.support.v7.util.DiffUtil;
@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

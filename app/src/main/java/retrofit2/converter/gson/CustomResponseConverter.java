@@ -2,9 +2,8 @@ package retrofit2.converter.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import com.zjonline.blocks5.api.ApiResponse;
-import com.zjonline.blocks5.api.HttpStatus;
-import com.zjonline.blocks5.api.ResponseError;
+import com.bing.blocks5.api.HttpStatus;
+import com.bing.blocks5.api.ResponseError;
 
 import java.io.IOException;
 

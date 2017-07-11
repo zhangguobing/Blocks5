@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.activity;
+package com.bing.blocks5.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
-import com.zjonline.blocks5.base.BaseAdapter;
-import com.zjonline.blocks5.base.BaseListActivity;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.model.Activity;
-import com.zjonline.blocks5.presenter.ActivityPresenter;
-import com.zjonline.blocks5.ui.search.adapter.ActivityListAdapter;
-import com.zjonline.blocks5.ui.search.adapter.holder.ActivityViewHolder;
-import com.zjonline.blocks5.widget.BottomSpaceItemDecoration;
+import com.bing.blocks5.base.BaseAdapter;
+import com.bing.blocks5.base.BaseListActivity;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
+import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
+import com.bing.blocks5.widget.BottomSpaceItemDecoration;
 
 import java.util.List;
 
@@ -48,6 +48,11 @@ public class CreatedListActivity extends BaseListActivity<Activity,ActivityViewH
     @Override
     protected void refreshPage() {
         getCallbacks().getActivityListByUserId(mUserId,mPage = 1);
+    }
+
+    @Override
+    protected void nextPage() {
+        getCallbacks().getActivityListByUserId(mUserId,mPage);
     }
 
     @Override

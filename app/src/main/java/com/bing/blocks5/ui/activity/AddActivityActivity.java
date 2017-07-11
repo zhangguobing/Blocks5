@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.activity;
+package com.bing.blocks5.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,18 +20,18 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Checked;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.album.Album;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.base.BasePresenterActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.model.Config;
-import com.zjonline.blocks5.presenter.ActivityPresenter;
-import com.zjonline.blocks5.repository.ConfigManager;
-import com.zjonline.blocks5.ui.activity.request.CreateActivityParams;
-import com.zjonline.blocks5.util.ToastUtil;
-import com.zjonline.blocks5.widget.SwitchButton;
-import com.zjonline.blocks5.widget.TitleBar;
+import com.bing.blocks5.R;
+import com.bing.blocks5.album.Album;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BasePresenterActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.model.Config;
+import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.repository.ConfigManager;
+import com.bing.blocks5.ui.activity.request.CreateActivityParams;
+import com.bing.blocks5.util.ToastUtil;
+import com.bing.blocks5.widget.SwitchButton;
+import com.bing.blocks5.widget.TitleBar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

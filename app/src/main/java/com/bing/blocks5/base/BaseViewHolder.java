@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.base;
+package com.bing.blocks5.base;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -10,7 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.zjonline.blocks5.util.ClickUtils;
+import com.bing.blocks5.util.ClickUtils;
 
 import butterknife.ButterKnife;
 

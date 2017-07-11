@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.base;
+package com.bing.blocks5.base;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -9,11 +9,11 @@ import android.support.v7.widget.SimpleItemAnimator;
 
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.util.ToastUtil;
-import com.zjonline.blocks5.widget.LoadMoreView;
-import com.zjonline.blocks5.widget.MultiStateView;
-import com.zjonline.blocks5.widget.RefreshHeadView;
+import com.bing.blocks5.R;
+import com.bing.blocks5.util.ToastUtil;
+import com.bing.blocks5.widget.LoadMoreView;
+import com.bing.blocks5.widget.MultiStateView;
+import com.bing.blocks5.widget.RefreshHeadView;
 
 import java.util.List;
 
@@ -41,6 +41,8 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
     protected int mPageSize = DEFAULT_PAGE_SIZE;
     protected int mPage = DEFAULT_PAGE;
 
+    private boolean mEnableLoadMore;
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
@@ -61,7 +63,9 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
 
             @Override
             public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
-                nextPage();
+                if(mEnableLoadMore){
+                    nextPage();
+                }
             }
         });
 
@@ -130,9 +134,9 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
             } else {
                 mAdapter.addItems(items);
             }
-            boolean enableLoadMore = items.size() >= mPageSize;
-            if(enableLoadMore)  mPage ++;
-            mRefreshLayout.setEnableLoadmore(enableLoadMore);
+            mEnableLoadMore = items.size() >= mPageSize;
+            if(mEnableLoadMore)  mPage ++;
+            mRefreshLayout.setEnableLoadmore(mEnableLoadMore);
         } else {
             if (mPage == 1) {
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)

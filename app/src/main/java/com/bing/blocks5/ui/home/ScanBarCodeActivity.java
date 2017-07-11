@@ -1,10 +1,8 @@
-package com.zjonline.blocks5.ui.home;
+package com.bing.blocks5.ui.home;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.UriMatcher;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,13 +16,12 @@ import android.support.v7.app.AlertDialog;
 import com.google.zxing.Result;
 import com.google.zxing.client.android.CaptureFragment;
 import com.google.zxing.client.result.ResultParser;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseActivity;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.base.BasePresenterActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.presenter.ActivityUserPresenter;
-import com.zjonline.blocks5.util.ToastUtil;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BasePresenterActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.presenter.ActivityUserPresenter;
+import com.bing.blocks5.util.ToastUtil;
 
 /**
  * author：zhangguobing on 2017/6/25 13:50

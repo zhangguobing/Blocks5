@@ -7,7 +7,7 @@
 
     <include layout="@layout/layout_title_bar"/>
 
-    <com.zjonline.blocks5.widget.MultiStateView
+    <com.bing.blocks5.widget.MultiStateView
         android:id="@+id/multi_state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -28,6 +28,6 @@
 
         </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
-    </com.zjonline.blocks5.widget.MultiStateView>
+    </com.bing.blocks5.widget.MultiStateView>
 
 </LinearLayout>

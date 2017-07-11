@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.zjonline.blocks5.widget.HomeBanner
+                <com.bing.blocks5.widget.HomeBanner
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
@@ -51,7 +51,7 @@
                 android:scrollbars="none"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <com.zjonline.blocks5.widget.HomeTabViewPager
+                <com.bing.blocks5.widget.HomeTabViewPager
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

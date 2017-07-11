@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.ui.common.adapter;
+package com.bing.blocks5.ui.common.adapter;
 
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.widget.SmoothImageView;
+import com.bing.blocks5.R;
+import com.bing.blocks5.widget.SmoothImageView;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 

@@ -1,10 +1,9 @@
-package com.zjonline.blocks5.ui.setting;
+package com.bing.blocks5.ui.setting;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,15 +12,14 @@ import android.widget.TextView;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.zjonline.blocks5.R;
-import com.zjonline.blocks5.base.BaseActivity;
-import com.zjonline.blocks5.base.BasePresenter;
-import com.zjonline.blocks5.base.BasePresenterActivity;
-import com.zjonline.blocks5.base.ContentView;
-import com.zjonline.blocks5.model.User;
-import com.zjonline.blocks5.presenter.UserPresenter;
-import com.zjonline.blocks5.util.IdCardCheckUtil;
-import com.zjonline.blocks5.util.ToastUtil;
+import com.bing.blocks5.R;
+import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BasePresenterActivity;
+import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.model.User;
+import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.util.IdCardCheckUtil;
+import com.bing.blocks5.util.ToastUtil;
 
 import java.util.List;
 

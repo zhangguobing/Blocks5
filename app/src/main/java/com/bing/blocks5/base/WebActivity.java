@@ -1,4 +1,4 @@
-package com.zjonline.blocks5.base;
+package com.bing.blocks5.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -16,12 +15,10 @@ import android.widget.TextView;
 
 import com.just.library.AgentWeb;
 import com.just.library.ChromeClientCallbackManager;
-import com.zjonline.blocks5.R;
+import com.bing.blocks5.R;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import cn.campusapp.router.Router;
-import cn.campusapp.router.router.ActivityRouter;
 
 /**
  * author：zhangguobing on 2017/6/27 14:16

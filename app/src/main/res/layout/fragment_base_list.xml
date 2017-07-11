@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.zjonline.blocks5.widget.MultiStateView
+    <com.bing.blocks5.widget.MultiStateView
         android:id="@+id/multi_state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,6 +26,6 @@
 
         </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
-    </com.zjonline.blocks5.widget.MultiStateView>
+    </com.bing.blocks5.widget.MultiStateView>
 
 </LinearLayout>
