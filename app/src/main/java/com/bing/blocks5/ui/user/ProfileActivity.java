@@ -72,8 +72,6 @@ public class ProfileActivity extends BasePresenterActivity<UserPresenter.UserUiC
     @Bind(R.id.image_3)
     ImageView mImage3;
 
-    private User mUser;
-
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
@@ -108,7 +106,7 @@ public class ProfileActivity extends BasePresenterActivity<UserPresenter.UserUiC
 
     public static void createWithAnimation(Activity activity){
         create(activity);
-        activity.overridePendingTransition(R.anim.slide_in_top,R.anim.fade_back);
+        activity.overridePendingTransition(R.anim.slide_in_top, R.anim.activity_stay);
         isAnimationEnter = true;
     }
 
@@ -116,7 +114,7 @@ public class ProfileActivity extends BasePresenterActivity<UserPresenter.UserUiC
     public void finish() {
         super.finish();
         if(isAnimationEnter){
-            overridePendingTransition(R.anim.slide_out_bottom,R.anim.fade_forward);
+            overridePendingTransition(R.anim.activity_stay,R.anim.slide_out_bottom);
         }
     }
 
@@ -265,7 +263,6 @@ public class ProfileActivity extends BasePresenterActivity<UserPresenter.UserUiC
     }
 
     private void setUser(User user){
-        mUser = user;
         ImageLoadUtil.loadAvatar(mAvatarImg,user.getAvatar(),this);
         ImageLoadUtil.loadImage(mImage1,user.getImg_url_1(),this);
         ImageLoadUtil.loadImage(mImage2,user.getImg_url_2(),this);

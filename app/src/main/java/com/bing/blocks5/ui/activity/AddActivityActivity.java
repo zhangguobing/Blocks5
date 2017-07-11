@@ -116,7 +116,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityPresenter
     public static void create(Activity activity) {
         Intent intent = new Intent(activity, AddActivityActivity.class);
         activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.slide_in_top, R.anim.fade_back);
+        activity.overridePendingTransition(R.anim.slide_in_top, R.anim.activity_stay);
     }
 
 
@@ -145,7 +145,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityPresenter
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.slide_out_bottom, R.anim.fade_forward);
+        overridePendingTransition(R.anim.activity_stay,R.anim.slide_out_bottom);
     }
 
     @OnClick({R.id.iv_upload_pictures, R.id.iv_upload_cover,
