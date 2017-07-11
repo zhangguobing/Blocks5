@@ -40,7 +40,7 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
     protected int mPageSize = DEFAULT_PAGE_SIZE;
     protected int mPage = DEFAULT_PAGE;
 
-    private boolean mEnableLoadMore;
+    private boolean mEnableLoadMore = true;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -137,14 +137,16 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
             mRefreshLayout.setEnableLoadmore(mEnableLoadMore);
         } else {
             if (mPage == 1) {
-                mMultiStateView.setState(MultiStateView.STATE_EMPTY)
-                        .setIcon(getEmptyIcon())
-                        .setTitle(getEmptyTitle())
-                        .setButton(v -> onRetryClick());
+                if(mAdapter.getItemCount() == 0){
+                    mMultiStateView.setState(MultiStateView.STATE_EMPTY)
+                            .setIcon(getEmptyIcon())
+                            .setTitle(getEmptyTitle())
+                            .setButton(v -> onRetryClick());
+                }
             } else {
                 ToastUtil.showText("没有更多了");
             }
-            mRefreshLayout.setEnableLoadmore(false);
+            mRefreshLayout.setEnableLoadmore(mEnableLoadMore = false);
         }
         mRefreshLayout.setEnableRefresh(getEnableRefresh());
     }

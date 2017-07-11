@@ -50,7 +50,7 @@ public class HistoryActivity extends BaseListActivity<Activity,ActivityViewHolde
     }
 
     protected void nextPage() {
-        getCallbacks().getHistoryOrCollectActivity(true,mPage++,mPageSize);
+        getCallbacks().getHistoryOrCollectActivity(false,mPage++,mPageSize);
     }
 
     @Override
