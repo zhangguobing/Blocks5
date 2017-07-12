@@ -10,7 +10,7 @@ import com.bing.blocks5.base.BaseListFragment;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.User;
 import com.bing.blocks5.model.event.UserSearchEvent;
-import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.controller.UserController;
 import com.bing.blocks5.ui.search.adapter.UserListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.UserViewHolder;
 import com.bing.blocks5.ui.user.UserDetailActivity;
@@ -25,12 +25,12 @@ import java.util.List;
 /**
  * Created by wjb on 2016/4/27.
  */
-public class SearchUserListFragment extends BaseListFragment<User,UserViewHolder,UserPresenter.UserUiCallbacks>
-implements UserViewHolder.IUserOperateListener,UserPresenter.UserListUi {
+public class SearchUserListFragment extends BaseListFragment<User,UserViewHolder,UserController.UserUiCallbacks>
+implements UserViewHolder.IUserOperateListener,UserController.UserListUi {
 
     @Override
     protected BasePresenter getPresenter() {
-        return new UserPresenter();
+        return new UserController();
     }
 
     @Override

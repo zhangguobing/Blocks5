@@ -10,7 +10,7 @@ import com.bing.blocks5.base.BaseListFragment;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.ActivityUser;
 import com.bing.blocks5.model.event.ActivityUserFilterEvent;
-import com.bing.blocks5.presenter.ActivityUserPresenter;
+import com.bing.blocks5.controller.ActivityUserController;
 import com.bing.blocks5.ui.activity.adapter.ActivityUserAdapter;
 import com.bing.blocks5.ui.activity.adapter.holder.ActivityUserViewHolder;
 import com.bing.blocks5.ui.user.UserDetailActivity;
@@ -23,8 +23,8 @@ import java.util.List;
  * email：bing901222@qq.com
  */
 
-public class ActivityUserFragment extends BaseListFragment<ActivityUser,ActivityUserViewHolder,ActivityUserPresenter.ActivityUserUiCallbacks>
-        implements ActivityUserPresenter.SignUpList {
+public class ActivityUserFragment extends BaseListFragment<ActivityUser,ActivityUserViewHolder,ActivityUserController.ActivityUserUiCallbacks>
+        implements ActivityUserController.SignUpList {
 
     private static final String EXTRA_ACTIVITY_ID = "extra_activity_id";
     private static final String EXTRA_IS_SIGN = "extra_is_sign";
@@ -80,7 +80,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityUserPresenter();
+        return new ActivityUserController();
     }
 
     @Override

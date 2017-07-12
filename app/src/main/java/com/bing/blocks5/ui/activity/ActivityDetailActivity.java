@@ -18,7 +18,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.bing.blocks5.model.ShareInfo;
+import com.bing.blocks5.ui.home.HomeActivity;
 import com.bing.blocks5.util.ShareUtil;
+import com.bing.blocks5.widget.opendanmaku.DanmakuItem;
+import com.bing.blocks5.widget.opendanmaku.DanmakuView;
+import com.bing.blocks5.widget.opendanmaku.IDanmakuItem;
+import com.bumptech.glide.Glide;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.bing.blocks5.R;
@@ -27,7 +32,7 @@ import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.Config;
-import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.repository.ConfigManager;
 import com.bing.blocks5.ui.home.ScanBarCodeActivity;
 import com.bing.blocks5.ui.user.UserDetailActivity;
@@ -39,13 +44,14 @@ import com.bing.blocks5.widget.TitleBar;
 import com.bing.blocks5.widget.bottomsharedialog.BottomShareDialog;
 import com.bing.blocks5.widget.toprightmenu.MenuItem;
 import com.bing.blocks5.widget.toprightmenu.TopRightMenu;
+import com.youth.banner.Banner;
+import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import cn.sharesdk.framework.ShareSDK;
 
 /**
  * author：zhangguobing on 2017/7/4 09:25
@@ -54,8 +60,8 @@ import cn.sharesdk.framework.ShareSDK;
  */
 
 @ContentView(R.layout.activity_activity_detail)
-public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresenter.ActivityUiCallbacks>
-   implements ActivityPresenter.ActivityDetailUi{
+public class ActivityDetailActivity extends BasePresenterActivity<ActivityController.ActivityUiCallbacks>
+   implements ActivityController.ActivityDetailUi{
 
     @Bind(R.id.rg_price_type)
     RadioGroup mPriceTypeRg;
@@ -91,6 +97,10 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresen
     TextView mEndTimeTv;
     @Bind(R.id.btn_join)
     Button mJoinBtn;
+    @Bind(R.id.banner)
+    Banner mBanner;
+    @Bind(R.id.danmakuView)
+    DanmakuView mDanmakuView;
 
     private static final String EXTRA_ACTIVITY_ID = "activityId";
 
@@ -173,6 +183,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresen
 
 
     private void showTopRightMenu(View view){
+        if(mActivity == null) return;
         TopRightMenu topRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(R.mipmap.ic_favourite_6dp, "收藏"));
@@ -181,7 +192,6 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresen
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
         menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, "加入活动"));
         menuItems.add(new MenuItem(R.mipmap.ic_report_6dp, "举报活动"));
-
         topRightMenu
                 .setHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
                 .setWidth(320)
@@ -237,7 +247,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresen
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityPresenter();
+        return new ActivityController();
     }
 
 
@@ -278,7 +288,43 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityPresen
         mNeedIdentitySwitch.setChecked("0".equals(activity.getNeed_identity()));
         mJoinBtn.setEnabled(activity.getState() == 1);
         mUserId = activity.getUser_id();
+        initBanner(activity);
+        initDanmakuView(activity.getComments());
         mActivity = activity;
+    }
+
+
+    private void initBanner(Activity activity) {
+        if(activity == null) return;
+        List<String> imageUrls = new ArrayList<>();
+        if(!TextUtils.isEmpty(activity.getImg_url_1())){
+            imageUrls.add(activity.getImg_url_1());
+        }
+        if(!TextUtils.isEmpty(activity.getImg_url_2())){
+            imageUrls.add(activity.getImg_url_2());
+        }
+        if(!TextUtils.isEmpty(activity.getImg_url_3())){
+            imageUrls.add(activity.getImg_url_3());
+        }
+        mBanner.setImages(imageUrls).setImageLoader(new GlideImageLoader()).start();
+    }
+
+
+    private void initDanmakuView(List<Activity.Comment> comments){
+        if(comments == null || comments.size() == 0) return;
+        List<IDanmakuItem> list = new ArrayList<>();
+        for (int i = 0; i < comments.size(); i++) {
+            list.add(new DanmakuItem(this,comments.get(i).getContent(),mDanmakuView.getWidth()));
+        }
+        mDanmakuView.addItem(list,true);
+        mDanmakuView.show();
+    }
+
+    private class GlideImageLoader extends ImageLoader {
+        @Override
+        public void displayImage(Context context, Object path, ImageView imageView) {
+            Glide.with(context).load(path).placeholder(R.drawable.bg_img_place_holder).error(R.mipmap.img_error).into(imageView);
+        }
     }
 
     @Override

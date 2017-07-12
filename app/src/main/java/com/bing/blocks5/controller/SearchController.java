@@ -1,4 +1,4 @@
-package com.bing.blocks5.presenter;
+package com.bing.blocks5.controller;
 
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class SearchPresenter extends BasePresenter<SearchPresenter.SearchUi,SearchPresenter.SearchUiCallbacks> {
+public class SearchController extends BasePresenter<SearchController.SearchUi,SearchController.SearchUiCallbacks> {
 
     @Override
     protected SearchUiCallbacks createUiCallbacks(SearchUi ui) {

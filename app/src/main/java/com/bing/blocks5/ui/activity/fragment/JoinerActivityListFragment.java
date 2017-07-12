@@ -7,7 +7,7 @@ import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
-import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.ui.activity.ActivityDetailActivity;
 import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
@@ -20,8 +20,8 @@ import java.util.List;
  * email：bing901222@qq.com
  */
 
-public class JoinerActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,ActivityPresenter.ActivityUiCallbacks>
-        implements ActivityPresenter.ActivityListUi{
+public class JoinerActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,ActivityController.ActivityUiCallbacks>
+        implements ActivityController.ActivityListUi{
 
     private static final String EXTRA_ACTIVITY_STATE = "extra_activity_state";
     //活动参与者ID
@@ -65,7 +65,7 @@ public class JoinerActivityListFragment extends BaseListFragment<Activity,Activi
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityPresenter();
+        return new ActivityController();
     }
 
     @Override

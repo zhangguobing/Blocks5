@@ -18,6 +18,9 @@ public class UserListAdapter extends BaseAdapter<User,UserViewHolder> {
 
     private UserViewHolder.IUserOperateListener mListener;
 
+    public UserListAdapter() {
+    }
+
     public UserListAdapter(UserViewHolder.IUserOperateListener listener) {
         this.mListener = listener;
     }

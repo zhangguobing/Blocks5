@@ -26,6 +26,8 @@
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
+                    app:delay_time="5000"
+                    app:image_scale_type="center_crop"
                     android:background="?android:windowBackground"
                     app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected"
                     app:layout_scrollFlags="scroll"/>

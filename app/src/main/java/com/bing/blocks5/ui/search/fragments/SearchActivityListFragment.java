@@ -9,7 +9,7 @@ import com.bing.blocks5.base.BaseListFragment;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.event.ActivitySearchEvent;
-import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.controller.UserController;
 import com.bing.blocks5.ui.activity.ActivityDetailActivity;
 import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
@@ -21,8 +21,8 @@ import com.bing.blocks5.widget.BottomSpaceItemDecoration;
 /**
  * Created by wjb on 2016/4/27.
  */
-public class SearchActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,UserPresenter.UserUiCallbacks>
-implements UserPresenter.UserUi{
+public class SearchActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,UserController.UserUiCallbacks>
+implements UserController.UserUi{
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
@@ -71,7 +71,7 @@ implements UserPresenter.UserUi{
 
     @Override
     protected BasePresenter getPresenter() {
-        return new UserPresenter();
+        return new UserController();
     }
 
     @Subscribe

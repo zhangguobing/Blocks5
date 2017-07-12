@@ -15,7 +15,7 @@ import com.bing.blocks5.R;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
-import com.bing.blocks5.presenter.LoginAuthPresenter;
+import com.bing.blocks5.controller.LoginAuthController;
 import com.bing.blocks5.ui.home.HomeActivity;
 import com.bing.blocks5.util.ActivityStack;
 import com.bing.blocks5.util.CountDownTimerUtils;
@@ -32,8 +32,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_login)
-public class LoginActivity extends BasePresenterActivity<LoginAuthPresenter.LoginAuthUiCallbacks>
-   implements LoginAuthPresenter.LoginUi{
+public class LoginActivity extends BasePresenterActivity<LoginAuthController.LoginAuthUiCallbacks>
+   implements LoginAuthController.LoginUi{
 
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
@@ -50,7 +50,7 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthPresenter.Logi
 
     @Override
     protected BasePresenter getPresenter() {
-        return new LoginAuthPresenter();
+        return new LoginAuthController();
     }
 
     public static void create(Context context){

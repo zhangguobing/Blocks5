@@ -20,7 +20,7 @@ import com.bing.blocks5.R;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
-import com.bing.blocks5.presenter.ActivityUserPresenter;
+import com.bing.blocks5.controller.ActivityUserController;
 import com.bing.blocks5.util.ToastUtil;
 
 /**
@@ -28,8 +28,8 @@ import com.bing.blocks5.util.ToastUtil;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_scan_barcode)
-public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserPresenter.ActivityUserUiCallbacks>
-        implements CaptureFragment.OnFragmentInteractionListener,ActivityUserPresenter.ScanBarcodeUi {
+public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserController.ActivityUserUiCallbacks>
+        implements CaptureFragment.OnFragmentInteractionListener,ActivityUserController.ScanBarcodeUi {
 
     private static final int REQUEST_CAMERA_PERMISSION = 10001;
 
@@ -114,7 +114,7 @@ public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserPrese
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityUserPresenter();
+        return new ActivityUserController();
     }
 
     @Override

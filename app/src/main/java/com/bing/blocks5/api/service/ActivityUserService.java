@@ -3,6 +3,7 @@ package com.bing.blocks5.api.service;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.ActivityUser;
+import com.bing.blocks5.model.User;
 
 import java.util.List;
 
@@ -41,4 +42,18 @@ public interface ActivityUserService {
     @GET("histories/activities")
     Observable<ApiResponse<List<Activity>>> getHistoryOrCollectActivity(@Query("token") String token, @Query("is_collect") int collect,
                                                                   @Query("page_index") int page_index, @Query("page_size") int page_size);
+
+    /**
+     * 获取某用户关注的（或被关注的）用户列表
+     * @param token
+     * @param follow_type 类型：0 为我关注，1为关注我的。默认0
+     * @param page_index 页码，从1开始，默认1
+     * @param page_size 每页数量，默认10
+     * @param user_id 需要查看的用户，不填则默认为当前用户
+     * @return
+     */
+    @GET("follows")
+    Observable<ApiResponse<List<User>>> getFollowers(@Query("token") String token, @Query("follow_type") int follow_type,
+                                             @Query("page_index") int page_index,@Query("page_size") int page_size,
+                                             @Query("user_id") int user_id);
 }

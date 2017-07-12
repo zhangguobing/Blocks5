@@ -10,7 +10,7 @@ import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
-import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.ui.activity.ActivityDetailActivity;
 import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
@@ -23,8 +23,8 @@ import java.util.List;
 /**
  * Created by wjb on 2016/4/27.
  */
-public class HomeActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,ActivityPresenter.ActivityUiCallbacks>
-   implements ActivityPresenter.ActivityListUi,AppBarLayout.OnOffsetChangedListener{
+public class HomeActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,ActivityController.ActivityUiCallbacks>
+   implements ActivityController.ActivityListUi,AppBarLayout.OnOffsetChangedListener{
 
     private static final String KEY_ACTIVITY_TYPE_ID = "key_activity_type_id";
 
@@ -66,7 +66,7 @@ public class HomeActivityListFragment extends BaseListFragment<Activity,Activity
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityPresenter();
+        return new ActivityController();
     }
 
     public static HomeActivityListFragment newInstance(int activity_type_id) {

@@ -1,4 +1,4 @@
-package com.bing.blocks5.presenter;
+package com.bing.blocks5.controller;
 
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class UserPresenter extends BasePresenter<UserPresenter.UserUi,UserPresenter.UserUiCallbacks> {
+public class UserController extends BasePresenter<UserController.UserUi,UserController.UserUiCallbacks> {
 
     @Override
     protected UserUiCallbacks createUiCallbacks(UserUi ui) {
@@ -162,7 +162,7 @@ public class UserPresenter extends BasePresenter<UserPresenter.UserUi,UserPresen
                 });
     }
 
-    public interface UserUi extends BasePresenter.Ui<UserPresenter.UserUiCallbacks>{
+    public interface UserUi extends BasePresenter.Ui<UserController.UserUiCallbacks>{
 
     }
 

@@ -21,7 +21,7 @@ import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.JsonBean;
 import com.bing.blocks5.model.User;
-import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.controller.UserController;
 import com.bing.blocks5.util.GetJsonDataUtil;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.ToastUtil;
@@ -40,8 +40,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_profile)
-public class ProfileActivity extends BasePresenterActivity<UserPresenter.UserUiCallbacks>
-  implements UserPresenter.ProfileUi{
+public class ProfileActivity extends BasePresenterActivity<UserController.UserUiCallbacks>
+  implements UserController.ProfileUi{
 
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
@@ -246,7 +246,7 @@ public class ProfileActivity extends BasePresenterActivity<UserPresenter.UserUiC
 
     @Override
     protected BasePresenter getPresenter() {
-        return new UserPresenter();
+        return new UserController();
     }
 
     @Override

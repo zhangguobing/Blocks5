@@ -1,4 +1,4 @@
-package com.bing.blocks5.presenter;
+package com.bing.blocks5.controller;
 
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
@@ -6,6 +6,7 @@ import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.ActivityUser;
+import com.bing.blocks5.model.User;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class ActivityUserPresenter extends BasePresenter<ActivityUserPresenter.ActivityUserUi,ActivityUserPresenter.ActivityUserUiCallbacks> {
+public class ActivityUserController extends BasePresenter<ActivityUserController.ActivityUserUi,ActivityUserController.ActivityUserUiCallbacks> {
 
     @Override
     protected ActivityUserUiCallbacks createUiCallbacks(ActivityUserUi ui) {
@@ -35,6 +36,11 @@ public class ActivityUserPresenter extends BasePresenter<ActivityUserPresenter.A
             @Override
             public void getHistoryOrCollectActivity(boolean is_collect, int page_index, int page_size) {
                 doGetHistoryOrCollectActivity(getId(ui), is_collect, page_index, page_size);
+            }
+
+            @Override
+            public void getFollowers(int follow_type, int page_index, int page_size, int user_id) {
+                doGetFollowers(getId(ui), follow_type, page_index, page_size, user_id);
             }
         };
     }
@@ -106,13 +112,35 @@ public class ActivityUserPresenter extends BasePresenter<ActivityUserPresenter.A
                 });
     }
 
+    private void doGetFollowers(final int callingId, int follow_type, int page_index, int page_size, int user_id){
+        mApiClient.activityUserService()
+                .getFollowers(mToken,follow_type,page_index,page_size,user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<List<User>>>() {
+                    @Override
+                    public void onResponse(ApiResponse<List<User>> response) {
+                         ActivityUserUi ui = findUi(callingId);
+                         if(ui instanceof followOrFanUi){
+                             ((followOrFanUi)ui).onFollowerList(response.data);
+                         }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
     public interface ActivityUserUiCallbacks{
         void sign(int activity_id);
         void getUsersByActivityId(int is_sign,int activity_id,String sex);
         void getHistoryOrCollectActivity(boolean is_collect, int page_index, int page_size);
+        void getFollowers(int follow_type, int page_index, int page_size, int user_id);
     }
 
-    public interface ActivityUserUi extends BasePresenter.Ui<ActivityUserPresenter.ActivityUserUiCallbacks>{
+    public interface ActivityUserUi extends BasePresenter.Ui<ActivityUserController.ActivityUserUiCallbacks>{
 
     }
 
@@ -127,5 +155,9 @@ public class ActivityUserPresenter extends BasePresenter<ActivityUserPresenter.A
 
     public interface HistoryCollectUi extends ActivityUserUi{
         void onActivitiesResult(List<Activity> activities);
+    }
+
+    public interface followOrFanUi extends ActivityUserUi{
+        void onFollowerList(List<User> users);
     }
 }

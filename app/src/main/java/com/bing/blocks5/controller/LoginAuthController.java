@@ -1,4 +1,4 @@
-package com.bing.blocks5.presenter;
+package com.bing.blocks5.controller;
 
 import android.text.TextUtils;
 
@@ -22,7 +22,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class LoginAuthPresenter extends BasePresenter<LoginAuthPresenter.LoginAuthUi,LoginAuthPresenter.LoginAuthUiCallbacks>{
+public class LoginAuthController extends BasePresenter<LoginAuthController.LoginAuthUi,LoginAuthController.LoginAuthUiCallbacks>{
 
     @Override
     protected LoginAuthUiCallbacks createUiCallbacks(final LoginAuthUi ui) {

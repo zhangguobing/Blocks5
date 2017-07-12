@@ -22,7 +22,7 @@ import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Config;
-import com.bing.blocks5.presenter.LoginAuthPresenter;
+import com.bing.blocks5.controller.LoginAuthController;
 import com.bing.blocks5.ui.activity.AddActivityActivity;
 import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
 import com.bing.blocks5.ui.home.fragments.HomeActivityListFragment;
@@ -48,8 +48,8 @@ import cn.campusapp.router.Router;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_home)
-public class HomeActivity extends BasePresenterActivity<LoginAuthPresenter.LoginAuthUiCallbacks>
-   implements LoginAuthPresenter.HomeUi,SlidingActivityBase {
+public class HomeActivity extends BasePresenterActivity<LoginAuthController.LoginAuthUiCallbacks>
+   implements LoginAuthController.HomeUi,SlidingActivityBase {
 
     @Bind(R.id.banner)
     HomeBanner mBanner;
@@ -128,7 +128,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthPresenter.Login
         for (Config.BannersBean bannersBean : bannersBeans){
             imageUrls.add(bannersBean.getImgUrl());
         }
-        mBanner.setImages(imageUrls).setDelayTime(5000).setOnBannerListener(position -> {
+        mBanner.setImages(imageUrls).setOnBannerListener(position -> {
             Config.BannersBean bannersBean = bannersBeans.get(position);
             Router.open(HomeActivity.this,bannersBean.getLinkUrl());
         }).setImageLoader(new GlideImageLoader()).start();
@@ -136,7 +136,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthPresenter.Login
 
     @Override
     protected BasePresenter getPresenter() {
-        return new LoginAuthPresenter();
+        return new LoginAuthController();
     }
 
     @Override
@@ -197,7 +197,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthPresenter.Login
     private class GlideImageLoader extends ImageLoader{
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            Glide.with(context).load(path).into(imageView);
+            Glide.with(context).load(path).placeholder(R.drawable.bg_img_place_holder).error(R.mipmap.img_error).into(imageView);
         }
     }
 

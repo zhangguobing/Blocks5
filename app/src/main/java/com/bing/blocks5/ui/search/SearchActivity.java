@@ -17,7 +17,7 @@ import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.User;
-import com.bing.blocks5.presenter.SearchPresenter;
+import com.bing.blocks5.controller.SearchController;
 import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
 import com.bing.blocks5.ui.search.fragments.SearchActivityListFragment;
 import com.bing.blocks5.ui.search.fragments.SearchUserListFragment;
@@ -33,8 +33,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_search)
-public class SearchActivity extends BasePresenterActivity<SearchPresenter.SearchUiCallbacks>
-    implements SearchPresenter.SearchUi{
+public class SearchActivity extends BasePresenterActivity<SearchController.SearchUiCallbacks>
+    implements SearchController.SearchUi{
 
     @Bind(R.id.tab_layout)
     TabLayout mTabLayout;
@@ -94,7 +94,7 @@ public class SearchActivity extends BasePresenterActivity<SearchPresenter.Search
 
     @Override
     protected BasePresenter getPresenter() {
-        return new SearchPresenter();
+        return new SearchController();
     }
 
     @Override

@@ -17,7 +17,7 @@ import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.User;
-import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.controller.UserController;
 import com.bing.blocks5.util.ActivityDataConvert;
 import com.bing.blocks5.util.ActivityStack;
 
@@ -29,8 +29,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_setting)
-public class SettingActivity extends BasePresenterActivity<UserPresenter.UserUiCallbacks>
-    implements UserPresenter.SettingUi{
+public class SettingActivity extends BasePresenterActivity<UserController.UserUiCallbacks>
+    implements UserController.SettingUi{
 
     @Bind(R.id.tv_certification)
     TextView mCertTv;
@@ -92,7 +92,7 @@ public class SettingActivity extends BasePresenterActivity<UserPresenter.UserUiC
 
     @Override
     protected BasePresenter getPresenter() {
-        return new UserPresenter();
+        return new UserController();
     }
 
     @Override

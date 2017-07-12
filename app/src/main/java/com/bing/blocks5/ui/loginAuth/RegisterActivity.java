@@ -10,7 +10,7 @@ import com.bing.blocks5.R;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
-import com.bing.blocks5.presenter.LoginAuthPresenter;
+import com.bing.blocks5.controller.LoginAuthController;
 import com.bing.blocks5.util.CountDownTimerUtils;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.util.ValidatorUtil;
@@ -23,8 +23,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_register)
-public class RegisterActivity extends BasePresenterActivity<LoginAuthPresenter.LoginAuthUiCallbacks>
-   implements LoginAuthPresenter.LoginUi{
+public class RegisterActivity extends BasePresenterActivity<LoginAuthController.LoginAuthUiCallbacks>
+   implements LoginAuthController.LoginUi{
 
     @Bind(R.id.et_phone)
     EditText mPhoneEditText;
@@ -37,7 +37,7 @@ public class RegisterActivity extends BasePresenterActivity<LoginAuthPresenter.L
 
     @Override
     protected BasePresenter getPresenter() {
-        return new LoginAuthPresenter();
+        return new LoginAuthController();
     }
 
     public static void create(Context context){

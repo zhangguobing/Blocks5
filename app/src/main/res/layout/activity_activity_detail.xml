@@ -25,6 +25,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp">
+
+                    <com.youth.banner.Banner
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        app:delay_time="5000"
+                        app:image_scale_type="center_crop"
+                        app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected"/>
+
+                    <com.bing.blocks5.widget.opendanmaku.DanmakuView
+                        android:id="@+id/danmakuView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:start_Y_offset="0.2"
+                        app:end_Y_offset="0.8"
+                        app:max_row="4"
+                        app:max_running_per_row="2"
+                        app:pick_interval="1000"
+                        app:show_debug="false" />
+
+                </FrameLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

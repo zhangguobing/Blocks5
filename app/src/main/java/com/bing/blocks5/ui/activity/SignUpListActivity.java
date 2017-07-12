@@ -18,7 +18,7 @@ import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.event.ActivityUserFilterEvent;
-import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.ui.activity.fragment.ActivityUserFragment;
 import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
 import com.bing.blocks5.util.EventUtil;
@@ -35,8 +35,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_signup_list)
-public class SignUpListActivity extends BasePresenterActivity<ActivityPresenter.ActivityUiCallbacks>
-   implements ActivityPresenter.SignUpUi{
+public class SignUpListActivity extends BasePresenterActivity<ActivityController.ActivityUiCallbacks>
+   implements ActivityController.SignUpUi{
 
     @Bind(R.id.tab_layout)
     TabLayout mTabLayout;
@@ -143,7 +143,7 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityPresenter.
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityPresenter();
+        return new ActivityController();
     }
 
     @Override

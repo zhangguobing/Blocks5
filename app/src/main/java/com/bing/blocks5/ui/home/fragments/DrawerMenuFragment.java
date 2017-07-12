@@ -25,6 +25,7 @@ import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.ui.home.HomeActivity;
 import com.bing.blocks5.ui.setting.SettingActivity;
 import com.bing.blocks5.ui.user.FavouriteActivity;
+import com.bing.blocks5.ui.user.FollowOrFansActivity;
 import com.bing.blocks5.ui.user.HistoryActivity;
 import com.bing.blocks5.ui.user.ProfileActivity;
 import com.bing.blocks5.util.ImageLoadUtil;
@@ -88,7 +89,8 @@ public class DrawerMenuFragment extends Fragment {
 
     @OnClick({R.id.ll_profile,R.id.ll_setting,R.id.iv_avatar,
          R.id.ll_my_created_activity,R.id.ll_my_join_activity,
-            R.id.ll_collect,R.id.ll_history})
+            R.id.ll_collect,R.id.ll_history,R.id.ll_follow,
+         R.id.ll_followed})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_avatar:
@@ -116,6 +118,14 @@ public class DrawerMenuFragment extends Fragment {
                 break;
             case R.id.ll_history:
                 HistoryActivity.create(getContext());
+                hideSlideMenu();
+                break;
+            case R.id.ll_follow:
+                FollowOrFansActivity.create(getContext(),FollowOrFansActivity.TYPE_FOLLOW,AppCookie.getUserInfo().getId());
+                hideSlideMenu();
+                break;
+            case R.id.ll_followed:
+                FollowOrFansActivity.create(getContext(),FollowOrFansActivity.TYPE_FOLLOWED,AppCookie.getUserInfo().getId());
                 hideSlideMenu();
                 break;
         }

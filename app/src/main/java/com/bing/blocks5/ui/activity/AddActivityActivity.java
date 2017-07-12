@@ -26,7 +26,7 @@ import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Config;
-import com.bing.blocks5.presenter.ActivityPresenter;
+import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.repository.ConfigManager;
 import com.bing.blocks5.ui.activity.request.CreateActivityParams;
 import com.bing.blocks5.util.ToastUtil;
@@ -48,8 +48,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_add_activity)
-public class AddActivityActivity extends BasePresenterActivity<ActivityPresenter.ActivityUiCallbacks>
-      implements ActivityPresenter.CreateActivityUi,Validator.ValidationListener {
+public class AddActivityActivity extends BasePresenterActivity<ActivityController.ActivityUiCallbacks>
+      implements ActivityController.CreateActivityUi,Validator.ValidationListener {
 
     private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
     private static final int ACTIVITY_REQUEST_TAKE_PICTURE = 101;
@@ -304,7 +304,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityPresenter
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityPresenter();
+        return new ActivityController();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bing.blocks5.presenter;
+package com.bing.blocks5.controller;
 
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class ActivityPresenter extends BasePresenter<ActivityPresenter.ActivityUi,ActivityPresenter.ActivityUiCallbacks> {
+public class ActivityController extends BasePresenter<ActivityController.ActivityUi,ActivityController.ActivityUiCallbacks> {
 
     @Override
     protected ActivityUiCallbacks createUiCallbacks(ActivityUi ui) {
@@ -293,9 +293,9 @@ public class ActivityPresenter extends BasePresenter<ActivityPresenter.ActivityU
                 .subscribe(new RequestCallback<ApiResponse>() {
                     @Override
                     public void onResponse(ApiResponse response) {
-                        ActivityPresenter.ActivityUi ui = findUi(callingId);
-                        if(ui instanceof ActivityPresenter.ActivityDetailUi){
-                            ((ActivityPresenter.ActivityDetailUi)ui).joinSuccess();
+                        ActivityController.ActivityUi ui = findUi(callingId);
+                        if(ui instanceof ActivityController.ActivityDetailUi){
+                            ((ActivityController.ActivityDetailUi)ui).joinSuccess();
                         }
                     }
                     @Override

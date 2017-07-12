@@ -13,12 +13,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.User;
-import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.controller.UserController;
 import com.bing.blocks5.ui.activity.CreatedListActivity;
 import com.bing.blocks5.ui.activity.JoinListActivity;
 import com.bing.blocks5.ui.common.GalleryActivity;
@@ -36,8 +37,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_user_detail)
-public class UserDetailActivity extends BasePresenterActivity<UserPresenter.UserUiCallbacks>
-implements UserPresenter.UserDetailUi{
+public class UserDetailActivity extends BasePresenterActivity<UserController.UserUiCallbacks>
+implements UserController.UserDetailUi{
 
     @Bind(R.id.iv_user_avatar)
     ImageView userAvatarImg;
@@ -160,7 +161,7 @@ implements UserPresenter.UserDetailUi{
     }
 
     @OnClick({R.id.iv_back,R.id.layout_his_create_activity,R.id.layout_his_join_activity,
-    R.id.image_1,R.id.image_2,R.id.image_3})
+    R.id.image_1,R.id.image_2,R.id.image_3,R.id.ll_follow,R.id.ll_followed})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_back:
@@ -181,12 +182,18 @@ implements UserPresenter.UserDetailUi{
             case R.id.image_3:
                 showGallery(view,2);
                 break;
+            case R.id.ll_follow:
+                FollowOrFansActivity.create(this,FollowOrFansActivity.TYPE_FOLLOW, user_id);
+                break;
+            case R.id.ll_followed:
+                FollowOrFansActivity.create(this,FollowOrFansActivity.TYPE_FOLLOWED, user_id);
+                break;
         }
     }
 
     @Override
     protected BasePresenter getPresenter() {
-        return new UserPresenter();
+        return new UserController();
     }
 
     @Override

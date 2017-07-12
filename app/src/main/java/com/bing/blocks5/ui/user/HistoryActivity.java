@@ -9,7 +9,7 @@ import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListActivity;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
-import com.bing.blocks5.presenter.ActivityUserPresenter;
+import com.bing.blocks5.controller.ActivityUserController;
 import com.bing.blocks5.ui.activity.ActivityDetailActivity;
 import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
@@ -23,8 +23,8 @@ import java.util.List;
  * email：bing901222@qq.com
  */
 
-public class HistoryActivity extends BaseListActivity<Activity,ActivityViewHolder,ActivityUserPresenter.ActivityUserUiCallbacks>
-     implements ActivityUserPresenter.HistoryCollectUi{
+public class HistoryActivity extends BaseListActivity<Activity,ActivityViewHolder,ActivityUserController.ActivityUserUiCallbacks>
+     implements ActivityUserController.HistoryCollectUi{
 
 
     public static void create(Context context){
@@ -55,7 +55,7 @@ public class HistoryActivity extends BaseListActivity<Activity,ActivityViewHolde
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityUserPresenter();
+        return new ActivityUserController();
     }
 
     @Override

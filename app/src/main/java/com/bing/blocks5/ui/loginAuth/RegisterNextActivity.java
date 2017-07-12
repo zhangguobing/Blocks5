@@ -16,7 +16,7 @@ import com.bing.blocks5.album.Album;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
-import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.controller.UserController;
 import com.bing.blocks5.ui.home.HomeActivity;
 import com.bing.blocks5.util.ActivityStack;
 import com.bing.blocks5.util.ToastUtil;
@@ -34,8 +34,8 @@ import butterknife.OnClick;
  * 完善信息页面
  */
 @ContentView(R.layout.activity_login_next)
-public class RegisterNextActivity extends BasePresenterActivity<UserPresenter.UserUiCallbacks>
-        implements UserPresenter.LoginNextUi {
+public class RegisterNextActivity extends BasePresenterActivity<UserController.UserUiCallbacks>
+        implements UserController.LoginNextUi {
 
     private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
     private static final int ACTIVITY_REQUEST_TAKE_PICTURE = 101;
@@ -93,7 +93,7 @@ public class RegisterNextActivity extends BasePresenterActivity<UserPresenter.Us
 
     @Override
     protected BasePresenter getPresenter() {
-        return new UserPresenter();
+        return new UserController();
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListActivity;
 import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
-import com.bing.blocks5.presenter.ActivityUserPresenter;
+import com.bing.blocks5.controller.ActivityUserController;
 import com.bing.blocks5.ui.activity.ActivityDetailActivity;
 import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
@@ -24,8 +24,8 @@ import java.util.List;
  * 活动收藏列表页
  */
 
-public class FavouriteActivity extends BaseListActivity<Activity,ActivityViewHolder,ActivityUserPresenter.ActivityUserUiCallbacks>
-     implements ActivityUserPresenter.HistoryCollectUi{
+public class FavouriteActivity extends BaseListActivity<Activity,ActivityViewHolder,ActivityUserController.ActivityUserUiCallbacks>
+     implements ActivityUserController.HistoryCollectUi{
 
     public static void create(Context context){
         Intent intent = new Intent(context,FavouriteActivity.class);
@@ -56,7 +56,7 @@ public class FavouriteActivity extends BaseListActivity<Activity,ActivityViewHol
 
     @Override
     protected BasePresenter getPresenter() {
-        return new ActivityUserPresenter();
+        return new ActivityUserController();
     }
 
     @Override

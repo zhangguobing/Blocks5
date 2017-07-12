@@ -120,6 +120,8 @@
         <activity android:name=".ui.user.HistoryActivity"
             android:screenOrientation="portrait"
             android:label="历史"/>
+        <activity android:name=".ui.user.FollowOrFansActivity"
+            android:screenOrientation="portrait" />
 
 
         <!-- ShareSDK 开始 -->

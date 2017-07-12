@@ -17,7 +17,7 @@ import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.User;
-import com.bing.blocks5.presenter.UserPresenter;
+import com.bing.blocks5.controller.UserController;
 import com.bing.blocks5.util.IdCardCheckUtil;
 import com.bing.blocks5.util.ToastUtil;
 
@@ -31,8 +31,8 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_identity)
-public class IdentityActivity extends BasePresenterActivity<UserPresenter.UserUiCallbacks>
- implements Validator.ValidationListener ,UserPresenter.IdentityUi{
+public class IdentityActivity extends BasePresenterActivity<UserController.UserUiCallbacks>
+ implements Validator.ValidationListener ,UserController.IdentityUi{
     @NotEmpty(message = "请输入姓名")
     @Bind(R.id.et_identity_name)
     EditText mIdentityNameEt;
@@ -86,7 +86,7 @@ public class IdentityActivity extends BasePresenterActivity<UserPresenter.UserUi
 
     @Override
     protected BasePresenter getPresenter() {
-        return new UserPresenter();
+        return new UserController();
     }
 
     @Override
