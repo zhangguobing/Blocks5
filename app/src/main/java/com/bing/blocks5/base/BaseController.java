@@ -9,6 +9,7 @@ import com.bing.blocks5.api.ApiClient;
 import com.bing.blocks5.api.ResponseError;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -17,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * email：bing901222@qq.com
  */
 
-public abstract class BasePresenter<U extends BasePresenter.Ui<UC>, UC> {
+public abstract class BaseController<U extends BaseController.Ui<UC>, UC> {
 
     protected final ApiClient mApiClient;
 
@@ -28,7 +29,7 @@ public abstract class BasePresenter<U extends BasePresenter.Ui<UC>, UC> {
 
     protected String mToken = AppCookie.getToken();
 
-    public BasePresenter() {
+    public BaseController() {
         mApiClient = ApiClient.getInstance();
         mUis = new CopyOnWriteArraySet<>();
         mUnmodifiableUis = Collections.unmodifiableSet(mUis);

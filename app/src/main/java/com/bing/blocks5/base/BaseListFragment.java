@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 
+import com.bing.blocks5.api.ResponseError;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.bing.blocks5.R;
@@ -120,11 +121,20 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
         refreshPage();
     }
 
-    public void onFinishRequest(List<T> items) {
+    @Override
+    public void onResponseError(ResponseError error) {
+        super.onResponseError(error);
+        resetRefreshLayout();
+    }
+
+    private void resetRefreshLayout(){
         if(isDetached()) return;
         mRefreshLayout.finishRefreshing();
         mRefreshLayout.finishLoadmore();
+    }
 
+    public void onFinishRequest(List<T> items) {
+        resetRefreshLayout();
         if (items != null && !items.isEmpty()) {
             if (mPage == 1) {
                 mAdapter.setItems(items);

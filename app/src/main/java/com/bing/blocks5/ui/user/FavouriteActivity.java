@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListActivity;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.controller.ActivityUserController;
 import com.bing.blocks5.ui.activity.ActivityDetailActivity;
@@ -55,7 +55,7 @@ public class FavouriteActivity extends BaseListActivity<Activity,ActivityViewHol
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityUserController();
     }
 

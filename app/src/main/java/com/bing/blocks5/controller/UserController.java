@@ -3,7 +3,7 @@ package com.bing.blocks5.controller;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
 import com.bing.blocks5.api.ResponseError;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.User;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class UserController extends BasePresenter<UserController.UserUi,UserController.UserUiCallbacks> {
+public class UserController extends BaseController<UserController.UserUi,UserController.UserUiCallbacks> {
 
     @Override
     protected UserUiCallbacks createUiCallbacks(UserUi ui) {
@@ -32,6 +32,11 @@ public class UserController extends BasePresenter<UserController.UserUi,UserCont
             @Override
             public void follow(String follow_id) {
                 doFollow(getId(ui), follow_id);
+            }
+
+            @Override
+            public void cancelFollow(String follow_id) {
+                doCancelFollow(getId(ui), follow_id);
             }
 
             @Override
@@ -111,6 +116,28 @@ public class UserController extends BasePresenter<UserController.UserUi,UserCont
                 });
     }
 
+    //取消关注
+    private void doCancelFollow(final int callingId,String follow_id){
+        mApiClient.userService()
+                .cancelFollow(mToken, follow_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse>() {
+                    @Override
+                    public void onResponse(ApiResponse response) {
+                        UserUi ui = findUi(callingId);
+                        if(ui instanceof UserDetailUi){
+                            ((UserDetailUi)ui).cancelFollowSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
     private void doGetUserById(final int callingId, int user_id){
         mApiClient.userService()
                 .getUserById(user_id,mToken)
@@ -162,7 +189,7 @@ public class UserController extends BasePresenter<UserController.UserUi,UserCont
                 });
     }
 
-    public interface UserUi extends BasePresenter.Ui<UserController.UserUiCallbacks>{
+    public interface UserUi extends BaseController.Ui<UserController.UserUiCallbacks>{
 
     }
 
@@ -180,6 +207,7 @@ public class UserController extends BasePresenter<UserController.UserUi,UserCont
 
     public interface UserDetailUi extends UserUi{
         void followSuccess();
+        void cancelFollowSuccess();
         void loadUserCallback(User user);
     }
 
@@ -196,6 +224,7 @@ public class UserController extends BasePresenter<UserController.UserUi,UserCont
         void register(String token,String nickName,String sex,String password,String avatar);
         void identity(String identityName,String identityCode);
         void follow(String follow_id);
+        void cancelFollow(String follow_id);
         void getUserById(int user_id);
         void updateUser(int age, String job,String address,
                         String avatar,String content,String image_url_1,

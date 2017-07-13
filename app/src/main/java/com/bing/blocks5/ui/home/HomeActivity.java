@@ -18,7 +18,7 @@ import com.youth.banner.loader.ImageLoader;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.Blocks5App;
 import com.bing.blocks5.R;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Config;
@@ -113,14 +113,13 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
 
     private void initView() {
         setTitleBar();
-//        initBanner();
-//        initViewPager();
     }
 
     @Override
     protected void loadUiData() {
         showLoading(R.string.label_being_loading);
         getCallbacks().fetchConfig(AppCookie.getToken());
+        getCallbacks().getUploadToken(AppCookie.getToken());
     }
 
     private void initBanner(List<Config.BannersBean> bannersBeans){
@@ -135,7 +134,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new LoginAuthController();
     }
 

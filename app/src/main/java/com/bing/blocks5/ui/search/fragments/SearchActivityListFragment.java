@@ -3,10 +3,10 @@ package com.bing.blocks5.ui.search.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.bing.blocks5.base.BaseController;
 import com.squareup.otto.Subscribe;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;
-import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.event.ActivitySearchEvent;
 import com.bing.blocks5.controller.UserController;
@@ -70,7 +70,7 @@ implements UserController.UserUi{
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new UserController();
     }
 

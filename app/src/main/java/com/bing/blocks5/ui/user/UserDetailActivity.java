@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.User;
@@ -25,6 +25,7 @@ import com.bing.blocks5.ui.activity.JoinListActivity;
 import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.ToastUtil;
+import com.flyco.dialog.widget.NormalDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,7 @@ implements UserController.UserDetailUi{
     private String[] gallery_urls;
 
     private int user_id;
+    private boolean is_follow = false;
 
     public static void create(Context context,User user){
         Intent intent = new Intent(context, UserDetailActivity.class);
@@ -117,13 +119,8 @@ implements UserController.UserDetailUi{
         Drawable sexDrawable = ContextCompat.getDrawable(this,sexDrawableId);
         sexDrawable.setBounds(0,0,sexDrawable.getIntrinsicWidth(),sexDrawable.getIntrinsicHeight());
         mNickNameSexTv.setCompoundDrawables(null,null,sexDrawable,null);
-        mIsFollowImg.setImageResource(user.getIs_follow() == 0 ? R.mipmap.ic_focus : R.mipmap.ic_has_followed);
-        if(user.getIs_follow() == 0){
-            mIsFollowImg.setOnClickListener(v -> {
-                showLoading(R.string.label_being_something);
-                getCallbacks().follow(user.getId()+"");
-            });
-        }
+        is_follow = user.getIs_follow() == 1;
+        mIsFollowImg.setImageResource(is_follow ? R.mipmap.ic_has_followed: R.mipmap.ic_focus);
         mContentTv.setText(TextUtils.isEmpty(user.getContent()) ? "未填写个性签名": user.getContent());
         if(!TextUtils.isEmpty(user.getImg_url_1())){
             image_1.setVisibility(View.VISIBLE);
@@ -161,7 +158,7 @@ implements UserController.UserDetailUi{
     }
 
     @OnClick({R.id.iv_back,R.id.layout_his_create_activity,R.id.layout_his_join_activity,
-    R.id.image_1,R.id.image_2,R.id.image_3,R.id.ll_follow,R.id.ll_followed})
+    R.id.image_1,R.id.image_2,R.id.image_3,R.id.ll_follow,R.id.ll_followed,R.id.iv_is_follow})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_back:
@@ -188,20 +185,57 @@ implements UserController.UserDetailUi{
             case R.id.ll_followed:
                 FollowOrFansActivity.create(this,FollowOrFansActivity.TYPE_FOLLOWED, user_id);
                 break;
+            case R.id.iv_is_follow:
+                handleFollowClick();
+                break;
+        }
+    }
+
+    private void handleFollowClick(){
+        if(is_follow){
+            final NormalDialog dialog = new NormalDialog(this);
+            int color = ContextCompat.getColor(this,R.color.primary_text);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.isTitleShow(false)
+                    .cornerRadius(5)
+                    .content("是不是要取消关注Ta?")
+                    .contentGravity(Gravity.CENTER)
+                    .contentTextColor(color)
+                    .dividerColor(R.color.divider)
+                    .btnTextSize(15.5f, 15.5f)
+                    .btnTextColor(color,color)
+                    .widthScale(0.75f)
+                    .show();
+            dialog.setOnBtnClickL(dialog::dismiss, () -> {
+                dialog.dismiss();
+                showLoading(R.string.label_being_something);
+                getCallbacks().cancelFollow(user_id+"");
+            });
+        }else{
+            showLoading(R.string.label_being_something);
+            getCallbacks().follow(user_id +"");
         }
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new UserController();
     }
 
     @Override
     public void followSuccess() {
+        is_follow = true;
         cancelLoading();
-        ToastUtil.showText("关注成功");
+        ToastUtil.showText("已关注");
         mIsFollowImg.setImageResource(R.mipmap.ic_has_followed);
-        mIsFollowImg.setOnClickListener(null);
+    }
+
+    @Override
+    public void cancelFollowSuccess() {
+        is_follow = false;
+        cancelLoading();
+        ToastUtil.showText("已取消关注");
+        mIsFollowImg.setImageResource(R.mipmap.ic_focus);
     }
 
     @Override

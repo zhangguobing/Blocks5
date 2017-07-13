@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 
+import com.bing.blocks5.base.BaseController;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.bing.blocks5.Blocks5App;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;
-import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.ui.activity.ActivityDetailActivity;
@@ -65,7 +65,7 @@ public class HomeActivityListFragment extends BaseListFragment<Activity,Activity
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityController();
     }
 

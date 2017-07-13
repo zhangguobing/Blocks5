@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
+import com.bing.blocks5.base.BaseController;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -22,7 +23,6 @@ import com.mobsandgeeks.saripaar.annotation.Checked;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.bing.blocks5.R;
 import com.bing.blocks5.album.Album;
-import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Config;
@@ -303,7 +303,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityController();
     }
 

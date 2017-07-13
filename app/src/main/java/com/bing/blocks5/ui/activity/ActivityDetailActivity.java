@@ -18,7 +18,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.bing.blocks5.model.ShareInfo;
-import com.bing.blocks5.ui.home.HomeActivity;
 import com.bing.blocks5.util.ShareUtil;
 import com.bing.blocks5.widget.opendanmaku.DanmakuItem;
 import com.bing.blocks5.widget.opendanmaku.DanmakuView;
@@ -27,7 +26,7 @@ import com.bumptech.glide.Glide;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.bing.blocks5.R;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Activity;
@@ -246,7 +245,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityController();
     }
 

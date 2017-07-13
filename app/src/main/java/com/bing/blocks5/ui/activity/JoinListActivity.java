@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.bing.blocks5.base.BaseController;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListActivity;
-import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
@@ -63,7 +63,7 @@ public class JoinListActivity extends BaseListActivity<Activity,ActivityViewHold
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityController();
     }
 

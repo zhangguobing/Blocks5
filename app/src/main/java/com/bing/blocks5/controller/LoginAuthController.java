@@ -2,12 +2,13 @@ package com.bing.blocks5.controller;
 
 import android.text.TextUtils;
 
+import com.bing.blocks5.base.BaseController;
+import com.bing.blocks5.model.UploadToken;
 import com.squareup.otto.Subscribe;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
 import com.bing.blocks5.api.ResponseError;
-import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.model.Config;
 import com.bing.blocks5.model.LoginBean;
 import com.bing.blocks5.model.event.UserChangeEvent;
@@ -22,7 +23,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class LoginAuthController extends BasePresenter<LoginAuthController.LoginAuthUi,LoginAuthController.LoginAuthUiCallbacks>{
+public class LoginAuthController extends BaseController<LoginAuthController.LoginAuthUi,LoginAuthController.LoginAuthUiCallbacks> {
 
     @Override
     protected LoginAuthUiCallbacks createUiCallbacks(final LoginAuthUi ui) {
@@ -50,6 +51,11 @@ public class LoginAuthController extends BasePresenter<LoginAuthController.Login
             @Override
             public void fetchConfig(String token) {
                 doConfig(getId(ui), token);
+            }
+
+            @Override
+            public void getUploadToken(String token) {
+                doGetUploadToken(getId(ui), token);
             }
         };
     }
@@ -163,15 +169,36 @@ public class LoginAuthController extends BasePresenter<LoginAuthController.Login
                 });
     }
 
+    private void doGetUploadToken(final int callingId, String token){
+        mApiClient.loginAuthService()
+                .getUploadToken(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<UploadToken>>() {
+                    @Override
+                    public void onResponse(ApiResponse<UploadToken> response) {
+                        if(response.data != null){
+                            AppCookie.saveUploadToken(response.data.getToken());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
     public interface LoginAuthUiCallbacks {
         void login(String phone,String captcha);
         void captcha(String phone);
         void forget(String phone);
         void resetPassword(String phone,String captcha,String password);
         void fetchConfig(String token);
+        void getUploadToken(String token);
     }
 
-    public interface LoginAuthUi extends BasePresenter.Ui<LoginAuthUiCallbacks>{
+    public interface LoginAuthUi extends BaseController.Ui<LoginAuthUiCallbacks>{
 
     }
     public interface LoginUi extends LoginAuthUi {

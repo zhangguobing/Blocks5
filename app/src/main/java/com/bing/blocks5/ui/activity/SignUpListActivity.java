@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.flyco.dialog.widget.NormalDialog;
 import com.bing.blocks5.R;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.event.ActivityUserFilterEvent;
@@ -142,7 +142,7 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityController();
     }
 

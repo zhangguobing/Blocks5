@@ -3,6 +3,7 @@ package com.bing.blocks5.api.service;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.model.User;
 
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -29,9 +30,24 @@ public interface UserService {
     @GET("users/{id}")
     Observable<ApiResponse<User>> getUserById(@Path("id") int user_id, @Query("token") String token);
 
+    /**
+     * 关注某个用户
+     * @param token
+     * @param follow_id
+     * @return
+     */
     @FormUrlEncoded
     @POST("follows")
     Observable<ApiResponse> follow(@Query("token") String token, @Field("follow_id") String follow_id);
+
+    /**
+     * 取消关注某个用户
+     * @param token
+     * @param follow_id
+     * @return
+     */
+    @DELETE("follows")
+    Observable<ApiResponse> cancelFollow(@Query("token") String token, @Query("follow_id") String follow_id);
 
     @FormUrlEncoded
     @POST("user/base")

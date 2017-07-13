@@ -7,13 +7,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.flyco.dialog.listener.OnBtnClickL;
+import com.bing.blocks5.base.BaseController;
 import com.flyco.dialog.widget.NormalDialog;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
 import com.bing.blocks5.SplashActivity;
 import com.bing.blocks5.api.ApiClient;
-import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.User;
@@ -75,12 +74,7 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
                 .btnTextColor(color,color)
                 .widthScale(0.75f)
                 .show();
-        dialog.setOnBtnClickL(new OnBtnClickL() {
-            @Override
-            public void onBtnClick() {
-                dialog.dismiss();
-            }
-        }, () -> {
+        dialog.setOnBtnClickL(dialog::dismiss, () -> {
             dialog.dismiss();
             AppCookie.saveUserInfo(null);
             AppCookie.saveToken(null);
@@ -91,7 +85,7 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new UserController();
     }
 

@@ -3,7 +3,7 @@ package com.bing.blocks5.controller;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
 import com.bing.blocks5.api.ResponseError;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.User;
 import com.bing.blocks5.model.event.ActivitySearchEvent;
@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class SearchController extends BasePresenter<SearchController.SearchUi,SearchController.SearchUiCallbacks> {
+public class SearchController extends BaseController<SearchController.SearchUi,SearchController.SearchUiCallbacks> {
 
     @Override
     protected SearchUiCallbacks createUiCallbacks(SearchUi ui) {
@@ -79,7 +79,7 @@ public class SearchController extends BasePresenter<SearchController.SearchUi,Se
         void getUserById(int user_id);
     }
 
-    public interface SearchUi extends BasePresenter.Ui<SearchUiCallbacks>{
+    public interface SearchUi extends BaseController.Ui<SearchUiCallbacks>{
        void activityListCallback(List<Activity> activities);
        void userCallBack(User user);
     }

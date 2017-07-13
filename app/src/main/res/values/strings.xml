@@ -18,6 +18,7 @@
     <string name="label_being_loading">正在加载&#8230;</string>
     <string name="label_being_something">请稍候&#8230;</string>
     <string name="label_being_login">正在登录,请稍候&#8230;</string>
+    <string name="lable_being_upload">正在上传,请稍候&#8230;</string>
     <string name="label_identity_notice">BLOCKS5公告:\n\n1.实名认证是为了增加举办和参加活动的安全性。\n\n2.平台承诺：严格遵守国家法律法规，绝对不会泄露用户任何隐私。\n\n3.实名认证成功的用户，会增加相应的信用。</string>
     <string name="label_activity_barcode_intro">签到步骤:\n\n1.在活动开始时间前半个小时到活动结束内。\n\n2.楼主打开“签到列表”页面。\n\n3.让参加的用户扫码楼主页面内的二维码，即“签到”，活动状态会变成完成状态，奖励楼主相应的信用。\n\n4.否则活动状态为活动未完成，会扣除楼主相应的信用。</string>
 

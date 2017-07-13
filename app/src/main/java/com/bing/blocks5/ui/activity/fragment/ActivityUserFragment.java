@@ -7,7 +7,7 @@ import com.squareup.otto.Subscribe;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.ActivityUser;
 import com.bing.blocks5.model.event.ActivityUserFilterEvent;
 import com.bing.blocks5.controller.ActivityUserController;
@@ -79,7 +79,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityUserController();
     }
 

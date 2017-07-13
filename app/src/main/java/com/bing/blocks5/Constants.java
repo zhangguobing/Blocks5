@@ -43,5 +43,6 @@ public class Constants {
         public static final String REFRESH_TOKEN = "app.block5.refresh_token";
         public static final String SHARE_FILE = "app.block5.share";
         public static final String TOKEN = "app.block5.token";
+        public static final String UPLOAD_TOKEN = "app.block5.upload.token";
     }
 }

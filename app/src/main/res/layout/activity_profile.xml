@@ -237,9 +237,11 @@
                 <View style="@style/Divider_Horizontal_Gray" />
 
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:padding="15dp">
 
                     <TextView
@@ -250,37 +252,49 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
+
+                    <LinearLayout
+                        android:id="@+id/ablum_container"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:orientation="horizontal">
+
+
+                    </LinearLayout>
+
+
                     <ImageView
                         android:id="@+id/iv_album"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
                         android:src="@mipmap/ic_open_ablum" />
 
-                    <ImageView
-                        android:id="@+id/image_1"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_toLeftOf="@id/iv_album"/>
+                    <!--<ImageView-->
+                        <!--android:id="@+id/image_1"-->
+                        <!--android:layout_width="42dp"-->
+                        <!--android:layout_height="42dp"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:layout_toLeftOf="@id/iv_album"/>-->
 
-                    <ImageView
-                        android:id="@+id/image_2"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_toLeftOf="@id/image_1"/>
+                    <!--<ImageView-->
+                        <!--android:id="@+id/image_2"-->
+                        <!--android:layout_width="42dp"-->
+                        <!--android:layout_height="42dp"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:layout_toLeftOf="@id/image_1"/>-->
 
-                    <ImageView
-                        android:id="@+id/image_3"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_toLeftOf="@id/image_2"/>
+                    <!--<ImageView-->
+                        <!--android:id="@+id/image_3"-->
+                        <!--android:layout_width="42dp"-->
+                        <!--android:layout_height="42dp"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:layout_toLeftOf="@id/image_2"/>-->
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View style="@style/Divider_Horizontal_Gray" />
 

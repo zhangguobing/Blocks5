@@ -52,4 +52,12 @@ public class AppCookie {
     public static String getToken(){
         return PreferenceUtil.getString(Constants.Persistence.TOKEN, null);
     }
+
+    public static void saveUploadToken(String uploadToken){
+        PreferenceUtil.set(Constants.Persistence.UPLOAD_TOKEN, uploadToken);
+    }
+
+    public static String getUploadToken(){
+        return PreferenceUtil.getString(Constants.Persistence.UPLOAD_TOKEN, null);
+    }
 }

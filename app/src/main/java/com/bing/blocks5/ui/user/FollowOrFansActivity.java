@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.bing.blocks5.AppCookie;
-import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListActivity;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.controller.ActivityUserController;
 import com.bing.blocks5.model.User;
 import com.bing.blocks5.ui.search.adapter.UserListAdapter;
@@ -70,7 +68,7 @@ public class FollowOrFansActivity extends BaseListActivity<User,UserViewHolder,A
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityUserController();
     }
 

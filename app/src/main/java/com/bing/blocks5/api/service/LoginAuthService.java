@@ -3,6 +3,7 @@ package com.bing.blocks5.api.service;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.model.Config;
 import com.bing.blocks5.model.LoginBean;
+import com.bing.blocks5.model.UploadToken;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -29,4 +30,6 @@ public interface LoginAuthService {
     Observable<ApiResponse> resetPassword(@Field("phone") String phone, @Field("captcha") String captcha, @Field("password") String password);
     @GET("configure")
     Observable<ApiResponse<Config>> config(@Query("token") String token);
+    @GET("getUploadToken")
+    Observable<ApiResponse<UploadToken>> getUploadToken(@Query("token") String token);
 }

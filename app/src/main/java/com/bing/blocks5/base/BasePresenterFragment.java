@@ -12,42 +12,42 @@ import com.bing.blocks5.util.ToastUtil;
  * email：bing901222@qq.com
  */
 
-public abstract class BasePresenterFragment<UC> extends BaseFragment implements BasePresenter.Ui<UC> {
+public abstract class BasePresenterFragment<UC> extends BaseFragment implements BaseController.Ui<UC> {
 
     private UC mCallbacks;
 
-    private BasePresenter mBasePresenter;
+    private BaseController mBaseController;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBasePresenter = getPresenter();
-        Preconditions.checkState(mBasePresenter != null, "mBasePresenter can't be null");
-        mBasePresenter.attachUi(this);
+        mBaseController = getPresenter();
+        Preconditions.checkState(mBaseController != null, "mBaseController can't be null");
+        mBaseController.attachUi(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mBasePresenter.init();
-        mBasePresenter.startUi(this);
+        mBaseController.init();
+        mBaseController.startUi(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mBasePresenter.suspend();
+        mBaseController.suspend();
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mBasePresenter.detachUi(this);
+        mBaseController.detachUi(this);
     }
 
 
-    protected abstract BasePresenter getPresenter();
+    protected abstract BaseController getPresenter();
 
     @Override
     public void setCallbacks(UC callbacks) {

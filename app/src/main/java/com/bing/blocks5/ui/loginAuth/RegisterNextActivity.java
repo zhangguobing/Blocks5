@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
 import com.bing.blocks5.album.Album;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.UserController;
@@ -92,7 +92,7 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new UserController();
     }
 

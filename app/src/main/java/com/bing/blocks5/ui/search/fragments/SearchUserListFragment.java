@@ -7,7 +7,7 @@ import com.squareup.otto.Subscribe;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.User;
 import com.bing.blocks5.model.event.UserSearchEvent;
 import com.bing.blocks5.controller.UserController;
@@ -29,7 +29,7 @@ public class SearchUserListFragment extends BaseListFragment<User,UserViewHolder
 implements UserViewHolder.IUserOperateListener,UserController.UserListUi {
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new UserController();
     }
 

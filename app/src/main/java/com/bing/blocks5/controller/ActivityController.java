@@ -3,7 +3,7 @@ package com.bing.blocks5.controller;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
 import com.bing.blocks5.api.ResponseError;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.ui.activity.request.CreateActivityParams;
 
@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class ActivityController extends BasePresenter<ActivityController.ActivityUi,ActivityController.ActivityUiCallbacks> {
+public class ActivityController extends BaseController<ActivityController.ActivityUi,ActivityController.ActivityUiCallbacks> {
 
     @Override
     protected ActivityUiCallbacks createUiCallbacks(ActivityUi ui) {
@@ -319,7 +319,7 @@ public class ActivityController extends BasePresenter<ActivityController.Activit
         void start(int activity_id);
     }
 
-    public interface ActivityUi extends BasePresenter.Ui<ActivityUiCallbacks>{
+    public interface ActivityUi extends BaseController.Ui<ActivityUiCallbacks>{
 
     }
 

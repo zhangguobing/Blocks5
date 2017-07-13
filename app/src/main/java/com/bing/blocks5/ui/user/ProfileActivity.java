@@ -6,17 +6,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.bing.blocks5.util.AsyncRun;
+import com.bing.blocks5.util.QiniuUploadUtils;
 import com.google.gson.Gson;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
 import com.bing.blocks5.album.Album;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.JsonBean;
@@ -26,6 +31,8 @@ import com.bing.blocks5.util.GetJsonDataUtil;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.TitleBar;
+import com.kaopiz.kprogresshud.KProgressHUD;
+import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 
 import org.json.JSONArray;
 
@@ -47,9 +54,12 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
 
-    private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
+    private static final int ACTIVITY_REQUEST_SELECT_AVATAR = 100;
+    private static final int ACTIVITY_REQUEST_SELECT_ABLUM = 101;
 
     private static boolean isAnimationEnter = false;
+
+    private String mAvatarUrl = "";
 
     @Bind(R.id.tv_select_area)
     TextView mSelectAreaTv;
@@ -65,12 +75,10 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     EditText mContentEt;
     @Bind(R.id.iv_avatar)
     ImageView mAvatarImg;
-    @Bind(R.id.image_1)
-    ImageView mImage1;
-    @Bind(R.id.image_2)
-    ImageView mImage2;
-    @Bind(R.id.image_3)
-    ImageView mImage3;
+    @Bind(R.id.ablum_container)
+    LinearLayout mAblumContainer;
+
+    private KProgressHUD mUploadProgressDialog;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -81,6 +89,10 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
             titleBar.setLeftText("取消");
         }
         initJsonData();
+
+        mUploadProgressDialog = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.PIE_DETERMINATE)
+                .setLabel(getString(R.string.lable_being_upload)).setMaxProgress(100);
     }
 
     @Override
@@ -122,8 +134,10 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_avatar:
+                fromAlbum(1, ACTIVITY_REQUEST_SELECT_AVATAR);
+                break;
             case R.id.iv_album:
-                fromAlbum(1);
+                fromAlbum(3, ACTIVITY_REQUEST_SELECT_ABLUM);
                 break;
             case R.id.tv_select_area:
                 showPickerView();
@@ -157,23 +171,35 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
 
     private void save() {
         showLoading(R.string.label_being_something);
-        String avatar_url = mAvatarImg.getTag() == null ? "" : mAvatarImg.getTag().toString();
         int age = Integer.parseInt(mAgeTv.getText().toString());
         String job = mJobEt.getText().toString().trim();
         String address = mSelectAreaTv.getText().toString();
         String content = mContentEt.getText().toString().trim();
-        String image_url_1 = mImage1.getTag() == null ? "" : mImage1.getTag().toString();
-        String image_url_2 = mImage1.getTag() == null ? "" : mImage2.getTag().toString();
-        String image_url_3 = mImage1.getTag() == null ? "" : mImage3.getTag().toString();
-        getCallbacks().updateUser(age,job,address,avatar_url,content,image_url_1,image_url_2,image_url_3);
+        String image_url_1 = "";
+        String image_url_2 = "";
+        String image_url_3 = "";
+        getCallbacks().updateUser(age,job,address,mAvatarUrl,content,image_url_1,image_url_2,image_url_3);
+    }
+
+    /**
+     * 往容器内添加相应的子View
+     */
+    private void addChildViewToAlbum(String imageUrl){
+        ImageView imageView = new ImageView(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.width = DensityUtil.dp2px(this,42);
+        layoutParams.leftMargin = DensityUtil.dp2px(this,20);
+        imageView.setLayoutParams(layoutParams);
+        mAblumContainer.addView(imageView);
+        ImageLoadUtil.loadImage(imageView,imageUrl,this);
     }
 
     /**
      * Select image from fromAlbum.
      */
-    private void fromAlbum(int selectCount) {
+    private void fromAlbum(int selectCount, int requestCode) {
         Album.album(this)
-                .requestCode(ACTIVITY_REQUEST_SELECT_PHOTO)
+                .requestCode(requestCode)
                 .toolBarColor(ContextCompat.getColor(this, R.color.red))
                 .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryDark))
@@ -183,6 +209,75 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                 .start();
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case ACTIVITY_REQUEST_SELECT_AVATAR: {
+                if (resultCode == RESULT_OK) {
+                    String filePath = Album.parseResult(data).get(0);
+                    QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                        @Override
+                        public void onStart() {
+                            mUploadProgressDialog.show();
+                        }
+
+                        @Override
+                        public void onSuccess(String fileUrl) {
+                            mUploadProgressDialog.dismiss();
+                            ImageLoadUtil.loadAvatar(mAvatarImg,fileUrl,ProfileActivity.this);
+                            mAvatarUrl = fileUrl;
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String msg) {
+                            mUploadProgressDialog.dismiss();
+                            ToastUtil.showText("上传异常");
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+                            mUploadProgressDialog.setProgress(progress);
+                        }
+                    });
+                }
+                break;
+            }
+            case ACTIVITY_REQUEST_SELECT_ABLUM:
+                if(resultCode == RESULT_OK) {
+                    List<String> filePaths = Album.parseResult(data);
+                    QiniuUploadUtils.getInstance().uploadImages(filePaths, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                        @Override
+                        public void onStart() {
+                            AsyncRun.runInMain(() -> mUploadProgressDialog.show());
+                        }
+
+                        @Override
+                        public void onSuccess(String fileUrl) {
+                            AsyncRun.runInMain(() -> {
+                                mUploadProgressDialog.dismiss();
+                                addChildViewToAlbum(fileUrl);
+                            });
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String msg) {
+                            AsyncRun.runInMain(() -> {
+                                mUploadProgressDialog.dismiss();
+                                ToastUtil.showText("上传异常");
+                            });
+
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+                            AsyncRun.runInMain(() -> mUploadProgressDialog.setProgress(progress));
+                        }
+                    });
+                    break;
+                }
+        }
+    }
 
     private void showPickerView() {
         OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
@@ -245,7 +340,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new UserController();
     }
 
@@ -263,15 +358,30 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     }
 
     private void setUser(User user){
+        mAvatarUrl = user.getAvatar();
         ImageLoadUtil.loadAvatar(mAvatarImg,user.getAvatar(),this);
-        ImageLoadUtil.loadImage(mImage1,user.getImg_url_1(),this);
-        ImageLoadUtil.loadImage(mImage2,user.getImg_url_2(),this);
-        ImageLoadUtil.loadImage(mImage3,user.getImg_url_3(),this);
+        initAblum(user);
         mNickNameTv.setText(user.getNick_name());
         mSexTv.setText(user.getSex());
         mAgeTv.setText(user.getAge()+"");
         mSelectAreaTv.setText(user.getAddr());
         mJobEt.setText(user.getJob());
         mContentEt.setText(user.getContent());
+    }
+
+    private void initAblum(User user){
+        List<String> imageUrls = new ArrayList<>();
+        if(!TextUtils.isEmpty(user.getImg_url_1())){
+            imageUrls.add(user.getImg_url_1());
+        }
+        if(!TextUtils.isEmpty(user.getImg_url_2())){
+            imageUrls.add(user.getImg_url_2());
+        }
+        if(!TextUtils.isEmpty(user.getImg_url_3())){
+            imageUrls.add(user.getImg_url_3());
+        }
+        for (String imageUrl : imageUrls){
+            addChildViewToAlbum(imageUrl);
+        }
     }
 }

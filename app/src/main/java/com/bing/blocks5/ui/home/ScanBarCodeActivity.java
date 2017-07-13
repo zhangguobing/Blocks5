@@ -17,7 +17,7 @@ import com.google.zxing.Result;
 import com.google.zxing.client.android.CaptureFragment;
 import com.google.zxing.client.result.ResultParser;
 import com.bing.blocks5.R;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.ActivityUserController;
@@ -113,7 +113,7 @@ public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserContr
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new ActivityUserController();
     }
 

@@ -9,11 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bing.blocks5.base.BaseController;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.bing.blocks5.R;
-import com.bing.blocks5.base.BasePresenter;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.User;
@@ -85,7 +85,7 @@ public class IdentityActivity extends BasePresenterActivity<UserController.UserU
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new UserController();
     }
 

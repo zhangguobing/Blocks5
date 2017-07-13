@@ -3,7 +3,7 @@ package com.bing.blocks5.controller;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
 import com.bing.blocks5.api.ResponseError;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.ActivityUser;
 import com.bing.blocks5.model.User;
@@ -18,7 +18,7 @@ import rx.schedulers.Schedulers;
  * email：bing901222@qq.com
  */
 
-public class ActivityUserController extends BasePresenter<ActivityUserController.ActivityUserUi,ActivityUserController.ActivityUserUiCallbacks> {
+public class ActivityUserController extends BaseController<ActivityUserController.ActivityUserUi,ActivityUserController.ActivityUserUiCallbacks> {
 
     @Override
     protected ActivityUserUiCallbacks createUiCallbacks(ActivityUserUi ui) {
@@ -140,7 +140,7 @@ public class ActivityUserController extends BasePresenter<ActivityUserController
         void getFollowers(int follow_type, int page_index, int page_size, int user_id);
     }
 
-    public interface ActivityUserUi extends BasePresenter.Ui<ActivityUserController.ActivityUserUiCallbacks>{
+    public interface ActivityUserUi extends BaseController.Ui<ActivityUserController.ActivityUserUiCallbacks>{
 
     }
 

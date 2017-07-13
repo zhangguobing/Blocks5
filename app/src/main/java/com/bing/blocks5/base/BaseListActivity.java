@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 
+import com.bing.blocks5.api.ResponseError;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.bing.blocks5.R;
@@ -121,12 +122,24 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
         refreshPage();
     }
 
-    public void onFinishRequest(List<T> items) {
-        boolean isDestroyed = Build.VERSION.SDK_INT >= 17 ? isDestroyed() : isFinishing();
-        if(isDestroyed) return;
+    @Override
+    public void onResponseError(ResponseError error) {
+        super.onResponseError(error);
+        resetRefreshLayout();
+    }
+
+    private void resetRefreshLayout(){
+        if(isActivityDestroyed()) return;
         mRefreshLayout.finishRefreshing();
         mRefreshLayout.finishLoadmore();
+    }
 
+    public boolean isActivityDestroyed(){
+        return Build.VERSION.SDK_INT >= 17 ? isDestroyed() : isFinishing();
+    }
+
+    public void onFinishRequest(List<T> items) {
+        resetRefreshLayout();
         if (items != null && !items.isEmpty()) {
             if (mPage == 1) {
                 mAdapter.setItems(items);

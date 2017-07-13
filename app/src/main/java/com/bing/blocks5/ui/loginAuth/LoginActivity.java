@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bing.blocks5.R;
-import com.bing.blocks5.base.BasePresenter;
+import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.LoginAuthController;
@@ -49,7 +49,7 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
     private CountDownTimerUtils countDownTimerUtils;
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseController getPresenter() {
         return new LoginAuthController();
     }
 
