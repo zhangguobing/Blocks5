@@ -178,6 +178,17 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         String image_url_1 = "";
         String image_url_2 = "";
         String image_url_3 = "";
+        for (int i = 0; i < mAblumContainer.getChildCount(); i++) {
+            View childView = mAblumContainer.getChildAt(i);
+            String url = childView.getTag().toString();
+            if(i == 0){
+                image_url_1 = url;
+            }else if(i == 1){
+                image_url_2 = url;
+            }else if(i == 2){
+                image_url_3 = url;
+            }
+        }
         getCallbacks().updateUser(age,job,address,mAvatarUrl,content,image_url_1,image_url_2,image_url_3);
     }
 
@@ -192,6 +203,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         imageView.setLayoutParams(layoutParams);
         mAblumContainer.addView(imageView);
         ImageLoadUtil.loadImage(imageView,imageUrl,this);
+        imageView.setTag(imageUrl);
     }
 
     /**
@@ -214,7 +226,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
             case ACTIVITY_REQUEST_SELECT_AVATAR: {
-                if (resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK && data != null) {
                     String filePath = Album.parseResult(data).get(0);
                     QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
                         @Override
@@ -244,7 +256,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                 break;
             }
             case ACTIVITY_REQUEST_SELECT_ABLUM:
-                if(resultCode == RESULT_OK) {
+                if(resultCode == RESULT_OK && data != null) {
                     List<String> filePaths = Album.parseResult(data);
                     QiniuUploadUtils.getInstance().uploadImages(filePaths, new QiniuUploadUtils.QiniuUploadUtilsListener() {
                         @Override

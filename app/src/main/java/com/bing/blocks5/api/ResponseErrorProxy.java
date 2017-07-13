@@ -1,5 +1,7 @@
 package com.bing.blocks5.api;
 
+import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.model.Token;
 import com.google.gson.JsonParseException;
 import com.orhanobut.logger.Logger;
 import com.bing.blocks5.AppConfig;
@@ -14,14 +16,18 @@ import java.lang.reflect.Method;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.HttpException;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
 import static com.bing.blocks5.Constants.HttpCode.HTTP_UNKNOWN_ERROR;
 import static com.bing.blocks5.Constants.HttpCode.HTTP_NETWORK_ERROR;
 import static com.bing.blocks5.Constants.HttpCode.HTTP_SERVER_ERROR;
+import static com.bing.blocks5.Constants.HttpCode.HTTP_UNAUTHORIZED;
 
 
 public class ResponseErrorProxy implements InvocationHandler {
@@ -83,34 +89,33 @@ public class ResponseErrorProxy implements InvocationHandler {
                         Logger.e("网络请求出现错误: " + error.toString());
                     }
 
-                    return Observable.error(error);
+//                    return Observable.error(error);
 
-//                                if (error.getCode() == HTTP_UNAUTHORIZED) {
-//                                    return refreshTokenWhenTokenInvalid();
-//                                } else {
-//                                    return Observable.error(error);
-//                                }
+                    if (error.getCode() == HTTP_UNAUTHORIZED) {
+                        return refreshTokenWhenTokenInvalid();
+                    } else {
+                        return Observable.error(error);
+                    }
                 }));
     }
 
-//    private Observable<?> refreshTokenWhenTokenInvalid() {
-//        synchronized (ResponseErrorProxy.class) {
+    private Observable<?> refreshTokenWhenTokenInvalid() {
+        synchronized (ResponseErrorProxy.class) {
 //            Map<String, String> params = new HashMap<>();
 //            params.put(PARAM_CLIENT_ID, AppConfig.APP_KEY);
 //            params.put(PARAM_CLIENT_SECRET, AppConfig.APP_SECRET);
 //            params.put(PARAM_GRANT_TYPE, "refresh_token");
 //            params.put(PARAM_REFRESH_TOKEN, AppCookie.getRefreshToken());
-//
-//            return mRestApiClient.tokenService()
-//                    .refreshToken(params)
-//                    .doOnNext(new Action1<Token>() {
-//                        @Override
-//                        public void call(Token token) {
+//            params.put("token", AppCookie.getUserInfo().getPhone());
+
+            return mApiClient.tokenService()
+                    .refreshToken(AppCookie.getUserInfo().getPhone())
+                    .doOnNext(response -> {
 //                            AppCookie.saveAccessToken(token.getAccessToken());
 //                            AppCookie.saveRefreshToken(token.getRefreshToken());
+                        if(response.data != null) AppCookie.saveToken(response.data.getToken());
 //                            mRestApiClient.setToken(token.getAccessToken());
-//                        }
-//                    });
-//        }
-//    }
+                    });
+        }
+    }
 }

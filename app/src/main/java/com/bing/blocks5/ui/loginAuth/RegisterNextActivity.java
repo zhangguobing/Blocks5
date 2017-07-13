@@ -18,9 +18,13 @@ import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.UserController;
 import com.bing.blocks5.ui.home.HomeActivity;
+import com.bing.blocks5.ui.user.ProfileActivity;
 import com.bing.blocks5.util.ActivityStack;
+import com.bing.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.util.QiniuUploadUtils;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.TitleBar;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +56,17 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
     @Bind(R.id.iv_avatar)
     ImageView mAvatarImage;
 
-    private ArrayList<String> mImageList;
+    private KProgressHUD mUploadProgressDialog;
+
+    private String mAvatarUrl = "";
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         setTitleBar();
+        mUploadProgressDialog = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.PIE_DETERMINATE)
+                .setLabel(getString(R.string.lable_being_upload)).setMaxProgress(100);
     }
 
     private void setTitleBar() {
@@ -122,10 +131,9 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
                 .toolBarColor(ContextCompat.getColor(this, R.color.red))
                 .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryDark))
-                .selectCount(3)
+                .selectCount(1)
                 .columnCount(3)
                 .title("相册")
-                .checkedList(mImageList)
                 .start();
     }
 
@@ -144,18 +152,18 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
      *
      * @param position current position.
      */
-    private void previewImage(int position) {
-        Album.gallery(this)
-                .requestCode(ACTIVITY_REQUEST_PREVIEW_PHOTO)
-                .toolBarColor(ContextCompat.getColor(this, R.color.red))
-                .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
-                .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryDark))
-                .checkedList(mImageList) // Image list.
-                .currentPosition(position) // Preview first to show the first few.
-                .checkFunction(true) // Does the user have an anti-selection when previewing.
-                .start();
-
-    }
+//    private void previewImage(int position) {
+//        Album.gallery(this)
+//                .requestCode(ACTIVITY_REQUEST_PREVIEW_PHOTO)
+//                .toolBarColor(ContextCompat.getColor(this, R.color.red))
+//                .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+//                .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryDark))
+//                .checkedList(mImageList) // Image list.
+//                .currentPosition(position) // Preview first to show the first few.
+//                .checkFunction(true) // Does the user have an anti-selection when previewing.
+//                .start();
+//
+//    }
 
 
     @Override
@@ -163,43 +171,62 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
         switch (requestCode) {
             case ACTIVITY_REQUEST_SELECT_PHOTO: {
                 if (resultCode == RESULT_OK) {
-                    mImageList = Album.parseResult(data);
-                    refreshImage();
-                } else if (resultCode == RESULT_CANCELED) {
-//                    ToastUtil.showText(R.string.cancel_select_photo_hint);
+                    String filePath = Album.parseResult(data).get(0);
+                    QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                        @Override
+                        public void onStart() {
+                            mUploadProgressDialog.show();
+                        }
+
+                        @Override
+                        public void onSuccess(String fileUrl) {
+                            mUploadProgressDialog.dismiss();
+                            ImageLoadUtil.loadAvatar(mAvatarImage,fileUrl,RegisterNextActivity.this);
+                            mAvatarUrl = fileUrl;
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String msg) {
+                            mUploadProgressDialog.dismiss();
+                            ToastUtil.showText("上传异常");
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+                            mUploadProgressDialog.setProgress(progress);
+                        }
+                    });
                 }
                 break;
             }
-            case ACTIVITY_REQUEST_TAKE_PICTURE: {
-                if (resultCode == RESULT_OK) {
-                    List<String> imageList = Album.parseResult(data);
-                    mImageList.addAll(imageList);
-                    refreshImage();
-                } else if (resultCode == RESULT_CANCELED) {
-//                    ToastUtil.showText(R.string.cancel_select_photo_hint);
-                }
-                break;
-            }
-            case ACTIVITY_REQUEST_PREVIEW_PHOTO: {
-                if (resultCode == RESULT_OK) {
-                    mImageList = Album.parseResult(data);
-                    refreshImage();
-                }
-                break;
-            }
+//            case ACTIVITY_REQUEST_TAKE_PICTURE: {
+//                if (resultCode == RESULT_OK) {
+//                    List<String> imageList = Album.parseResult(data);
+//                    mImageList.addAll(imageList);
+//                    refreshImage();
+//                }
+//                break;
+//            }
+//            case ACTIVITY_REQUEST_PREVIEW_PHOTO: {
+//                if (resultCode == RESULT_OK) {
+//                    mImageList = Album.parseResult(data);
+//                    refreshImage();
+//                }
+//                break;
+//            }
         }
     }
 
     /**
      * Process selection results.
      */
-    private void refreshImage() {
-        if (mImageList == null || mImageList.size() == 0) {
-            mAvatarImage.setImageResource(R.mipmap.ic_user_avatar_white);
-        } else {
-            Album.getAlbumConfig().getImageLoader().loadImage(mAvatarImage, mImageList.get(0), mAvatarImage.getMeasuredWidth(), mAvatarImage.getMeasuredHeight());
-        }
-    }
+//    private void refreshImage() {
+//        if (mImageList == null || mImageList.size() == 0) {
+//            mAvatarImage.setImageResource(R.mipmap.ic_user_avatar_white);
+//        } else {
+//            Album.getAlbumConfig().getImageLoader().loadImage(mAvatarImage, mImageList.get(0), mAvatarImage.getMeasuredWidth(), mAvatarImage.getMeasuredHeight());
+//        }
+//    }
 
     private void completeRegisterClick(){
         if (mNickNameEt.getText().toString().trim().length() == 0) {
@@ -229,6 +256,6 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
         showLoading(R.string.label_being_something);
         String sex = mRadioGroup.getCheckedRadioButtonId() == R.id.rb_male ? "男" : "女";
         getCallbacks().register(AppCookie.getToken(),mNickNameEt.getText().toString().trim(),
-                sex,mPwdEt.getText().toString().trim(),null);
+                sex,mPwdEt.getText().toString().trim(),mAvatarUrl);
     }
 }

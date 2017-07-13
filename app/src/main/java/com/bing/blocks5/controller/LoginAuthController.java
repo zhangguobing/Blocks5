@@ -49,13 +49,13 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
             }
 
             @Override
-            public void fetchConfig(String token) {
-                doConfig(getId(ui), token);
+            public void fetchConfig() {
+                doConfig(getId(ui));
             }
 
             @Override
-            public void getUploadToken(String token) {
-                doGetUploadToken(getId(ui), token);
+            public void getUploadToken() {
+                doGetUploadToken(getId(ui));
             }
         };
     }
@@ -147,9 +147,9 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
                 });
     }
 
-    private void doConfig(final int callingId, String token){
+    private void doConfig(final int callingId){
         mApiClient.loginAuthService()
-                .config(token)
+                .config(mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<Config>>() {
@@ -169,9 +169,9 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
                 });
     }
 
-    private void doGetUploadToken(final int callingId, String token){
+    private void doGetUploadToken(final int callingId){
         mApiClient.loginAuthService()
-                .getUploadToken(token)
+                .getUploadToken(mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<UploadToken>>() {
@@ -194,8 +194,8 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
         void captcha(String phone);
         void forget(String phone);
         void resetPassword(String phone,String captcha,String password);
-        void fetchConfig(String token);
-        void getUploadToken(String token);
+        void fetchConfig();
+        void getUploadToken();
     }
 
     public interface LoginAuthUi extends BaseController.Ui<LoginAuthUiCallbacks>{

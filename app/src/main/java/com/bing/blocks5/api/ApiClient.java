@@ -6,6 +6,7 @@ import com.bing.blocks5.Constants;
 import com.bing.blocks5.api.service.ActivityService;
 import com.bing.blocks5.api.service.ActivityUserService;
 import com.bing.blocks5.api.service.LoginAuthService;
+import com.bing.blocks5.api.service.TokenService;
 import com.bing.blocks5.api.service.UserService;
 import com.bing.blocks5.util.GsonHelper;
 
@@ -118,5 +119,9 @@ public class ApiClient {
 
     public ActivityUserService activityUserService(){
         return getByProxy(ActivityUserService.class);
+    }
+
+    public TokenService tokenService(){
+        return getByProxy(TokenService.class);
     }
 }

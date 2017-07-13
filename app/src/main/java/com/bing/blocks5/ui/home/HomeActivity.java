@@ -118,8 +118,8 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
     @Override
     protected void loadUiData() {
         showLoading(R.string.label_being_loading);
-        getCallbacks().fetchConfig(AppCookie.getToken());
-        getCallbacks().getUploadToken(AppCookie.getToken());
+        getCallbacks().fetchConfig();
+        getCallbacks().getUploadToken();
     }
 
     private void initBanner(List<Config.BannersBean> bannersBeans){

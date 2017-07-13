@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
+import com.bing.blocks5.model.UploadToken;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
