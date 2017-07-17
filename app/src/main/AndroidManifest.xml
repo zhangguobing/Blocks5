@@ -54,7 +54,7 @@
             android:label="下一步"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.bing.blocks5.ui.home.HomeActivity"
+        <activity android:name="com.bing.blocks5.ui.home.MainActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>

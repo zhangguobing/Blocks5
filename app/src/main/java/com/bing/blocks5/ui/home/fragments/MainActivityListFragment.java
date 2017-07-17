@@ -5,8 +5,8 @@ import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 
 import com.bing.blocks5.base.BaseController;
+import com.bing.blocks5.ui.home.MainActivity;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
-import com.bing.blocks5.Blocks5App;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;
 import com.bing.blocks5.model.Activity;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by wjb on 2016/4/27.
  */
-public class HomeActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,ActivityController.ActivityUiCallbacks>
+public class MainActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,ActivityController.ActivityUiCallbacks>
    implements ActivityController.ActivityListUi,AppBarLayout.OnOffsetChangedListener{
 
     private static final String KEY_ACTIVITY_TYPE_ID = "key_activity_type_id";
@@ -41,24 +41,21 @@ public class HomeActivityListFragment extends BaseListFragment<Activity,Activity
                 lazyLoad();
             }
              //解决下拉刷新 和tabBarLayout中嵌套时上下滚动冲突
-            if(this.getContext() != null){
-                Blocks5App application = (Blocks5App) this.getContext().getApplicationContext();
-                if(application.mAppBarLayout != null){
-                    application.mAppBarLayout.addOnOffsetChangedListener(this);
+            if(this.getContext() != null && getContext() instanceof MainActivity){
+                AppBarLayout appBarLayout = ((MainActivity)getContext()).mAppBarLayout;
+                if(appBarLayout != null){
+                    appBarLayout.addOnOffsetChangedListener(this);
                 }
             }else{
                 //viewpager中第一页加载的太早,getContext还拿不到,做个延迟
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(HomeActivityListFragment.this.getContext() != null){
-                            Blocks5App application = (Blocks5App) HomeActivityListFragment.this.getContext().getApplicationContext();
-                            if(application.mAppBarLayout != null){
-                                application.mAppBarLayout.addOnOffsetChangedListener(HomeActivityListFragment.this);
-                            }
+                new Handler().postDelayed(() -> {
+                    if(MainActivityListFragment.this.getContext() != null && getContext() instanceof MainActivity) {
+                        AppBarLayout appBarLayout = ((MainActivity) getContext()).mAppBarLayout;
+                        if (appBarLayout != null) {
+                            appBarLayout.addOnOffsetChangedListener(MainActivityListFragment.this);
                         }
                     }
-                },100);
+                },150);
             }
         }
         super.setUserVisibleHint(isVisibleToUser);
@@ -69,10 +66,10 @@ public class HomeActivityListFragment extends BaseListFragment<Activity,Activity
         return new ActivityController();
     }
 
-    public static HomeActivityListFragment newInstance(int activity_type_id) {
+    public static MainActivityListFragment newInstance(int activity_type_id) {
         Bundle args = new Bundle();
         args.putInt(KEY_ACTIVITY_TYPE_ID, activity_type_id);
-        HomeActivityListFragment fragment = new HomeActivityListFragment();
+        MainActivityListFragment fragment = new MainActivityListFragment();
         fragment.setArguments(args);
         return fragment;
     }

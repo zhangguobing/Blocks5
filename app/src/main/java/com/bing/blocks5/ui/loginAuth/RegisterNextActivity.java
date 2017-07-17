@@ -17,17 +17,13 @@ import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.UserController;
-import com.bing.blocks5.ui.home.HomeActivity;
-import com.bing.blocks5.ui.user.ProfileActivity;
+import com.bing.blocks5.ui.home.MainActivity;
 import com.bing.blocks5.util.ActivityStack;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.QiniuUploadUtils;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.TitleBar;
 import com.kaopiz.kprogresshud.KProgressHUD;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -109,7 +105,7 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
     public void registerSuccess(String message) {
         cancelLoading();
         ToastUtil.showText(message);
-        HomeActivity.create(this);
+        MainActivity.create(this);
         ActivityStack.create().appLogin();
     }
 

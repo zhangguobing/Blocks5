@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -16,6 +18,11 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bing.blocks5.base.BaseController;
+import com.bing.blocks5.ui.user.ProfileActivity;
+import com.bing.blocks5.util.AsyncRun;
+import com.bing.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.util.QiniuUploadUtils;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -51,9 +58,8 @@ import butterknife.OnClick;
 public class AddActivityActivity extends BasePresenterActivity<ActivityController.ActivityUiCallbacks>
       implements ActivityController.CreateActivityUi,Validator.ValidationListener {
 
-    private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
-    private static final int ACTIVITY_REQUEST_TAKE_PICTURE = 101;
-    private static final int ACTIVITY_REQUEST_PREVIEW_PHOTO = 102;
+    private static final int ACTIVITY_REQUEST_SELECT_COVER = 100;
+    private static final int ACTIVITY_REQUEST_SELECT_PICTURE = 101;
 
     @NotEmpty(message = "请输入开始时间")
     @Bind(R.id.tv_start_time)
@@ -87,6 +93,10 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     EditText mActivityContentEt;
     @Bind(R.id.sb_need_identity)
     SwitchButton mNeedIdentitySwitch;
+    @Bind(R.id.iv_upload_cover)
+    ImageView mCoverImg;
+    @Bind(R.id.picture_container)
+    LinearLayout mPictureContainer;
 
     //选中的类型位置
     private int mSelectedTypePosition = -1;
@@ -99,6 +109,10 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
 
     private Validator mValidator;
 
+    private KProgressHUD mUploadProgressDialog;
+
+    private String mCoverUrl = "";
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
@@ -108,6 +122,10 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
             titleBar.setLeftText("取消");
         }
         initPriceTypeRadioButton();
+
+        mUploadProgressDialog = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.PIE_DETERMINATE)
+                .setLabel(getString(R.string.lable_being_upload)).setMaxProgress(100);
 
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
@@ -154,10 +172,10 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_upload_pictures:
-                fromAlbum(3);
+                fromAlbum(3,ACTIVITY_REQUEST_SELECT_PICTURE);
                 break;
             case R.id.iv_upload_cover:
-                fromAlbum(1);
+                fromAlbum(1,ACTIVITY_REQUEST_SELECT_COVER);
                 break;
             case R.id.tv_start_time:
                 showStartTimePicker();
@@ -183,9 +201,9 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     /**
      * Select image from fromAlbum.
      */
-    private void fromAlbum(int selectCount) {
+    private void fromAlbum(int selectCount, int requestCode) {
         Album.album(this)
-                .requestCode(ACTIVITY_REQUEST_SELECT_PHOTO)
+                .requestCode(requestCode)
                 .toolBarColor(ContextCompat.getColor(this, R.color.red))
                 .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryDark))
@@ -330,8 +348,18 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
         params.price_type = mPriceTypeRg.getCheckedRadioButtonId();
         params.price_content = mPriceContentEt.getText().toString().trim();
         params.need_identity = mNeedIdentitySwitch.isChecked() ? 0 : 1;
-        params.cover_url = "http://www.baidu.com";
-        params.image_url_1 = "http://www.baidu.com";
+        params.cover_url = mCoverUrl;
+        for (int i = 0; i < mPictureContainer.getChildCount(); i++) {
+            View childView = mPictureContainer.getChildAt(i);
+            String url = childView.getTag().toString();
+            if(i == 0){
+                params.image_url_1 = url;
+            }else if(i == 1){
+                params.image_url_2 = url;
+            }else if(i == 2){
+                params.image_url_3 = url;
+            }
+        }
         params.content = mActivityContentEt.getText().toString().trim();
         getCallbacks().createActivity(params);
     }
@@ -343,5 +371,89 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
             String message = error.getCollatedErrorMessage(this);
             ToastUtil.showText(message);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case ACTIVITY_REQUEST_SELECT_COVER: {
+                if (resultCode == RESULT_OK && data != null) {
+                    String filePath = Album.parseResult(data).get(0);
+                    QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                        @Override
+                        public void onStart() {
+                            mUploadProgressDialog.show();
+                        }
+
+                        @Override
+                        public void onSuccess(String fileUrl) {
+                            mUploadProgressDialog.dismiss();
+                            ImageLoadUtil.loadImage(mCoverImg,fileUrl,AddActivityActivity.this);
+                            mCoverUrl = fileUrl;
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String msg) {
+                            mUploadProgressDialog.dismiss();
+                            ToastUtil.showText("上传异常");
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+                            mUploadProgressDialog.setProgress(progress);
+                        }
+                    });
+                }
+                break;
+            }
+            case ACTIVITY_REQUEST_SELECT_PICTURE:
+                if(resultCode == RESULT_OK && data != null) {
+                    List<String> filePaths = Album.parseResult(data);
+                    QiniuUploadUtils.getInstance().uploadImages(filePaths, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                        @Override
+                        public void onStart() {
+                            AsyncRun.runInMain(() -> mUploadProgressDialog.show());
+                        }
+
+                        @Override
+                        public void onSuccess(String fileUrl) {
+                            AsyncRun.runInMain(() -> {
+                                mUploadProgressDialog.dismiss();
+                                addChildViewToPicture(fileUrl);
+                            });
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String msg) {
+                            AsyncRun.runInMain(() -> {
+                                mUploadProgressDialog.dismiss();
+                                ToastUtil.showText("上传异常");
+                            });
+
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+                            AsyncRun.runInMain(() -> mUploadProgressDialog.setProgress(progress));
+                        }
+                    });
+                    break;
+                }
+        }
+    }
+
+
+    /**
+     * 往容器内添加相应的子View
+     */
+    private void addChildViewToPicture(String imageUrl){
+        ImageView imageView = new ImageView(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.width = DensityUtil.dp2px(this,42);
+        layoutParams.leftMargin = DensityUtil.dp2px(this,20);
+        imageView.setLayoutParams(layoutParams);
+        mPictureContainer.addView(imageView);
+        ImageLoadUtil.loadImage(imageView,imageUrl,this);
+        imageView.setTag(imageUrl);
     }
 }

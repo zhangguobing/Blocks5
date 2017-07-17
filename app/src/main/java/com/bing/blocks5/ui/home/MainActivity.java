@@ -13,10 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bing.blocks5.ui.home.fragments.MainActivityListFragment;
 import com.bumptech.glide.Glide;
 import com.youth.banner.loader.ImageLoader;
-import com.bing.blocks5.AppCookie;
-import com.bing.blocks5.Blocks5App;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
@@ -25,7 +24,6 @@ import com.bing.blocks5.model.Config;
 import com.bing.blocks5.controller.LoginAuthController;
 import com.bing.blocks5.ui.activity.AddActivityActivity;
 import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
-import com.bing.blocks5.ui.home.fragments.HomeActivityListFragment;
 import com.bing.blocks5.ui.home.fragments.DrawerMenuFragment;
 import com.bing.blocks5.ui.search.SearchActivity;
 import com.bing.blocks5.ui.user.ProfileActivity;
@@ -47,14 +45,16 @@ import cn.campusapp.router.Router;
  * author：zhangguobing on 2017/6/19 20:29
  * email：bing901222@qq.com
  */
-@ContentView(R.layout.activity_home)
-public class HomeActivity extends BasePresenterActivity<LoginAuthController.LoginAuthUiCallbacks>
+@ContentView(R.layout.activity_main)
+public class MainActivity extends BasePresenterActivity<LoginAuthController.LoginAuthUiCallbacks>
    implements LoginAuthController.HomeUi,SlidingActivityBase {
 
     @Bind(R.id.banner)
     HomeBanner mBanner;
     @Bind(R.id.view_pager)
     HomeTabViewPager mViewPager;
+    @Bind(R.id.app_bar_layout)
+    public AppBarLayout mAppBarLayout;
 
     private SlidingActivityHelper mHelper;
     private SlidingMenu mSlidingMenu;
@@ -65,8 +65,6 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
         mHelper.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         setBehindContentView(R.layout.menu_frame);
-
-        Blocks5App.getContext().mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
 
         DrawerMenuFragment drawerMenuFragment = new DrawerMenuFragment();
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
@@ -129,7 +127,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
         }
         mBanner.setImages(imageUrls).setOnBannerListener(position -> {
             Config.BannersBean bannersBean = bannersBeans.get(position);
-            Router.open(HomeActivity.this,bannersBean.getLinkUrl());
+            Router.open(MainActivity.this,bannersBean.getLinkUrl());
         }).setImageLoader(new GlideImageLoader()).start();
     }
 
@@ -220,7 +218,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
 
                 @Override
                 public void performAction(View view) {
-                    SearchActivity.create(HomeActivity.this);
+                    SearchActivity.create(MainActivity.this);
                 }
             });
         }
@@ -239,7 +237,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
 
         List<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < titles.size(); i++) {
-            fragments.add(HomeActivityListFragment.newInstance(activityTypesBeans.get(i).getId()));
+            fragments.add(MainActivityListFragment.newInstance(activityTypesBeans.get(i).getId()));
         }
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         TabLayout tablayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -259,7 +257,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
     }
 
     public static void create(Context context){
-        Intent intent = new Intent(context,HomeActivity.class);
+        Intent intent = new Intent(context,MainActivity.class);
         context.startActivity(intent);
     }
 

@@ -1,7 +1,5 @@
 package com.bing.blocks5;
 
-import android.app.Application;
-import android.support.design.widget.AppBarLayout;
 import android.support.multidex.MultiDex;
 
 import com.aitangba.swipeback.ActivityLifecycleHelper;
@@ -26,7 +24,6 @@ import cn.campusapp.router.Router;
 public class Blocks5App extends MobApplication{
     private static Blocks5App mInstance;
     private RefWatcher mRefWatcher;
-    public AppBarLayout mAppBarLayout;
 
     @Override
     public void onCreate() {

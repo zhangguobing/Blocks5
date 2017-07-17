@@ -22,7 +22,7 @@ import com.bing.blocks5.model.LoginBean;
 import com.bing.blocks5.ui.activity.CreatedActivity;
 import com.bing.blocks5.ui.activity.JoinActivity;
 import com.bing.blocks5.ui.common.GalleryActivity;
-import com.bing.blocks5.ui.home.HomeActivity;
+import com.bing.blocks5.ui.home.MainActivity;
 import com.bing.blocks5.ui.setting.SettingActivity;
 import com.bing.blocks5.ui.user.FavouriteActivity;
 import com.bing.blocks5.ui.user.FollowOrFansActivity;
@@ -133,9 +133,9 @@ public class DrawerMenuFragment extends Fragment {
 
     private void hideSlideMenu(){
         Activity activity = getActivity();
-        if(activity instanceof HomeActivity){
-            HomeActivity homeActivity = (HomeActivity) activity;
-            homeActivity.getSlidingMenu().showContent(false);
+        if(activity instanceof MainActivity){
+            MainActivity mainActivity = (MainActivity) activity;
+            mainActivity.getSlidingMenu().showContent(false);
         }
     }
 

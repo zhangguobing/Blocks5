@@ -29,7 +29,7 @@ public class ImageLoadUtil {
         if(TextUtils.isEmpty(url) || "null".equals(url)) return;
         Glide.with(context)
                 .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .dontAnimate()
                 .placeholder(R.drawable.bg_img_place_holder)
                 .error(R.mipmap.img_error)
@@ -44,7 +44,9 @@ public class ImageLoadUtil {
      */
     public static void loadAvatar(ImageView imageView,String url,Context context){
         if(TextUtils.isEmpty(url) || "null".equals(url)) return;
-        Glide.with(context).load(url).asBitmap().placeholder(R.mipmap.ic_user_avatar_black).centerCrop().into(new BitmapImageViewTarget(imageView) {
+        Glide.with(context).load(url).asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.mipmap.ic_user_avatar_black)
+                .centerCrop().into(new BitmapImageViewTarget(imageView) {
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable =
