@@ -20,7 +20,7 @@ import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.event.ActivityUserFilterEvent;
 import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.ui.activity.fragment.ActivityUserFragment;
-import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
+import com.bing.blocks5.ui.main.adapter.FragmentAdapter;
 import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.ToastUtil;
 

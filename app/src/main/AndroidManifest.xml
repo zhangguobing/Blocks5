@@ -54,7 +54,7 @@
             android:label="下一步"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.bing.blocks5.ui.home.MainActivity"
+        <activity android:name="com.bing.blocks5.ui.main.MainActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
@@ -69,7 +69,7 @@
             android:label=""
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
-        <activity android:name="com.bing.blocks5.ui.home.ScanBarCodeActivity"
+        <activity android:name="com.bing.blocks5.ui.main.ScanBarCodeActivity"
             android:screenOrientation="portrait"
             android:label="扫描二维码"
             android:configChanges="orientation|keyboardHidden|screenSize" />

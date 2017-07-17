@@ -1,4 +1,4 @@
-package com.bing.blocks5.ui.home.viewholder;
+package com.bing.blocks5.ui.main.viewholder;
 
 import android.view.View;
 import android.widget.TextView;

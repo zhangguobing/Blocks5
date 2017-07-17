@@ -1,4 +1,4 @@
-package com.bing.blocks5.ui.home.fragments;
+package com.bing.blocks5.ui.main.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import com.bing.blocks5.model.LoginBean;
 import com.bing.blocks5.ui.activity.CreatedActivity;
 import com.bing.blocks5.ui.activity.JoinActivity;
 import com.bing.blocks5.ui.common.GalleryActivity;
-import com.bing.blocks5.ui.home.MainActivity;
+import com.bing.blocks5.ui.main.MainActivity;
 import com.bing.blocks5.ui.setting.SettingActivity;
 import com.bing.blocks5.ui.user.FavouriteActivity;
 import com.bing.blocks5.ui.user.FollowOrFansActivity;

@@ -13,7 +13,7 @@ import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.ui.activity.fragment.CreatorActivityListFragment;
-import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
+import com.bing.blocks5.ui.main.adapter.FragmentAdapter;
 import com.bing.blocks5.widget.TitleBar;
 
 import java.util.ArrayList;

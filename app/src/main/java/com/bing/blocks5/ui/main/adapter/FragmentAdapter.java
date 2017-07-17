@@ -1,4 +1,4 @@
-package com.bing.blocks5.ui.home.adapter;
+package com.bing.blocks5.ui.main.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

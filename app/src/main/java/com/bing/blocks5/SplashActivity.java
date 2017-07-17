@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.bing.blocks5.base.BasePermissionActivity;
 import com.bing.blocks5.base.ContentView;
-import com.bing.blocks5.ui.home.MainActivity;
+import com.bing.blocks5.ui.main.MainActivity;
 import com.bing.blocks5.ui.loginAuth.LoginActivity;
 import com.bing.blocks5.ui.loginAuth.RegisterActivity;
 import com.bing.blocks5.util.StatusBarUtil;

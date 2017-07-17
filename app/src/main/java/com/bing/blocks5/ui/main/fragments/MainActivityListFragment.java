@@ -1,11 +1,11 @@
-package com.bing.blocks5.ui.home.fragments;
+package com.bing.blocks5.ui.main.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 
 import com.bing.blocks5.base.BaseController;
-import com.bing.blocks5.ui.home.MainActivity;
+import com.bing.blocks5.ui.main.MainActivity;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;

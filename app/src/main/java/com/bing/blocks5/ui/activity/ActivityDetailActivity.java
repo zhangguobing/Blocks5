@@ -33,7 +33,7 @@ import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.Config;
 import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.repository.ConfigManager;
-import com.bing.blocks5.ui.home.ScanBarCodeActivity;
+import com.bing.blocks5.ui.main.ScanBarCodeActivity;
 import com.bing.blocks5.ui.user.UserDetailActivity;
 import com.bing.blocks5.util.ActivityDataConvert;
 import com.bing.blocks5.util.ImageLoadUtil;

@@ -18,7 +18,7 @@ import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.User;
 import com.bing.blocks5.controller.SearchController;
-import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
+import com.bing.blocks5.ui.main.adapter.FragmentAdapter;
 import com.bing.blocks5.ui.search.fragments.SearchActivityListFragment;
 import com.bing.blocks5.ui.search.fragments.SearchUserListFragment;
 

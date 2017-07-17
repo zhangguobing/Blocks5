@@ -1,4 +1,4 @@
-package com.bing.blocks5.ui.home;
+package com.bing.blocks5.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bing.blocks5.ui.home.fragments.MainActivityListFragment;
+import com.bing.blocks5.ui.main.fragments.MainActivityListFragment;
 import com.bumptech.glide.Glide;
 import com.youth.banner.loader.ImageLoader;
 import com.bing.blocks5.R;
@@ -23,8 +23,8 @@ import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Config;
 import com.bing.blocks5.controller.LoginAuthController;
 import com.bing.blocks5.ui.activity.AddActivityActivity;
-import com.bing.blocks5.ui.home.adapter.FragmentAdapter;
-import com.bing.blocks5.ui.home.fragments.DrawerMenuFragment;
+import com.bing.blocks5.ui.main.adapter.FragmentAdapter;
+import com.bing.blocks5.ui.main.fragments.DrawerMenuFragment;
 import com.bing.blocks5.ui.search.SearchActivity;
 import com.bing.blocks5.ui.user.ProfileActivity;
 import com.bing.blocks5.widget.HomeBanner;

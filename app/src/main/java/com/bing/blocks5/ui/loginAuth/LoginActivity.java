@@ -16,7 +16,7 @@ import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.LoginAuthController;
-import com.bing.blocks5.ui.home.MainActivity;
+import com.bing.blocks5.ui.main.MainActivity;
 import com.bing.blocks5.util.ActivityStack;
 import com.bing.blocks5.util.CountDownTimerUtils;
 import com.bing.blocks5.util.ToastUtil;

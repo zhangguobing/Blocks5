@@ -1,4 +1,4 @@
-package com.bing.blocks5.ui.home;
+package com.bing.blocks5.ui.main;
 
 import android.Manifest;
 import android.content.Context;
