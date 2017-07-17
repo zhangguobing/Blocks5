@@ -53,7 +53,9 @@ public class SplashActivity extends BasePermissionActivity{
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE}),2000);
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}),2000);
     }
 
     /**

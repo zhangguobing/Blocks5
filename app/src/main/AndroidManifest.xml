@@ -122,6 +122,9 @@
             android:label="历史"/>
         <activity android:name=".ui.user.FollowOrFansActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.main.OtherCityActivity"
+            android:label="其他城市"
+            android:screenOrientation="portrait" />
 
 
         <!-- ShareSDK 开始 -->
@@ -161,6 +164,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/album_camera_provider"/>
         </provider>
+
+        <!-- 高德定位 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="a31f89ba29fcc3f4a2c898134a4453d0"/>
+        <service android:name="com.amap.api.location.APSService"/>
+        <!-- 高德定位结束 -->
 
     </application>
 

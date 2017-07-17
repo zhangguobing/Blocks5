@@ -7,7 +7,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.zjonline.blocks5"
+        applicationId "com.bing.blocks5"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
@@ -15,16 +15,58 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('C:/Users/XuTianyu/.android/debug.keystore')
+            storePassword 'android'
+        }
+        release {
+            keyAlias 'blocks5ReleaseKeyStore'
+            keyPassword 'zgb10011000101'
+            storeFile file('D:/Android/MyProjects/Blocks5/release_keystore.jks')
+            storePassword 'zgb10011000101'
+        }
+    }
+
+    buildTypes {
+        debug{
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                File outputDirectory = new File(outputFile.parent);
+                def fileName
+                if (variant.buildType.name == "release") {
+                    fileName = "blocks5_v${defaultConfig.versionName}.apk"
+                }else{
+                    fileName = "blocks5_v${defaultConfig.versionName}_beta.apk"
+                }
+                output.outputFile = new File(outputDirectory, fileName)
+            }
+        }
     }
 }
 
@@ -105,4 +147,6 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-3.0.0.jar')
     compile files('libs/ShareSDK-Wechat-Core-3.0.0.jar')
     compile files('libs/ShareSDK-Wechat-Moments-3.0.0.jar')
+    //高德定位SDK
+    compile 'com.amap.api:location:latest.integration'
 }

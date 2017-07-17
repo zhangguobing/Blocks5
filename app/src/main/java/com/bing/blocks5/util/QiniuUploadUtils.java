@@ -23,7 +23,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
 
 /**
- * @Description: 七牛云上传图片
+ * @Description: 七牛云上传工具类
  */
 public class QiniuUploadUtils {
 

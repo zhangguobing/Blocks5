@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@style/ActivityTransitions</item>
+        <item name="android:windowBackground">@color/window_background</item>
     </style>
 
     <style name="AppTheme.Dark">
@@ -171,6 +172,17 @@
     <style name="BottomDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/bottom_dialog_slide_up</item>
         <item name="android:windowExitAnimation">@anim/bottom_dialog_slide_down</item>
+    </style>
+
+    <style name="radio_item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">7dip</item>
+        <item name="android:layout_margin">3dip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_radio_button_3</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@color/select_color_white</item>
     </style>
 
 </resources>

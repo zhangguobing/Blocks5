@@ -6,65 +6,6 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/layout_title_bar" />
-
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/coordinator_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/app_bar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.bing.blocks5.widget.HomeBanner
-                    android:id="@+id/banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    app:delay_time="5000"
-                    app:image_scale_type="center_crop"
-                    android:background="?android:windowBackground"
-                    app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected"
-                    app:layout_scrollFlags="scroll"/>
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabIndicatorColor="@color/red"
-                    app:tabIndicatorHeight="2dp"
-                    app:tabMode="scrollable"
-                    android:background="?android:windowBackground"
-                    android:overScrollMode="never"
-                    app:tabTextColor="@color/gray"
-                    app:tabSelectedTextColor="@color/red"/>
-
-            </android.support.design.widget.AppBarLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:scrollbars="none"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                <com.bing.blocks5.widget.HomeTabViewPager
-                    android:id="@+id/view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never" />
-            </LinearLayout>
-
-        </android.support.design.widget.CoordinatorLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -99,6 +40,62 @@
 
     </LinearLayout>
 
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.bing.blocks5.widget.HomeBanner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:delay_time="5000"
+                app:image_scale_type="center_crop"
+                android:background="?android:windowBackground"
+                app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected"
+                app:layout_scrollFlags="scroll"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@color/red"
+                app:tabIndicatorHeight="2dp"
+                app:tabMode="scrollable"
+                android:background="?android:windowBackground"
+                android:overScrollMode="never"
+                app:tabTextColor="@color/gray"
+                app:tabSelectedTextColor="@color/red"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <com.bing.blocks5.widget.HomeTabViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never" />
+        </LinearLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <com.bing.blocks5.widget.DropDownView
+        android:id="@+id/drop_down_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:containerBackgroundColor="?android:windowBackground"/>
 
 </RelativeLayout>
 

@@ -144,7 +144,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                     radioButton.setLayoutParams(layoutParams);
                     int padding = DensityUtil.dp2px(this,8);
                     radioButton.setPadding(padding,padding,padding,padding);
-                    radioButton.setTextColor(getResources().getColorStateList(R.color.textview));
+                    radioButton.setTextColor(getResources().getColorStateList(R.color.select_color_red));
                     radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
                     radioButton.setButtonDrawable(null);
                     radioButton.setBackgroundResource(R.drawable.bg_radio_button_2);

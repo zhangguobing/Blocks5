@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bing.blocks5.base.BaseController;
-import com.bing.blocks5.ui.user.ProfileActivity;
 import com.bing.blocks5.util.AsyncRun;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.QiniuUploadUtils;
@@ -148,7 +147,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                radioButton.setLayoutParams(layoutParams);
                int padding = DensityUtil.dp2px(this,8);
                radioButton.setPadding(padding,padding,padding,padding);
-               radioButton.setTextColor(getResources().getColorStateList(R.color.textview));
+               radioButton.setTextColor(getResources().getColorStateList(R.color.select_color_red));
                radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
                radioButton.setButtonDrawable(null);
                radioButton.setBackgroundResource(R.drawable.bg_radio_button_2);

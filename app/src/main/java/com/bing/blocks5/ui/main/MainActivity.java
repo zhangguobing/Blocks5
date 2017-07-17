@@ -1,5 +1,6 @@
 package com.bing.blocks5.ui.main;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,13 +9,25 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
 import com.bing.blocks5.ui.main.fragments.MainActivityListFragment;
+import com.bing.blocks5.util.AMapLocationUtil;
+import com.bing.blocks5.widget.DropDownView;
+import com.bing.blocks5.widget.FlowRadioButton;
+import com.bing.blocks5.widget.FlowRadioGroup;
 import com.bumptech.glide.Glide;
+import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
+import com.orhanobut.logger.Logger;
 import com.youth.banner.loader.ImageLoader;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseController;
@@ -29,7 +42,6 @@ import com.bing.blocks5.ui.search.SearchActivity;
 import com.bing.blocks5.ui.user.ProfileActivity;
 import com.bing.blocks5.widget.HomeBanner;
 import com.bing.blocks5.widget.HomeTabViewPager;
-import com.bing.blocks5.widget.TitleBar;
 import com.bing.blocks5.widget.slidingmenu.SlidingMenu;
 import com.bing.blocks5.widget.slidingmenu.app.SlidingActivityBase;
 import com.bing.blocks5.widget.slidingmenu.app.SlidingActivityHelper;
@@ -47,7 +59,7 @@ import cn.campusapp.router.Router;
  */
 @ContentView(R.layout.activity_main)
 public class MainActivity extends BasePresenterActivity<LoginAuthController.LoginAuthUiCallbacks>
-   implements LoginAuthController.HomeUi,SlidingActivityBase {
+   implements LoginAuthController.HomeUi,SlidingActivityBase,View.OnClickListener {
 
     @Bind(R.id.banner)
     HomeBanner mBanner;
@@ -55,9 +67,28 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
     HomeTabViewPager mViewPager;
     @Bind(R.id.app_bar_layout)
     public AppBarLayout mAppBarLayout;
+    @Bind(R.id.drop_down_view)
+    DropDownView mDropDownView;
 
     private SlidingActivityHelper mHelper;
     private SlidingMenu mSlidingMenu;
+
+
+    public static final int NUM_OF_STANDS = 4;
+    private ImageView arrowImg;
+    private FlowRadioGroup mSortRadioGroup;
+    private FlowRadioGroup mProprotyRadioGroup;
+    private FlowRadioGroup mAreaRadioGroup;
+    private FlowRadioGroup mTimeRadioGroup;
+    private TextView mCityTextView;
+
+    //是否已经定位成功
+    private boolean isLocationSuccess = false;
+    //是否已经获取到全局配置
+    private boolean isRecievedConfig = false;
+
+    private String mLocationCity;
+    private List<Config.ActivityAreasBean> ActivityAreasList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,13 +136,61 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        initView();
+        View collapsedView = LayoutInflater.from(this).inflate(R.layout.layout_main_title_view, null, false);
+        View expandedView = LayoutInflater.from(this).inflate(R.layout.view_my_drop_down_expanded, null, false);
+
+        arrowImg = (ImageView) collapsedView.findViewById(R.id.iv_arrow);
+        collapsedView.findViewById(R.id.main_sliding_menu).setOnClickListener(this);
+        collapsedView.findViewById(R.id.main_search).setOnClickListener(this);
+        expandedView.findViewById(R.id.tv_other_city).setOnClickListener(this);
+
+        mSortRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_sort);
+        mProprotyRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_property);
+        mAreaRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_activity_area);
+        mTimeRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_activity_time);
+
+        mCityTextView = (TextView) expandedView.findViewById(R.id.tv_city);
+
+        mDropDownView.setHeaderView(collapsedView);
+        mDropDownView.setExpandedView(expandedView);
+        mDropDownView.setDropDownListener(dropDownListener);
+
+        AMapLocationUtil.getInstance().setAMapLocationUtilListener(new AMapLocationUtil.AMapLocationUtilListener() {
+            @Override
+            public void onSuccess(AMapLocation aMapLocation) {
+                Logger.d("AMapLocation : ", aMapLocation);
+                isLocationSuccess = true;
+                mLocationCity = aMapLocation.getCity();
+                mCityTextView.setText(mLocationCity);
+                notifyActivityAreaChanged();
+            }
+
+            @Override
+            public void onFail(int errorCode, String errMsg) {
+                mCityTextView.setText("定位失败");
+                Logger.d("AMapLocation : ", "errcode:"+ errorCode + ",errMsg:"+errMsg);
+            }
+        }).startLocation();
     }
 
-    private void initView() {
-        setTitleBar();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AMapLocationUtil.getInstance().onDestory();
     }
+
+    private final DropDownView.DropDownListener dropDownListener = new DropDownView.DropDownListener() {
+        @Override
+        public void onExpandDropDown() {
+            ObjectAnimator.ofFloat(arrowImg, View.ROTATION.getName(), 180).start();
+        }
+
+        @Override
+        public void onCollapseDropDown() {
+            ObjectAnimator.ofFloat(arrowImg, View.ROTATION.getName(), -180, 0).start();
+        }
+    };
 
     @Override
     protected void loadUiData() {
@@ -139,10 +218,23 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
     @Override
     public void receiveConfig(Config config) {
         cancelLoading();
-
         initBanner(config.getBanners());
-
         initViewPager(config.getActivity_types());
+        ActivityAreasList = config.getActivity_areas();
+        isRecievedConfig = true;
+        notifyActivityAreaChanged();
+    }
+
+    private void notifyActivityAreaChanged() {
+        if(isRecievedConfig && isLocationSuccess){
+            for (Config.ActivityAreasBean activityArea: ActivityAreasList){
+//                mLocationCity = "深圳市";
+                if(activityArea.getCity().equals(mLocationCity)){
+                    addChildOptionToRadioGroup(mAreaRadioGroup, activityArea.getAreas());
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -190,7 +282,6 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         mHelper.setSlidingActionBarEnabled(b);
     }
 
-
     private class GlideImageLoader extends ImageLoader{
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
@@ -198,31 +289,6 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         }
     }
 
-    private void setTitleBar() {
-        TitleBar titleBar = getTitleBar();
-        if(titleBar != null){
-            View titleView = getLayoutInflater().inflate(R.layout.layout_main_title,null);
-            titleBar.setCustomTitle(titleView);
-            titleBar.setLeftImageResource(R.mipmap.ic_sliding_menu);
-            titleBar.setLeftClickListener(v -> mSlidingMenu.toggle());
-            titleBar.addAction(new TitleBar.Action() {
-                @Override
-                public String getText() {
-                    return null;
-                }
-
-                @Override
-                public int getDrawable() {
-                    return R.mipmap.ic_search_white;
-                }
-
-                @Override
-                public void performAction(View view) {
-                    SearchActivity.create(MainActivity.this);
-                }
-            });
-        }
-    }
 
     @Override
     public boolean supportSlideBack() {
@@ -273,6 +339,15 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
             case R.id.iv_profile:
                 ProfileActivity.createWithAnimation(this);
                 break;
+            case R.id.main_sliding_menu:
+                mSlidingMenu.toggle();
+                break;
+            case R.id.main_search:
+                SearchActivity.create(this);
+                break;
+            case R.id.tv_other_city:
+                OtherCityActivity.create(this);
+                break;
         }
     }
 
@@ -303,5 +378,30 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         boolean b = mHelper.onKeyUp(keyCode, event);
         if (b) return b;
         return super.onKeyUp(keyCode, event);
+    }
+
+
+    /**
+     * 添加子选项到RadioGroup中
+     * @param flowRadioGroup
+     * @param options
+     */
+    private void addChildOptionToRadioGroup(FlowRadioGroup flowRadioGroup,List<String> options){
+        for (int i = 0; i < options.size(); i++) {
+            FlowRadioButton flowRadioButton = new FlowRadioButton(this);
+            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            int margin = DensityUtil.dp2px(this,3);
+            layoutParams.setMargins(margin,margin,margin,margin);
+            flowRadioButton.setLayoutParams(layoutParams);
+            int padding = DensityUtil.dp2px(this,7);
+            flowRadioButton.setPadding(padding,padding,padding,padding);
+            flowRadioButton.setButtonDrawable(null);
+            flowRadioButton.setText(options.get(i));
+            flowRadioButton.setGravity(Gravity.CENTER);
+            flowRadioButton.setBackgroundResource(R.drawable.bg_radio_button_3);
+            flowRadioButton.setTextColor(ContextCompat.getColorStateList(this,R.color.select_color_white));
+            flowRadioGroup.addView(flowRadioButton);
+        }
     }
 }

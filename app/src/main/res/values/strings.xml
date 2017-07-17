@@ -22,20 +22,22 @@
     <string name="label_identity_notice">BLOCKS5公告:\n\n1.实名认证是为了增加举办和参加活动的安全性。\n\n2.平台承诺：严格遵守国家法律法规，绝对不会泄露用户任何隐私。\n\n3.实名认证成功的用户，会增加相应的信用。</string>
     <string name="label_activity_barcode_intro">签到步骤:\n\n1.在活动开始时间前半个小时到活动结束内。\n\n2.楼主打开“签到列表”页面。\n\n3.让参加的用户扫码楼主页面内的二维码，即“签到”，活动状态会变成完成状态，奖励楼主相应的信用。\n\n4.否则活动状态为活动未完成，会扣除楼主相应的信用。</string>
 
-    <string name="album_title_not_found_image">Not Found Image</string>
-    <string name="album_not_found_picture">Did not find the picture</string>
-    <string name="album_take_picture">Take Picture</string>
-    <string name="album_title">Image</string>
-    <string name="album_all_image">All Images</string>
-    <string name="album_check_limit">You can only select %1$d images</string>
-    <string name="album_check_limit_camera">You can only select %1$d images, anti-election after the operation.</string>
-    <string name="album_check_little">You have not choose photos.</string>
-    <string name="album_menu_finish">Finish</string>
-    <string name="album_check">Selected</string>
-    <string name="album_dialog_permission_failed">Access to failure</string>
-    <string name="album_permission_storage_failed_hint">Failed to get read photo album permissions, please authorize in the Settings before use.</string>
-    <string name="album_permission_camera_failed_hint">Failed to get camera permissions, please authorize in the Settings before use.</string>
-    <string name="album_dialog_sure">OK</string>
+    <string name="album_title_not_found_image">没有图片</string>
+    <string name="album_not_found_picture">没有找到图片，赶快拍一张吧！</string>
+    <string name="album_take_picture">拍照</string>
+
+    <string name="album_title">图片</string>
+    <string name="album_all_image">所有图片</string>
+    <string name="album_check_limit">您最多可以选择%1$d张图片</string>
+    <string name="album_check_limit_camera">您最多可以选择%1$d张图片，请删除1张后再拍照。</string>
+    <string name="album_check_little">你没有选择照片</string>
+    <string name="album_menu_finish">完成</string>
+    <string name="album_check">选择</string>
+
+    <string name="album_dialog_permission_failed">权限获取失败</string>
+    <string name="album_permission_storage_failed_hint">获取读取相册权限失败，请在设置中授权后再使用。</string>
+    <string name="album_permission_camera_failed_hint">获取相机权限失败，请在设置中授权后再使用。</string>
+    <string name="album_dialog_sure">好的</string>
 
     <string name="permission_rationale_camera">扫码二维码需要你提供拍照权限</string>
     <string name="mis_permission_dialog_title">权限拒绝</string>
@@ -54,4 +56,5 @@
     <string name="weibo">新浪微博</string>
     <string name="qq">QQ</string>
     <string name="qzone">QQ空间</string>
+
 </resources>

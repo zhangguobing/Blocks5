@@ -52,4 +52,13 @@
         <attr name="start_Y_offset" format="float" />
         <attr name="end_Y_offset" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="DropDownView">
+        <attr name="containerBackgroundColor" format="color" />
+        <attr name="overlayColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="FlowRadioGroup">
+        <attr name="radio_columu_num" format="integer" />
+    </declare-styleable>
 </resources>

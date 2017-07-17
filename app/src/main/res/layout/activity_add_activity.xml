@@ -302,7 +302,7 @@
                             <!--android:button="@null"-->
                             <!--android:padding="8dp"-->
                             <!--android:text="男女AA"-->
-                            <!--android:textColor="@color/textview"-->
+                            <!--android:textColor="@color/select_color_red"-->
                             <!--android:textSize="15sp" />-->
 
                         <!--<RadioButton-->
@@ -314,7 +314,7 @@
                             <!--android:button="@null"-->
                             <!--android:padding="8dp"-->
                             <!--android:text="男生AA"-->
-                            <!--android:textColor="@color/textview"-->
+                            <!--android:textColor="@color/select_color_red"-->
                             <!--android:textSize="15sp" />-->
 
                     </RadioGroup>
