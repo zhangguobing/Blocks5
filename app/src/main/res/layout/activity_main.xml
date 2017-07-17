@@ -1,44 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="10dp"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/iv_profile"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/ic_home_person" />
-
-        <ImageButton
-            android:id="@+id/ib_scan"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/ic_scan_4dp" />
-
-        <ImageButton
-            android:id="@+id/ib_add_activity"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/ic_home_add" />
-
-    </LinearLayout>
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
@@ -90,6 +54,42 @@
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/iv_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:src="@mipmap/ic_home_person" />
+
+        <ImageButton
+            android:id="@+id/ib_scan"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:src="@mipmap/ic_scan_4dp" />
+
+        <ImageButton
+            android:id="@+id/ib_add_activity"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:src="@mipmap/ic_home_add" />
+
+    </LinearLayout>
 
     <com.bing.blocks5.widget.DropDownView
         android:id="@+id/drop_down_view"
