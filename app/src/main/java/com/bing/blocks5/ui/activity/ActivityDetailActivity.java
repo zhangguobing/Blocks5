@@ -2,7 +2,9 @@ package com.bing.blocks5.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.bing.blocks5.model.ShareInfo;
+import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.util.ShareUtil;
 import com.bing.blocks5.widget.opendanmaku.DanmakuItem;
 import com.bing.blocks5.widget.opendanmaku.DanmakuView;
@@ -44,6 +47,7 @@ import com.bing.blocks5.widget.bottomsharedialog.BottomShareDialog;
 import com.bing.blocks5.widget.toprightmenu.MenuItem;
 import com.bing.blocks5.widget.toprightmenu.TopRightMenu;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
@@ -106,6 +110,8 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     private String mActivityId;
     private int mUserId;
     private Activity mActivity;
+
+    private List<String> imageUrls;
 
     public static void create(Context context, String activity_id){
         Intent intent = new Intent(context,ActivityDetailActivity.class);
@@ -295,7 +301,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
 
     private void initBanner(Activity activity) {
         if(activity == null) return;
-        List<String> imageUrls = new ArrayList<>();
+        imageUrls = new ArrayList<>();
         if(!TextUtils.isEmpty(activity.getImg_url_1())){
             imageUrls.add(activity.getImg_url_1());
         }
@@ -305,7 +311,8 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         if(!TextUtils.isEmpty(activity.getImg_url_3())){
             imageUrls.add(activity.getImg_url_3());
         }
-        mBanner.setImages(imageUrls).setImageLoader(new GlideImageLoader()).start();
+        mBanner.setImages(imageUrls).setImageLoader(new GlideImageLoader())
+                .setOnBannerListener(position -> showGallery(mBanner,position)).start();
     }
 
 
@@ -361,5 +368,34 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 UserDetailActivity.create(this,mUserId);
                 break;
         }
+    }
+
+    private void showGallery(View v,int position) {
+        if(imageUrls == null || imageUrls.size() == 0) return;
+        int[] location = new int[2];
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Rect frame = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            int statusBarHeight = frame.top;
+            v.getLocationOnScreen(location);
+            location[1] += statusBarHeight;
+        } else {
+            v.getLocationOnScreen(location);
+        }
+        v.invalidate();
+        int width = v.getWidth();
+        int height = v.getHeight();
+
+        Intent intent = new Intent(this, GalleryActivity.class);
+        Bundle b = new Bundle();
+        b.putStringArray(GalleryActivity.PHOTO_SOURCE_ID, imageUrls.toArray(new String[imageUrls.size()]));
+        intent.putExtras(b);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_POSITION, position);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_X_TAG, location[0]);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_Y_TAG, location[1]);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_W_TAG, width);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_H_TAG, height);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }

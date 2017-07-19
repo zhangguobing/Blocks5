@@ -125,6 +125,9 @@
         <activity android:name=".ui.main.OtherCityActivity"
             android:label="其他城市"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.setting.FeedBackActivity"
+            android:label="意见反馈"
+            android:screenOrientation="portrait" />
 
 
         <!-- ShareSDK 开始 -->
