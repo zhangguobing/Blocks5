@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/layout_title_bar"/>
@@ -29,7 +30,7 @@
                     android:text="当前定位城市"
                     android:textSize="16sp"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/primary_text"/>
+                    android:textColor="@color/primary_text" />
 
                 <TextView
                     android:id="@+id/tv_location_city"
@@ -38,8 +39,11 @@
                     android:button="@null"
                     android:background="@drawable/bg_radio_button_3"
                     android:textColor="@color/select_color_white"
-                    android:padding="7dp"
                     android:layout_marginTop="10dp"
+                    android:paddingLeft="33dp"
+                    android:paddingRight="33dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
                     android:text="正在定位..."/>
 
                 <TextView
@@ -51,31 +55,12 @@
                     android:textColor="@color/primary_text"/>
 
                 <com.bing.blocks5.widget.FlowRadioGroup
-                    android:id="@+id/rg_sort"
+                    android:id="@+id/rg_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    app:radio_columu_num="3">
-
-                    <com.bing.blocks5.widget.FlowRadioButton
-                        style="@style/radio_item"
-                        android:checked="true"
-                        android:text="深圳市"/>
-
-                    <com.bing.blocks5.widget.FlowRadioButton
-                        style="@style/radio_item"
-                        android:text="上海市"/>
-
-                    <com.bing.blocks5.widget.FlowRadioButton
-                        style="@style/radio_item"
-                        android:text="北京市"/>
-
-                    <com.bing.blocks5.widget.FlowRadioButton
-                        style="@style/radio_item"
-                        android:text="广州市"/>
-
-                </com.bing.blocks5.widget.FlowRadioGroup>
+                    app:radio_columu_num="3"/>
 
             </LinearLayout>
 

@@ -15,13 +15,18 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
+import com.bing.blocks5.model.event.MainActivityListFilterEvent;
 import com.bing.blocks5.ui.main.fragments.MainActivityListFragment;
+import com.bing.blocks5.ui.main.request.MainActivityListParams;
 import com.bing.blocks5.util.AMapLocationUtil;
+import com.bing.blocks5.util.EventUtil;
+import com.bing.blocks5.util.TimeUtil;
 import com.bing.blocks5.widget.DropDownView;
 import com.bing.blocks5.widget.FlowRadioButton;
 import com.bing.blocks5.widget.FlowRadioGroup;
@@ -46,6 +51,7 @@ import com.bing.blocks5.widget.slidingmenu.SlidingMenu;
 import com.bing.blocks5.widget.slidingmenu.app.SlidingActivityBase;
 import com.bing.blocks5.widget.slidingmenu.app.SlidingActivityHelper;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +67,7 @@ import cn.campusapp.router.Router;
 public class MainActivity extends BasePresenterActivity<LoginAuthController.LoginAuthUiCallbacks>
    implements LoginAuthController.HomeUi,SlidingActivityBase,View.OnClickListener {
 
+    private static final int REQEUEST_CODE_SELECT_CITY = 1001;
     @Bind(R.id.banner)
     HomeBanner mBanner;
     @Bind(R.id.view_pager)
@@ -89,6 +96,10 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
 
     private String mLocationCity;
     private List<Config.ActivityAreasBean> ActivityAreasList;
+
+    private List<String> areaOptions = new ArrayList<>();
+
+    private MainActivityListParams params = MainActivityListParams.getDefault();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,11 +154,21 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         collapsedView.findViewById(R.id.main_sliding_menu).setOnClickListener(this);
         collapsedView.findViewById(R.id.main_search).setOnClickListener(this);
         expandedView.findViewById(R.id.tv_other_city).setOnClickListener(this);
+        expandedView.findViewById(R.id.btn_ok).setOnClickListener(this);
 
         mSortRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_sort);
         mProprotyRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_property);
         mAreaRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_activity_area);
         mTimeRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_activity_time);
+
+        List<String> dates = TimeUtil.getFutureDate(8,"MM-dd");
+        List<String> weeks = TimeUtil.getFutureWeeks(8);
+        List<String> timeOptions = new ArrayList<>();
+        timeOptions.add("一周内");
+        for (int i = 0; i < dates.size(); i++) {
+            timeOptions.add(weeks.get(i) + " " + dates.get(i));
+        }
+        addChildOptionToRadioGroup(mTimeRadioGroup,timeOptions,0);
 
         mCityTextView = (TextView) expandedView.findViewById(R.id.tv_city);
 
@@ -155,22 +176,49 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         mDropDownView.setExpandedView(expandedView);
         mDropDownView.setDropDownListener(dropDownListener);
 
-        AMapLocationUtil.getInstance().setAMapLocationUtilListener(new AMapLocationUtil.AMapLocationUtilListener() {
-            @Override
-            public void onSuccess(AMapLocation aMapLocation) {
-                Logger.d("AMapLocation : ", aMapLocation);
-                isLocationSuccess = true;
-                mLocationCity = aMapLocation.getCity();
-                mCityTextView.setText(mLocationCity);
-                notifyActivityAreaChanged();
-            }
+        AMapLocationListener locationListener = new AMapLocationListener(this);
+        AMapLocationUtil.getInstance().setAMapLocationUtilListener(locationListener).startLocation();
+    }
 
-            @Override
-            public void onFail(int errorCode, String errMsg) {
-                mCityTextView.setText("定位失败");
-                Logger.d("AMapLocation : ", "errcode:"+ errorCode + ",errMsg:"+errMsg);
+    private void setLocationSuccess(AMapLocation aMapLocation){
+        isLocationSuccess = true;
+        mLocationCity = aMapLocation.getCity();
+        params.city = mLocationCity;
+        mCityTextView.setText(mLocationCity);
+        changeActivityAreaByCity(mLocationCity);
+        Logger.d("AMapLocation : ", aMapLocation);
+        EventUtil.sendEvent(new MainActivityListFilterEvent(params));
+    }
+
+    private void setLocationFail(int errorCode, String errMsg){
+        mCityTextView.setText("定位失败");
+        Logger.d("AMapLocation : ", "errcode:"+ errorCode + ",errMsg:"+errMsg);
+    }
+
+    private static class AMapLocationListener implements AMapLocationUtil.AMapLocationUtilListener {
+
+        private final WeakReference<MainActivity> mActivity;
+
+        private AMapLocationListener(MainActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void onSuccess(AMapLocation aMapLocation) {
+            MainActivity mainActivity = mActivity.get();
+            if(mainActivity != null){
+                mainActivity.setLocationSuccess(aMapLocation);
             }
-        }).startLocation();
+            Logger.d("AMapLocation : ", aMapLocation);
+        }
+
+        @Override
+        public void onFail(int errorCode, String errMsg) {
+            MainActivity mainActivity = mActivity.get();
+            if(mainActivity != null){
+                mainActivity.setLocationFail(errorCode, errMsg);
+            }
+        }
     }
 
 
@@ -222,18 +270,20 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         initViewPager(config.getActivity_types());
         ActivityAreasList = config.getActivity_areas();
         isRecievedConfig = true;
-        notifyActivityAreaChanged();
+        changeActivityAreaByCity(mLocationCity);
     }
 
-    private void notifyActivityAreaChanged() {
+    private void changeActivityAreaByCity(String city) {
         if(isRecievedConfig && isLocationSuccess){
+            areaOptions.clear();
+            areaOptions.add("所有地区");
             for (Config.ActivityAreasBean activityArea: ActivityAreasList){
-//                mLocationCity = "深圳市";
-                if(activityArea.getCity().equals(mLocationCity)){
-                    addChildOptionToRadioGroup(mAreaRadioGroup, activityArea.getAreas());
+                if(activityArea.getCity().equals(city)){
+                    areaOptions.addAll(activityArea.getAreas());
                     break;
                 }
             }
+            addChildOptionToRadioGroup(mAreaRadioGroup, areaOptions,0);
         }
     }
 
@@ -303,7 +353,8 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
 
         List<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < titles.size(); i++) {
-            fragments.add(MainActivityListFragment.newInstance(activityTypesBeans.get(i).getId()));
+            params.type_id =  activityTypesBeans.get(i).getId();
+            fragments.add(MainActivityListFragment.newInstance(params));
         }
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         TabLayout tablayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -346,8 +397,35 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
                 SearchActivity.create(this);
                 break;
             case R.id.tv_other_city:
-                OtherCityActivity.create(this);
+                OtherCityActivity.create(this,REQEUEST_CODE_SELECT_CITY);
                 break;
+            case R.id.btn_ok:
+                mDropDownView.collapseDropDown();
+                params.city = mCityTextView.getText().toString();
+                params.sort_type = mSortRadioGroup.getCheckedRadioButtonId() == R.id.rb_newest_time ? null : "credit";
+                params.state = mProprotyRadioGroup.getCheckedRadioButtonId() == R.id.rb_concentration ? "1":"2";
+                if(areaOptions != null && areaOptions.size() > 0){
+                    params.area = areaOptions.get(mAreaRadioGroup.getCheckedRadioButtonId());
+                }
+                if(mTimeRadioGroup.getCheckedRadioButtonId() > 0){
+                    params.end_at = TimeUtil.getEndTime(mTimeRadioGroup.getCheckedRadioButtonId()-1);
+                }
+                EventUtil.sendEvent(new MainActivityListFilterEvent(params));
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case REQEUEST_CODE_SELECT_CITY:
+                    String selectCity = data.getStringExtra(OtherCityActivity.EXTRA_RESULT);
+                    mCityTextView.setText(selectCity);
+                    changeActivityAreaByCity(selectCity);
+                    break;
+            }
         }
     }
 
@@ -386,7 +464,8 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
      * @param flowRadioGroup
      * @param options
      */
-    private void addChildOptionToRadioGroup(FlowRadioGroup flowRadioGroup,List<String> options){
+    private void addChildOptionToRadioGroup(FlowRadioGroup flowRadioGroup,List<String> options, int defaultCheckedPosition){
+        flowRadioGroup.removeAllViews();
         for (int i = 0; i < options.size(); i++) {
             FlowRadioButton flowRadioButton = new FlowRadioButton(this);
             RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -395,12 +474,14 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
             layoutParams.setMargins(margin,margin,margin,margin);
             flowRadioButton.setLayoutParams(layoutParams);
             int padding = DensityUtil.dp2px(this,7);
+            flowRadioButton.setId(i);
             flowRadioButton.setPadding(padding,padding,padding,padding);
             flowRadioButton.setButtonDrawable(null);
             flowRadioButton.setText(options.get(i));
             flowRadioButton.setGravity(Gravity.CENTER);
             flowRadioButton.setBackgroundResource(R.drawable.bg_radio_button_3);
             flowRadioButton.setTextColor(ContextCompat.getColorStateList(this,R.color.select_color_white));
+            flowRadioButton.setChecked(defaultCheckedPosition == i);
             flowRadioGroup.addView(flowRadioButton);
         }
     }

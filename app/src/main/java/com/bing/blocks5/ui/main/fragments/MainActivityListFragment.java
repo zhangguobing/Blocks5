@@ -2,10 +2,15 @@ package com.bing.blocks5.ui.main.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 
+import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BaseController;
+import com.bing.blocks5.model.event.MainActivityListFilterEvent;
 import com.bing.blocks5.ui.main.MainActivity;
+import com.bing.blocks5.ui.main.request.MainActivityListParams;
+import com.bing.blocks5.util.EventUtil;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListFragment;
@@ -16,6 +21,7 @@ import com.bing.blocks5.ui.search.adapter.ActivityListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.ActivityViewHolder;
 import com.bing.blocks5.widget.MultiStateView;
 import com.bing.blocks5.widget.BottomSpaceItemDecoration;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -26,9 +32,11 @@ import java.util.List;
 public class MainActivityListFragment extends BaseListFragment<Activity,ActivityViewHolder,ActivityController.ActivityUiCallbacks>
    implements ActivityController.ActivityListUi,AppBarLayout.OnOffsetChangedListener{
 
-    private static final String KEY_ACTIVITY_TYPE_ID = "key_activity_type_id";
+    private static final String KEY_PARMAS = "key_parmas";
 
-    private int activity_type_id;
+//    private int activity_type_id;
+
+    private MainActivityListParams mainActivityListParams;
 
     private long refreshTime  = 0;
     private boolean mInit = false;
@@ -66,9 +74,9 @@ public class MainActivityListFragment extends BaseListFragment<Activity,Activity
         return new ActivityController();
     }
 
-    public static MainActivityListFragment newInstance(int activity_type_id) {
+    public static MainActivityListFragment newInstance(MainActivityListParams params) {
         Bundle args = new Bundle();
-        args.putInt(KEY_ACTIVITY_TYPE_ID, activity_type_id);
+        args.putParcelable(KEY_PARMAS, params);
         MainActivityListFragment fragment = new MainActivityListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -84,20 +92,20 @@ public class MainActivityListFragment extends BaseListFragment<Activity,Activity
 
     @Override
     protected void refreshPage() {
-        getCallbacks().getActivityList(activity_type_id,mPage = 1);
+        getCallbacks().getActivityList(mainActivityListParams,mPage = 1);
     }
 
     @Override
     protected void nextPage() {
-        getCallbacks().getActivityList(activity_type_id,mPage);
+        getCallbacks().getActivityList(mainActivityListParams,mPage);
     }
 
     private void lazyLoad(){
         if(!mInit) return;
         if(isLoad) return;
         isLoad = true;
-        activity_type_id = getArguments().getInt(KEY_ACTIVITY_TYPE_ID);
-        getCallbacks().getActivityList(activity_type_id,mPage = 1);
+        mainActivityListParams = getArguments().getParcelable(KEY_PARMAS);
+        getCallbacks().getActivityList(mainActivityListParams,mPage = 1);
     }
 
     @Override
@@ -131,5 +139,22 @@ public class MainActivityListFragment extends BaseListFragment<Activity,Activity
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         mRefreshLayout.setEnabled(verticalOffset == 0);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventUtil.register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventUtil.unregister(this);
+    }
+
+    @Subscribe
+    public void onFilter(MainActivityListFilterEvent event){
+        getCallbacks().getActivityList(mainActivityListParams = event.params,mPage = 1);
     }
 }

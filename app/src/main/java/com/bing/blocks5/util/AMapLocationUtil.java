@@ -69,8 +69,8 @@ public class AMapLocationUtil {
     }
 
     public interface AMapLocationUtilListener{
-        public void onSuccess(AMapLocation aMapLocation);
-        public void onFail(int errorCode, String errMsg);
+        void onSuccess(AMapLocation aMapLocation);
+        void onFail(int errorCode, String errMsg);
     }
 
     public void stopLocation(){

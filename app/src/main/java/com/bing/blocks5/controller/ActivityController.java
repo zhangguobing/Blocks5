@@ -1,13 +1,18 @@
 package com.bing.blocks5.controller;
 
+import android.text.TextUtils;
+
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
 import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.ui.activity.request.CreateActivityParams;
+import com.bing.blocks5.ui.main.request.MainActivityListParams;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -28,8 +33,8 @@ public class ActivityController extends BaseController<ActivityController.Activi
             }
 
             @Override
-            public void getActivityList(int activity_type_id, int page_index) {
-                doGetActivityList(getId(ui), activity_type_id, page_index);
+            public void getActivityList(MainActivityListParams params, int page_index) {
+                doGetActivityList(getId(ui), params, page_index);
             }
 
             @Override
@@ -100,9 +105,21 @@ public class ActivityController extends BaseController<ActivityController.Activi
     }
 
 
-    private void doGetActivityList(final int callingId, int activity_type_id, int page_index){
+    private void doGetActivityList(final int callingId, MainActivityListParams params, int page_index){
+        Map<String,String> map = new HashMap<>();
+        map.put("token",mToken);
+        map.put("type_id",params.type_id+"");
+        map.put("page_index",page_index+"");
+        if(!TextUtils.isEmpty(params.city)){
+            map.put("city",params.city);
+        }
+        if(!TextUtils.isEmpty(params.sort_type)){
+            map.put("sort_type",params.sort_type);
+        }
+        map.put("begin_at",params.begin_at);
+        map.put("end_at",params.end_at);
         mApiClient.activityService()
-                .getActivityList(mToken,activity_type_id,page_index)
+                .getActivityList(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<List<Activity>>>() {
@@ -307,7 +324,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
 
     public interface ActivityUiCallbacks{
         void createActivity(CreateActivityParams params);
-        void getActivityList(int activity_type_id, int page_index);
+        void getActivityList(MainActivityListParams params, int page_index);
         void getActivityList(int user_id, int activity_state, int page_index);
         void getActivityListByUserId(int user_id, int page_index);
         void getActivityListByJoinId(int join_user_id, int page_index);

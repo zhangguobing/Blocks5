@@ -85,12 +85,9 @@ public class ResponseErrorProxy implements InvocationHandler {
                     }
 
                     if (AppConfig.DEBUG) {
-                        error.printStackTrace();
+                        throwable.printStackTrace();
                         Logger.e("网络请求出现错误: " + error.toString());
                     }
-
-//                    return Observable.error(error);
-
                     if (error.getCode() == HTTP_UNAUTHORIZED) {
                         return refreshTokenWhenTokenInvalid();
                     } else {

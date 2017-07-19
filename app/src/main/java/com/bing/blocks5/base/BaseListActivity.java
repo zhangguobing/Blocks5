@@ -126,6 +126,10 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
     public void onResponseError(ResponseError error) {
         super.onResponseError(error);
         resetRefreshLayout();
+        if(mAdapter.getItemCount() == 0){
+            mMultiStateView.setState(MultiStateView.STATE_ERROR)
+                    .setButton(v -> onRetryClick());
+        }
     }
 
     private void resetRefreshLayout(){

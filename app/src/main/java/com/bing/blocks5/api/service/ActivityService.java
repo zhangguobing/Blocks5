@@ -5,6 +5,7 @@ import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.ui.activity.request.CreateActivityParams;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -13,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -60,6 +62,10 @@ public interface ActivityService {
     //开始某个活动
     @GET("activities/{id}/start")
     Observable<ApiResponse> startActivity(@Path("id") int activity_id,@Query("token") String token);
+
+    //活动筛选  sort_type= credit 按信用程度
+    @GET("activities")
+    Observable<ApiResponse<List<Activity>>> getActivityList(@QueryMap Map<String,String> map);
 
 
 }

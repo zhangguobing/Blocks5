@@ -217,8 +217,14 @@ public class FlowRadioGroup extends ViewGroup {
                     child = getChildAt(i);
                     mlp = (MarginLayoutParams) child.getLayoutParams();
                     //为了视觉上更好看，强制每个RadioButton大小一致
-                    child.measure(MeasureSpec.makeMeasureSpec(maxChlidWidthWithMargin - mlp.rightMargin - mlp.leftMargin, MeasureSpec.EXACTLY),
-                            MeasureSpec.makeMeasureSpec(maxChlidHeightWithMargin - mlp.topMargin - mlp.leftMargin, MeasureSpec.EXACTLY));
+                    if(mColumuNum > 0){
+                        //如果设置了具体列数，则均等分宽度大小
+                        child.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() / mColumuNum - mlp.rightMargin - mlp.leftMargin , MeasureSpec.EXACTLY),
+                                MeasureSpec.makeMeasureSpec(maxChlidHeightWithMargin - mlp.topMargin - mlp.leftMargin, MeasureSpec.EXACTLY));
+                    }else{
+                        child.measure(MeasureSpec.makeMeasureSpec(maxChlidWidthWithMargin - mlp.rightMargin - mlp.leftMargin, MeasureSpec.EXACTLY),
+                                MeasureSpec.makeMeasureSpec(maxChlidHeightWithMargin - mlp.topMargin - mlp.leftMargin, MeasureSpec.EXACTLY));
+                    }
                 }
                 parentDesireWidth = getPaddingLeft() + getPaddingRight() + maxChlidWidthWithMargin * mColumuNum;
                 parentDesireHeight = getPaddingBottom() + getPaddingTop() + maxChlidHeightWithMargin * row;

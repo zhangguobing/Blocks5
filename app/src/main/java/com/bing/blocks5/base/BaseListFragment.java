@@ -125,6 +125,10 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
     public void onResponseError(ResponseError error) {
         super.onResponseError(error);
         resetRefreshLayout();
+        if(mAdapter.getItemCount() == 0){
+            mMultiStateView.setState(MultiStateView.STATE_ERROR)
+                    .setButton(v -> onRetryClick());
+        }
     }
 
     private void resetRefreshLayout(){
@@ -139,6 +143,7 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
             if (mPage == 1) {
                 mAdapter.setItems(items);
                 mMultiStateView.setState(MultiStateView.STATE_CONTENT);
+                mRecyclerView.scrollToPosition(0);
             } else {
                 mAdapter.addItems(items);
             }
