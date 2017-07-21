@@ -57,6 +57,9 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
             case R.id.btn_exit:
                 showExitDialog();
                 break;
+            case R.id.ll_feedback:
+                FeedBackActivity.create(this);
+                break;
         }
     }
 

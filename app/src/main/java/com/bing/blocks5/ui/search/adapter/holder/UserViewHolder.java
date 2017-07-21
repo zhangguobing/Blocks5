@@ -33,7 +33,6 @@ public class UserViewHolder extends BaseViewHolder<User> {
 
     public UserViewHolder(View view,IUserOperateListener listener) {
         super(view);
-        ButterKnife.bind(this,view);
         mListener = listener;
     }
 

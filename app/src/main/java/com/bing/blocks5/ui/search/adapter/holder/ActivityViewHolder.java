@@ -44,7 +44,6 @@ public class ActivityViewHolder extends BaseViewHolder<Activity> {
 
     public ActivityViewHolder(View view) {
         super(view);
-        ButterKnife.bind(this,view);
         mActivityTypes = ConfigManager.getInstance().getConfig().getActivity_types();
         mActivityStates = ConfigManager.getInstance().getConfig().getActivity_states();
     }

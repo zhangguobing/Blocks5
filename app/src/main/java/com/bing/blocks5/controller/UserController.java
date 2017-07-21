@@ -4,7 +4,10 @@ import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.api.RequestCallback;
 import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BaseController;
+import com.bing.blocks5.model.FeedBack;
 import com.bing.blocks5.model.User;
+
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -47,6 +50,16 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
             @Override
             public void updateUser(int age, String job, String address, String avatar, String content, String image_url_1, String image_url_2, String image_url_3) {
                 doUpdateUser(getId(ui),age,job,address,avatar,content,image_url_1,image_url_2,image_url_3);
+            }
+
+            @Override
+            public void getFeedBack(int page_index) {
+                doGetFeedBack(getId(ui), page_index);
+            }
+
+            @Override
+            public void addFeedBack(String content) {
+                doAddFeedBack(getId(ui), content);
             }
         };
     }
@@ -189,6 +202,51 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
                 });
     }
 
+    private void doGetFeedBack(final int callingId,int page_index){
+        mApiClient.userService()
+                .getFeedBack(mToken, page_index)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<List<FeedBack>>>() {
+                    @Override
+                    public void onResponse(ApiResponse<List<FeedBack>> response) {
+                        UserUi ui = findUi(callingId);
+                        if(ui instanceof FeedBackUi){
+                            ((FeedBackUi)ui).loadFeedBackSuccess(response.data);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
+    private void doAddFeedBack(final int callingId,String content){
+        mApiClient.userService()
+                .addFeedBack(mToken, content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<FeedBack>>() {
+                    @Override
+                    public void onResponse(ApiResponse<FeedBack> response) {
+                        UserUi ui = findUi(callingId);
+                        if(ui instanceof FeedBackUi){
+                            ((FeedBackUi)ui).addFeedBackSuccess(response.data);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        UserUi ui = findUi(callingId);
+                        if(ui instanceof FeedBackUi){
+                            ((FeedBackUi)ui).addFeedBackFail(error.getMessage());
+                        }
+                    }
+                });
+    }
+
     public interface UserUi extends BaseController.Ui<UserController.UserUiCallbacks>{
 
     }
@@ -220,6 +278,12 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
         void loadUserCallback(User user);
     }
 
+    public interface FeedBackUi extends UserUi{
+        void loadFeedBackSuccess(List<FeedBack> feedBacks);
+        void addFeedBackSuccess(FeedBack feedBack);
+        void addFeedBackFail(String msg);
+    }
+
     public interface UserUiCallbacks{
         void register(String token,String nickName,String sex,String password,String avatar);
         void identity(String identityName,String identityCode);
@@ -229,6 +293,8 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
         void updateUser(int age, String job,String address,
                         String avatar,String content,String image_url_1,
                         String image_url_2,String image_url_3);
+        void getFeedBack(int page_index);
+        void addFeedBack(String content);
     }
 
 

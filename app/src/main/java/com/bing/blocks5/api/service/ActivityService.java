@@ -2,6 +2,7 @@ package com.bing.blocks5.api.service;
 
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.ui.activity.request.CreateActivityParams;
 
 import java.util.List;
@@ -67,5 +68,7 @@ public interface ActivityService {
     @GET("activities")
     Observable<ApiResponse<List<Activity>>> getActivityList(@QueryMap Map<String,String> map);
 
-
+   //获取活动评论列表
+    @GET("activities/{activityId}/comments")
+    Observable<ApiResponse<List<Comment>>> getActivityComments(@Path("activityId") String activityId,@QueryMap Map<String,String> map);
 }

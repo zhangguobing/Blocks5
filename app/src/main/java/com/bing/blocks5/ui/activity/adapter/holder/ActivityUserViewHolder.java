@@ -25,10 +25,8 @@ public class ActivityUserViewHolder extends BaseViewHolder<ActivityUser> {
     @Bind(R.id.user_avatar)
     ImageView mAvatarImage;
 
-
     public ActivityUserViewHolder(View view) {
         super(view);
-        ButterKnife.bind(this,view);
     }
 
     public void bind(ActivityUser activityUser){

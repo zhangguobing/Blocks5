@@ -45,4 +45,16 @@ public class Constants {
         public static final String TOKEN = "app.block5.token";
         public static final String UPLOAD_TOKEN = "app.block5.upload.token";
     }
+
+    /**
+     * 发送状态
+     */
+    public interface SendState{
+        /**发送中*/
+        int SENDING = 1;
+        /**发送失败*/
+        int FAILED = 2;
+        /**成功*/
+        int SUCCESS = 0;
+    }
 }

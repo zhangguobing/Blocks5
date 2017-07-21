@@ -21,9 +21,9 @@
                 android:layout_height="150dp"
                 app:delay_time="5000"
                 app:image_scale_type="center_crop"
+                app:layout_scrollFlags="scroll"
                 android:background="?android:windowBackground"
-                app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected"
-                app:layout_scrollFlags="scroll"/>
+                app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected" />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_layout"
@@ -51,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never" />
+
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.view.View;
 
 import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BaseController;
@@ -23,6 +24,7 @@ import com.bing.blocks5.widget.MultiStateView;
 import com.bing.blocks5.widget.BottomSpaceItemDecoration;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,8 +35,6 @@ public class MainActivityListFragment extends BaseListFragment<Activity,Activity
    implements ActivityController.ActivityListUi,AppBarLayout.OnOffsetChangedListener{
 
     private static final String KEY_PARMAS = "key_parmas";
-
-//    private int activity_type_id;
 
     private MainActivityListParams mainActivityListParams;
 
@@ -47,23 +47,6 @@ public class MainActivityListFragment extends BaseListFragment<Activity,Activity
         if(isVisibleToUser){
             if(refreshTime == 0 || refreshTime - System.currentTimeMillis() > 30*60*1000){
                 lazyLoad();
-            }
-             //解决下拉刷新 和tabBarLayout中嵌套时上下滚动冲突
-            if(this.getContext() != null && getContext() instanceof MainActivity){
-                AppBarLayout appBarLayout = ((MainActivity)getContext()).mAppBarLayout;
-                if(appBarLayout != null){
-                    appBarLayout.addOnOffsetChangedListener(this);
-                }
-            }else{
-                //viewpager中第一页加载的太早,getContext还拿不到,做个延迟
-                new Handler().postDelayed(() -> {
-                    if(MainActivityListFragment.this.getContext() != null && getContext() instanceof MainActivity) {
-                        AppBarLayout appBarLayout = ((MainActivity) getContext()).mAppBarLayout;
-                        if (appBarLayout != null) {
-                            appBarLayout.addOnOffsetChangedListener(MainActivityListFragment.this);
-                        }
-                    }
-                },150);
             }
         }
         super.setUserVisibleHint(isVisibleToUser);

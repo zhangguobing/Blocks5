@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -72,8 +70,6 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
     HomeBanner mBanner;
     @Bind(R.id.view_pager)
     HomeTabViewPager mViewPager;
-    @Bind(R.id.app_bar_layout)
-    public AppBarLayout mAppBarLayout;
     @Bind(R.id.drop_down_view)
     DropDownView mDropDownView;
 

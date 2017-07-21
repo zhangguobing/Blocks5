@@ -56,6 +56,7 @@ public class DanmakuView extends View {
     private long previousTime = 0;
     private LinkedList<Float> lines;
 
+    private DanmakuListener listener;
 
     public DanmakuView(Context context) {
         this(context, null);
@@ -176,6 +177,9 @@ public class DanmakuView extends View {
 
                     } else {
                         //no item 弹幕播放完毕,
+                        if(listener != null){
+                            listener.onPlayFinished();
+                        }
                     }
 
                 }
@@ -362,5 +366,13 @@ public class DanmakuView extends View {
             times.removeFirst();
         }
         return difference > 0 ? times.size() / difference : 0.0;
+    }
+
+    public void setDanmakuListener(DanmakuListener listener) {
+        this.listener = listener;
+    }
+
+    public interface DanmakuListener{
+        void onPlayFinished();
     }
 }

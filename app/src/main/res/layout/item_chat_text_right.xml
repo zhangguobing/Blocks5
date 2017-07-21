@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 聊天页面 Item 文字型 左边 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingLeft="13dp"
+    android:paddingRight="13dp"
+    android:paddingBottom="5dp"
+    >
+
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/chat_text_date_style"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        tools:text="15:05"
+        />
+
+    <ImageView
+        android:id="@+id/image_photo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/text_time"
+        android:layout_marginTop="7dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好"
+        android:background="@drawable/chat_bg_bubble_right_cyan"
+        android:padding="13dp"
+        android:layout_toLeftOf="@+id/image_photo"
+        android:layout_alignTop="@+id/image_photo"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="13dp"
+        android:maxWidth="200dp"
+        android:textColorLink="#0071fe"
+        android:textColor="#4d4d4d"
+        android:textSize="15sp"
+        />
+
+    <!-- "发送中"或是"发送失败"提醒图标 -->
+    <ImageView
+        android:id="@+id/icon_progress_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/text_content"
+        android:layout_alignTop="@+id/text_content"
+        android:layout_alignBottom="@+id/text_content"
+        tools:src="@drawable/chat_icon_send_failed"
+        android:gravity="center_vertical"
+        />
+
+
+</RelativeLayout>

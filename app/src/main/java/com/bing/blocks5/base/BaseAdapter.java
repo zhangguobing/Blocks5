@@ -81,14 +81,20 @@ public abstract class BaseAdapter<T,VH extends RecyclerView.ViewHolder> extends 
 
     @Override
     public void addItems(List<T> items) {
+        int oldSize = mItems.size();
         mItems.addAll(items);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(oldSize, items.size());
+    }
+
+    public void addItems(int position, List<T> items){
+        mItems.addAll(position,items);
+        notifyItemRangeInserted(position,items.size());
     }
 
     @Override
     public void addItem(T item) {
         mItems.add(item);
-        notifyDataSetChanged();
+        notifyItemInserted(mItems.size() - 1);
     }
 
     @Override

@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.model.ShareInfo;
 import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.util.ShareUtil;
@@ -47,6 +48,7 @@ import com.bing.blocks5.widget.bottomsharedialog.BottomShareDialog;
 import com.bing.blocks5.widget.toprightmenu.MenuItem;
 import com.bing.blocks5.widget.toprightmenu.TopRightMenu;
 import com.youth.banner.Banner;
+import com.youth.banner.WeakHandler;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
@@ -316,7 +318,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     }
 
 
-    private void initDanmakuView(List<Activity.Comment> comments){
+    private void initDanmakuView(List<Comment> comments){
         if(comments == null || comments.size() == 0) return;
         List<IDanmakuItem> list = new ArrayList<>();
         for (int i = 0; i < comments.size(); i++) {
@@ -324,6 +326,8 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         }
         mDanmakuView.addItem(list,true);
         mDanmakuView.show();
+
+        mDanmakuView.setDanmakuListener(() -> mDanmakuView.addItem(list,true));
     }
 
     private class GlideImageLoader extends ImageLoader {
@@ -356,6 +360,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     public void onClick(View view){
         switch (view.getId()){
             case R.id.rl_message:
+                ActivityMessageActivity.create(this,mActivityId);
                 break;
             case R.id.btn_join:
                 showLoading(R.string.label_being_something);

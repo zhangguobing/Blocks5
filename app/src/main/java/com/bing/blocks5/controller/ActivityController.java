@@ -7,8 +7,10 @@ import com.bing.blocks5.api.RequestCallback;
 import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.ui.activity.request.CreateActivityParams;
 import com.bing.blocks5.ui.main.request.MainActivityListParams;
+import com.mob.MobApplication;
 
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +83,11 @@ public class ActivityController extends BaseController<ActivityController.Activi
             public void start(int activity_id) {
                 doStartActivity(getId(ui), activity_id);
             }
+
+            @Override
+            public void getComments(String activity_id,Map<String, String> paramsMap) {
+                doGetComments(getId(ui),activity_id,paramsMap);
+            }
         };
     }
 
@@ -104,6 +111,25 @@ public class ActivityController extends BaseController<ActivityController.Activi
                 });
     }
 
+    private void doGetComments(final int callingId,String activity_id, Map<String,String> map){
+        mApiClient.activityService()
+                .getActivityComments(activity_id,map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<List<Comment>>>() {
+                    @Override
+                    public void onResponse(ApiResponse<List<Comment>> response) {
+                        ActivityUi ui = findUi(callingId);
+                        if(ui instanceof CommentUi){
+                            ((CommentUi)ui).getCommentSuccess(response.data);
+                        }
+                    }
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
 
     private void doGetActivityList(final int callingId, MainActivityListParams params, int page_index){
         Map<String,String> map = new HashMap<>();
@@ -334,6 +360,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void join(int activity_id);
         void report(int activity_id,String content);
         void start(int activity_id);
+        void getComments(String activity_id,Map<String,String> paramsMap);
     }
 
     public interface ActivityUi extends BaseController.Ui<ActivityUiCallbacks>{
@@ -357,5 +384,9 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void onCollectSuccess(String msg);
         void joinSuccess();
         void reportSuccess();
+    }
+
+    public interface CommentUi extends ActivityUi{
+        void getCommentSuccess(List<Comment> comments);
     }
 }
