@@ -71,6 +71,8 @@ implements View.OnClickListener,UserController.FeedBackUi{
     private boolean isSending = false;
     private FeedBack mCurSendingFeedBack;
     private int mReadySendPosition;
+    //是否页面已经加载完毕
+    private boolean isPageLoadFinish = false;
 
     public static void create(Context context){
         Intent intent = new Intent(context,FeedBackActivity.class);
@@ -131,6 +133,7 @@ implements View.OnClickListener,UserController.FeedBackUi{
 
 
     private void sendTextMessage(){
+        if(!isPageLoadFinish) return;
         if(isSending) return;
         isSending = true;
         String text = mContentEditText.getText().toString().trim();
@@ -233,7 +236,8 @@ implements View.OnClickListener,UserController.FeedBackUi{
             if(mPage == 1){
                 mMultiStateView.setState(MultiStateView.STATE_CONTENT);
                 mAdapter.setItems(feedBacks);
-                mRecyclerView.scrollToPosition(mAdapter.getItemCount()-1);
+                recycleViewScrollToBottom();
+                isPageLoadFinish = true;
             }else{
                 mAdapter.addItems(0,feedBacks);
                 mRefreshLayout.finishRefreshing();
@@ -245,9 +249,10 @@ implements View.OnClickListener,UserController.FeedBackUi{
             }
         }else{
             if(mAdapter.getItemCount() == 0){
+                isPageLoadFinish = true;
+                mRefreshLayout.setEnableRefresh(false);
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
-                        .setTitle("暂无意见反馈")
-                        .setButton(v -> onRetryClick());
+                        .setTitle("暂无意见反馈");
             }else{
                 ToastUtil.showText("没有更多了");
             }
@@ -259,6 +264,9 @@ implements View.OnClickListener,UserController.FeedBackUi{
         mCurSendingFeedBack.setSend_state(Constants.SendState.SUCCESS);
         mAdapter.setItem(mReadySendPosition,mCurSendingFeedBack);
         isSending = false;
+        if(mMultiStateView.getState() == MultiStateView.STATE_EMPTY){
+            mMultiStateView.setState(MultiStateView.STATE_CONTENT);
+        }
     }
 
     @Override

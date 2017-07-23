@@ -2,6 +2,7 @@ package com.bing.blocks5.api;
 
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.model.Token;
+import com.bing.blocks5.util.NetworkUtil;
 import com.google.gson.JsonParseException;
 import com.orhanobut.logger.Logger;
 import com.bing.blocks5.AppConfig;
@@ -59,7 +60,10 @@ public class ResponseErrorProxy implements InvocationHandler {
                             || throwable instanceof UnknownHostException
                             || throwable instanceof ConnectException) {
                         error = new ResponseError(HTTP_NETWORK_ERROR,
-                                StringFetcher.getString(R.string.toast_error_network));
+                                        StringFetcher.getString(
+                                                NetworkUtil.isNetworkAvailable() ?
+                                                        R.string.toast_error_network :
+                                                        R.string.toast_error_network_unavailable));
                     } else if (throwable instanceof HttpException) {
                         HttpException exception = (HttpException) throwable;
                         try {

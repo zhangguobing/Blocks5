@@ -1,16 +1,20 @@
 package com.bing.blocks5.ui.activity.fragment;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.Constants;
 import com.bing.blocks5.R;
 import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BaseController;
@@ -21,9 +25,11 @@ import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.ui.activity.adapter.CommentAdapter;
 import com.bing.blocks5.ui.user.UserDetailActivity;
 import com.bing.blocks5.util.KeyboardChangeListener;
+import com.bing.blocks5.util.TimeUtil;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.MessageHeadView;
 import com.bing.blocks5.widget.MultiStateView;
+import com.flyco.dialog.widget.NormalDialog;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
@@ -60,6 +66,14 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     private CommentAdapter mAdapter;
 
     private boolean isPullRefresh = false;
+    private boolean isSending = false;
+    private Comment mCurSendingComment;
+    private int mReadySendPosition;
+    //是否页面已经加载完毕
+    private boolean isPageLoadFinish = false;
+
+    private String activity_id;
+    private String is_team;
 
     public static MessageFragment newInstance(String is_team,String activity_id) {
         Bundle args = new Bundle();
@@ -93,6 +107,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
 
+        mSendBtn.setOnClickListener(this);
 
         mContentEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -130,8 +145,8 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     }
 
     private void load(){
-        String is_team = getArguments().getString(EXTRA_IS_TEAM);
-        String activity_id = getArguments().getString(EXTRA_ACTIVITY_ID);
+        is_team = getArguments().getString(EXTRA_IS_TEAM);
+        activity_id = getArguments().getString(EXTRA_ACTIVITY_ID);
         Map<String,String> params = new HashMap<>();
         params.put("token", AppCookie.getToken());
         params.put("is_team",is_team);
@@ -173,7 +188,65 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                    UserDetailActivity.create(getContext(),comment.getUser_id());
                }
                break;
+           case R.id.btn_send:
+               sendTextMessage();
+               break;
+           case R.id.icon_progress_failed:
+               final NormalDialog dialog = new NormalDialog(getContext());
+               int color = ContextCompat.getColor(getContext(),R.color.primary_text);
+               dialog.setCanceledOnTouchOutside(false);
+               dialog.isTitleShow(false)
+                       .cornerRadius(5)
+                       .content("重新发送?")
+                       .contentGravity(Gravity.CENTER)
+                       .contentTextColor(color)
+                       .dividerColor(R.color.divider)
+                       .btnTextSize(15.5f, 15.5f)
+                       .btnTextColor(color,color)
+                       .widthScale(0.75f)
+                       .show();
+               dialog.setOnBtnClickL(dialog::dismiss, () -> {
+                   dialog.dismiss();
+                   int position = (int) v.getTag(R.id.tag_click_content);
+                   mReadySendPosition = position;
+                   mCurSendingComment = mAdapter.getItem(position);
+                   mCurSendingComment.setSend_state(Constants.SendState.SENDING);
+                   mAdapter.setItem(position,mCurSendingComment);
+                   recycleViewScrollToBottom();
+                   getCallbacks().addComment(activity_id,mCurSendingComment.getContent(),Integer.parseInt(is_team));
+               });
+               break;
        }
+    }
+
+    private void sendTextMessage(){
+        if(!isPageLoadFinish) return;
+        if(isSending) return;
+        isSending = true;
+        String text = mContentEditText.getText().toString().trim();
+        if(TextUtils.isEmpty(text)) return;
+        mContentEditText.setText("");
+
+        mCurSendingComment = null;
+        mCurSendingComment = new Comment();
+        mCurSendingComment.setUser_id(AppCookie.getUserInfo().getId());
+        mCurSendingComment.setContent(text);
+        mCurSendingComment.setSend_state(Constants.SendState.SENDING);
+        mCurSendingComment.setCreated_at(TimeUtil.getDate());
+
+        Comment.CreatorBean creatorBean = new Comment.CreatorBean();
+        creatorBean.setAvatar(AppCookie.getUserInfo().getAvatar());
+        creatorBean.setId(AppCookie.getUserInfo().getId());
+        creatorBean.setNick_name(AppCookie.getUserInfo().getNickName());
+
+        mCurSendingComment.setCreator(creatorBean);
+
+        mAdapter.addItem(mCurSendingComment);
+        recycleViewScrollToBottom();
+
+        mReadySendPosition = mAdapter.getItemCount() > 0 ? mAdapter.getItemCount()-1 : 0;
+
+        getCallbacks().addComment(activity_id,text,Integer.parseInt(is_team));
     }
 
     @Override
@@ -190,20 +263,40 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                 mAdapter.setItems(comments);
                 mRecyclerView.scrollToPosition(mAdapter.getItemCount()-1);
                 isPullRefresh = true;
+                isPageLoadFinish = true;
             }
             if(comments.size() < 10){
                 mRefreshLayout.setEnableRefresh(false);
             }
         }else{
             if(mAdapter.getItemCount() == 0){
+                isPageLoadFinish = true;
+                mRefreshLayout.setEnableRefresh(false);
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
-                        .setTitle("暂无留言")
-                        .setButton(v -> onRetryClick());
+                        .setTitle("暂无留言");
             }else{
                 ToastUtil.showText("没有更多了");
             }
         }
 
+    }
+
+    @Override
+    public void addCommentSuccess(Comment comment) {
+        mCurSendingComment.setSend_state(Constants.SendState.SUCCESS);
+        mAdapter.setItem(mReadySendPosition,mCurSendingComment);
+        isSending = false;
+        if(mMultiStateView.getState() == MultiStateView.STATE_EMPTY){
+            mMultiStateView.setState(MultiStateView.STATE_CONTENT);
+        }
+    }
+
+    @Override
+    public void addCommentFail(String msg) {
+        mCurSendingComment.setSend_state(Constants.SendState.FAILED);
+        mAdapter.setItem(mReadySendPosition,mCurSendingComment);
+        ToastUtil.showText(msg);
+        isSending = false;
     }
 
 }

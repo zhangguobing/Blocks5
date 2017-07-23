@@ -88,6 +88,11 @@ public class ActivityController extends BaseController<ActivityController.Activi
             public void getComments(String activity_id,Map<String, String> paramsMap) {
                 doGetComments(getId(ui),activity_id,paramsMap);
             }
+
+            @Override
+            public void addComment(String activity_id, String content, int is_team) {
+                doAddComment(getId(ui), activity_id, content, is_team);
+            }
         };
     }
 
@@ -127,6 +132,30 @@ public class ActivityController extends BaseController<ActivityController.Activi
                     @Override
                     public void onFailure(ResponseError error) {
                         findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
+
+    private void doAddComment(final int callingId,String activity_id, String content, int is_team){
+        mApiClient.activityService()
+                .addActivityComment(activity_id,mToken,content, is_team)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<Comment>>() {
+                    @Override
+                    public void onResponse(ApiResponse<Comment> response) {
+                        ActivityUi ui = findUi(callingId);
+                        if(ui instanceof CommentUi){
+                            ((CommentUi)ui).addCommentSuccess(response.data);
+                        }
+                    }
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        ActivityUi ui = findUi(callingId);
+                        if(ui instanceof CommentUi){
+                            ((CommentUi)ui).addCommentFail(error.getMessage());
+                        }
                     }
                 });
     }
@@ -361,6 +390,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void report(int activity_id,String content);
         void start(int activity_id);
         void getComments(String activity_id,Map<String,String> paramsMap);
+        void addComment(String activity_id,String content, int is_team);
     }
 
     public interface ActivityUi extends BaseController.Ui<ActivityUiCallbacks>{
@@ -388,5 +418,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
 
     public interface CommentUi extends ActivityUi{
         void getCommentSuccess(List<Comment> comments);
+        void addCommentSuccess(Comment comment);
+        void addCommentFail(String msg);
     }
 }

@@ -127,6 +127,7 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
         resetRefreshLayout();
         if(mAdapter.getItemCount() == 0){
             mMultiStateView.setState(MultiStateView.STATE_ERROR)
+                    .setTitle(error.getMessage())
                     .setButton(v -> onRetryClick());
         }
     }
@@ -155,8 +156,7 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
                 if(mAdapter.getItemCount() == 0){
                     mMultiStateView.setState(MultiStateView.STATE_EMPTY)
                             .setIcon(getEmptyIcon())
-                            .setTitle(getEmptyTitle())
-                            .setButton(v -> onRetryClick());
+                            .setTitle(getEmptyTitle());
                 }
             } else {
                 ToastUtil.showText("没有更多了");

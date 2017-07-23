@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public abstract class BaseAdapter<T,VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter implements IAdapter<T> {
 
-    private List<T> mItems;
+    private List<T> mItems = new ArrayList<>();
     private ViewEventListener<T> mViewEventListener;
 
     private int dataVersion = 0;
@@ -22,7 +23,7 @@ public abstract class BaseAdapter<T,VH extends RecyclerView.ViewHolder> extends 
     @Override
     public void setItems(final List<T> update) {
         dataVersion ++;
-        if(mItems == null){
+        if(mItems.isEmpty()){
             if(update == null){
                 return;
             }

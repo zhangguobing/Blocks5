@@ -69,6 +69,7 @@
             android:layout_marginLeft="15dp"
             android:textSize="15sp"
             android:textColor="@color/white"
+            android:enabled="false"
             android:background="@drawable/bg_btn_solid_light_round"/>
 
     </LinearLayout>

@@ -71,4 +71,9 @@ public interface ActivityService {
    //获取活动评论列表
     @GET("activities/{activityId}/comments")
     Observable<ApiResponse<List<Comment>>> getActivityComments(@Path("activityId") String activityId,@QueryMap Map<String,String> map);
+
+    //新增活动评论
+    @FormUrlEncoded
+    @POST("activities/{activityId}/comments")
+    Observable<ApiResponse<Comment>> addActivityComment(@Path("activityId") String activityId,@Query("token") String token, @Field("content") String content, @Field("is_team") int is_team);
 }
