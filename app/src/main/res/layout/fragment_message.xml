@@ -1,77 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
-
-    <com.bing.blocks5.widget.MultiStateView
-        android:id="@+id/multi_state_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:tr_head_height="40dp">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:scrollbarStyle="outsideOverlay"
-                android:scrollbars="vertical"
-                android:clipToPadding="false"
-                android:paddingBottom="24dp"/>
-
-        </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
-
-    </com.bing.blocks5.widget.MultiStateView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/divider"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="7dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="7dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_content"
-            android:layout_width="0dp"
+        <com.bing.blocks5.widget.MultiStateView
+            android:id="@+id/multi_state_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+                android:id="@+id/refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:tr_head_height="40dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="vertical"
+                    android:clipToPadding="false"
+                    android:paddingBottom="24dp"/>
+
+            </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+        </com.bing.blocks5.widget.MultiStateView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="4dp"
+            android:paddingBottom="7dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="4dp"
-            android:imeOptions="actionSend"
-            android:maxLines="3"
-            android:inputType="textMultiLine"
-            android:textSize="15sp"
-            android:background="@drawable/bg_edit_text_border" />
+            android:paddingTop="7dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
-            android:text="发送"
-            android:layout_marginLeft="15dp"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:enabled="false"
-            android:background="@drawable/bg_btn_solid_light_round"/>
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="4dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="4dp"
+                android:imeOptions="actionSend"
+                android:maxLines="3"
+                android:inputType="textMultiLine"
+                android:textSize="15sp"
+                android:background="@drawable/bg_edit_text_border" />
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:text="发送"
+                android:layout_marginLeft="15dp"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:enabled="false"
+                android:background="@drawable/bg_btn_solid_light_round"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/layout_notice_board"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_behavior="@string/top_sheet_behavior"
+        android:background="@color/colorPrimary"
+        app:behavior_peekHeight="40dp">
+
+        <ImageView
+            android:id="@+id/iv_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:src="@mipmap/ic_double_down"/>
+
+        <TextView
+            android:id="@+id/tv_notice_board_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+
+

@@ -27,14 +27,15 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/text_time"
         android:layout_marginTop="7dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_user_avatar_black"/>
 
     <TextView
         android:id="@+id/text_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好"
-        android:background="@drawable/chat_bg_bubble_right_cyan"
+        android:background="@drawable/bg_chat_right"
         android:padding="13dp"
         android:layout_toLeftOf="@+id/image_photo"
         android:layout_alignTop="@+id/image_photo"
@@ -42,7 +43,7 @@
         android:layout_marginLeft="13dp"
         android:maxWidth="200dp"
         android:textColorLink="#0071fe"
-        android:textColor="#4d4d4d"
+        android:textColor="@color/white"
         android:textSize="15sp"
         />
 

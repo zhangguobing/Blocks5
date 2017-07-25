@@ -11,8 +11,10 @@ import android.view.View;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseActivity;
 import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.model.event.ActivityMessageFilterEvent;
 import com.bing.blocks5.ui.activity.fragment.MessageFragment;
 import com.bing.blocks5.ui.main.adapter.FragmentAdapter;
+import com.bing.blocks5.util.EventUtil;
 import com.flyco.dialog.widget.ActionSheetDialog;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import butterknife.OnClick;
  * email：bing901222@qq.com
  */
 @ContentView(R.layout.activity_activity_message)
-public class ActivityMessageActivity extends BaseActivity{
+public class ActivityMessageActivity extends BaseActivity {
 
     private static final String EXTRA_ACTIVITY_ID = "activity_id";
 
@@ -67,12 +69,15 @@ public class ActivityMessageActivity extends BaseActivity{
         }
     }
 
+
     private void showFilterDialog() {
         final String[] contentOptions = {"全部留言", "楼主留言"};
         final ActionSheetDialog dialog = new ActionSheetDialog(this, contentOptions, null);
         dialog.isTitleShow(false).show();
         dialog.setOnOperItemClickL((parent, view, position, id) -> {
             dialog.dismiss();
+            showLoading(R.string.label_being_loading);
+            EventUtil.sendEvent(new ActivityMessageFilterEvent(position == 1));
         });
     }
 }

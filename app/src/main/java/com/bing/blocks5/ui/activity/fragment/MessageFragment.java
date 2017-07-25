@@ -1,6 +1,8 @@
 package com.bing.blocks5.ui.activity.fragment;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +14,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.Constants;
@@ -22,16 +26,20 @@ import com.bing.blocks5.base.BasePresenterFragment;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.model.Comment;
+import com.bing.blocks5.model.event.ActivityMessageFilterEvent;
 import com.bing.blocks5.ui.activity.adapter.CommentAdapter;
 import com.bing.blocks5.ui.user.UserDetailActivity;
+import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.KeyboardChangeListener;
 import com.bing.blocks5.util.TimeUtil;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.MessageHeadView;
 import com.bing.blocks5.widget.MultiStateView;
+import com.bing.blocks5.widget.topsheet.TopSheetBehavior;
 import com.flyco.dialog.widget.NormalDialog;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.squareup.otto.Subscribe;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,10 +70,17 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     Button mSendBtn;
     @Bind(R.id.et_content)
     EditText mContentEditText;
+    @Bind(R.id.iv_down)
+    ImageView mDownImg;
+    @Bind(R.id.layout_notice_board)
+    View mNoticeBoardLayout;
+    @Bind(R.id.tv_notice_board_title)
+    TextView mNoticeBoardTitleTv;
 
     private CommentAdapter mAdapter;
 
-    private boolean isPullRefresh = false;
+    //是否能下拉加载更多
+    private boolean isEnablePullRefresh = false;
     private boolean isSending = false;
     private Comment mCurSendingComment;
     private int mReadySendPosition;
@@ -74,6 +89,15 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
 
     private String activity_id;
     private String is_team;
+
+    //公告栏是否是展开状态
+    private boolean isNoticeBoardExpand = false;
+
+    //默认全部留言
+    private String is_activity_creator = "0";
+
+    //是否是过滤留言列表
+    private boolean isFilter;
 
     public static MessageFragment newInstance(String is_team,String activity_id) {
         Bundle args = new Bundle();
@@ -86,6 +110,8 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        is_team = getArguments().getString(EXTRA_IS_TEAM);
+        activity_id = getArguments().getString(EXTRA_ACTIVITY_ID);
 
         MessageHeadView headerView = new MessageHeadView(getContext());
         mRefreshLayout.setHeaderView(headerView);
@@ -95,7 +121,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         mRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                if(isPullRefresh){
+                if(isEnablePullRefresh){
                     load();
                 }
             }
@@ -108,6 +134,9 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         mRecyclerView.setAdapter(mAdapter);
 
         mSendBtn.setOnClickListener(this);
+        mDownImg.setOnClickListener(this);
+
+        mNoticeBoardTitleTv.setText("0".equals(is_team) ? "游客公告栏" : "团队公告栏");
 
         mContentEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -137,6 +166,20 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         load();
     }
 
+    /**
+     * 打开或者关闭活动公告栏
+     */
+    public void toggleNoticeBoard() {
+        if(isNoticeBoardExpand){
+            TopSheetBehavior.from(mNoticeBoardLayout).setState(TopSheetBehavior.STATE_COLLAPSED);
+            ObjectAnimator.ofFloat(mDownImg,View.ROTATION.getName(),-180,0).start();
+        }else{
+            TopSheetBehavior.from(mNoticeBoardLayout).setState(TopSheetBehavior.STATE_EXPANDED);
+            ObjectAnimator.ofFloat(mDownImg,View.ROTATION.getName(),180).start();
+        }
+        isNoticeBoardExpand = !isNoticeBoardExpand;
+    }
+
 
     private void recycleViewScrollToBottom(){
         if(mAdapter.getItemCount() > 0){
@@ -145,12 +188,11 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     }
 
     private void load(){
-        is_team = getArguments().getString(EXTRA_IS_TEAM);
-        activity_id = getArguments().getString(EXTRA_ACTIVITY_ID);
         Map<String,String> params = new HashMap<>();
         params.put("token", AppCookie.getToken());
         params.put("is_team",is_team);
-        if(isPullRefresh && mAdapter.getItemCount() > 0){
+        params.put("is_activity_creator",is_activity_creator);
+        if(isEnablePullRefresh && mAdapter.getItemCount() > 0 && !isFilter){
             params.put("last_at",mAdapter.getItem(mAdapter.getItemCount()-1).getCreated_at());
         }else{
             params.put("page_index","1");
@@ -190,6 +232,9 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                break;
            case R.id.btn_send:
                sendTextMessage();
+               break;
+           case R.id.iv_down:
+               toggleNoticeBoard();
                break;
            case R.id.icon_progress_failed:
                final NormalDialog dialog = new NormalDialog(getContext());
@@ -254,7 +299,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         if(isDetached()) return;
         if (comments != null && !comments.isEmpty()) {
             Collections.reverse(comments);
-            if(isPullRefresh){
+            if(isEnablePullRefresh && !isFilter){
                 mAdapter.addItems(0,comments);
                 mRefreshLayout.finishRefreshing();
                 mRecyclerView.scrollToPosition(comments.size() - 1);
@@ -262,14 +307,14 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                 mMultiStateView.setState(MultiStateView.STATE_CONTENT);
                 mAdapter.setItems(comments);
                 mRecyclerView.scrollToPosition(mAdapter.getItemCount()-1);
-                isPullRefresh = true;
+                isEnablePullRefresh = true;
                 isPageLoadFinish = true;
             }
             if(comments.size() < 10){
                 mRefreshLayout.setEnableRefresh(false);
             }
         }else{
-            if(mAdapter.getItemCount() == 0){
+            if(isFilter || mAdapter.getItemCount() == 0){
                 isPageLoadFinish = true;
                 mRefreshLayout.setEnableRefresh(false);
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
@@ -278,7 +323,10 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                 ToastUtil.showText("没有更多了");
             }
         }
-
+        if(isFilter){
+            cancelLoading();
+            isFilter = false;
+        }
     }
 
     @Override
@@ -299,4 +347,25 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         isSending = false;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventUtil.register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventUtil.unregister(this);
+    }
+
+    @Subscribe
+    public void onCommentsFilter(ActivityMessageFilterEvent event){
+        if(getUserVisibleHint() && isVisible()){
+            showLoading(R.string.label_being_loading);
+            is_activity_creator = event.is_activity_creator ? "1" : "0";
+            isFilter = true;
+            load();
+        }
+    }
 }

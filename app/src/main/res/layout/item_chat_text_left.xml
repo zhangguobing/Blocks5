@@ -35,20 +35,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好您好"
-        android:background="@drawable/chat_chatfrom_bg_normal"
-        android:paddingTop="13dp"
-        android:paddingRight="13dp"
-        android:paddingLeft="20dp"
-        android:paddingBottom="13dp"
+        android:background="@drawable/bg_chat_left"
+        android:padding="13dp"
         android:layout_toRightOf="@+id/image_photo"
         android:layout_alignTop="@+id/image_photo"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="13dp"
         android:maxWidth="200dp"
-        android:textColorLink="#0071fe"
-        android:textColor="#4d4d4d"
-        android:textSize="15sp"
-        />
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 
     <!-- "发送中"或是"发送失败"提醒图标 -->
     <ImageView
