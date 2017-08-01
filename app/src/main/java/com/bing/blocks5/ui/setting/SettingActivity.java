@@ -97,6 +97,6 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
         cancelLoading();
         mUser = user;
         String identityState = ActivityDataConvert.getIdentityStateById(user.getIdentity_state()+"");
-        mCertTv.setText("实名认证（"+ identityState +")");
+        mCertTv.setText("实名认证("+ identityState +")");
     }
 }

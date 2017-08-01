@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.QiniuUploadUtils;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.TitleBar;
+import com.flyco.dialog.widget.NormalDialog;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import butterknife.Bind;
@@ -225,33 +227,49 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
 //    }
 
     private void completeRegisterClick(){
-        if (mNickNameEt.getText().toString().trim().length() == 0) {
-            ToastUtil.showText("请输入昵称");
-            return;
-        }
-        if (mRadioGroup.getCheckedRadioButtonId() == -1) {
-            ToastUtil.showText("请选择性别");
-            return;
-        }
-        if (mPwdEt.getText().toString().trim().length() == 0) {
-            ToastUtil.showText("请输入密码");
-            return;
-        }
-        if (mConfirmPwdEt.getText().toString().trim().length() == 0) {
-            ToastUtil.showText("请输入确认密码");
-            return;
-        }
-        if (mPwdEt.getText().toString().trim().length() < 8) {
-            ToastUtil.showText("请输入至少8位密码");
-            return;
-        }
-        if (!mPwdEt.getText().toString().trim().equals(mConfirmPwdEt.getText().toString().trim())) {
-            ToastUtil.showText("密码不一致");
-            return;
-        }
-        showLoading(R.string.label_being_something);
-        String sex = mRadioGroup.getCheckedRadioButtonId() == R.id.rb_male ? "男" : "女";
-        getCallbacks().register(AppCookie.getToken(),mNickNameEt.getText().toString().trim(),
-                sex,mPwdEt.getText().toString().trim(),mAvatarUrl);
+        final NormalDialog dialog = new NormalDialog(this);
+        int color = ContextCompat.getColor(this,R.color.primary_text);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.isTitleShow(true)
+                .cornerRadius(5)
+                .title("提示")
+                .content("提交完成后将不能更改性别")
+                .contentGravity(Gravity.CENTER)
+                .contentTextColor(color)
+                .dividerColor(R.color.divider)
+                .btnTextSize(15.5f, 15.5f)
+                .btnTextColor(color,color)
+                .widthScale(0.75f)
+                .show();
+        dialog.setOnBtnClickL(dialog::dismiss, () -> {
+            if (mNickNameEt.getText().toString().trim().length() == 0) {
+                ToastUtil.showText("请输入昵称");
+                return;
+            }
+            if (mRadioGroup.getCheckedRadioButtonId() == -1) {
+                ToastUtil.showText("请选择性别");
+                return;
+            }
+            if (mPwdEt.getText().toString().trim().length() == 0) {
+                ToastUtil.showText("请输入密码");
+                return;
+            }
+            if (mConfirmPwdEt.getText().toString().trim().length() == 0) {
+                ToastUtil.showText("请输入确认密码");
+                return;
+            }
+            if (mPwdEt.getText().toString().trim().length() < 8) {
+                ToastUtil.showText("请输入至少8位密码");
+                return;
+            }
+            if (!mPwdEt.getText().toString().trim().equals(mConfirmPwdEt.getText().toString().trim())) {
+                ToastUtil.showText("密码不一致");
+                return;
+            }
+            showLoading(R.string.label_being_something);
+            String sex = mRadioGroup.getCheckedRadioButtonId() == R.id.rb_male ? "男" : "女";
+            getCallbacks().register(AppCookie.getToken(),mNickNameEt.getText().toString().trim(),
+                    sex,mPwdEt.getText().toString().trim(),mAvatarUrl);
+        });
     }
 }

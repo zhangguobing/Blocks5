@@ -22,7 +22,7 @@ public interface LoginAuthService {
     @POST("login")
     Observable<ApiResponse<LoginBean>> login(@Field("phone") String phone, @Field("captcha") String captcha);
     @GET("captcha")
-    Observable<ApiResponse> captcha(@Query("phone") String phone);
+    Observable<ApiResponse> captcha(@Query("phone") String phone,@Query("type") String type);
     @GET("forget")
     Observable<ApiResponse> forget(@Query("phone") String phone);
     @FormUrlEncoded

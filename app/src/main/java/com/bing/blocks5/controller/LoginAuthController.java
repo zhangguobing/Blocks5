@@ -34,8 +34,8 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
             }
 
             @Override
-            public void captcha(String phone) {
-                doCaptcha(getId(ui), phone);
+            public void captcha(String phone,String type) {
+                doCaptcha(getId(ui), phone, type);
             }
 
             @Override
@@ -84,9 +84,9 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
     }
 
 
-    private void doCaptcha(final int callingId, String phone){
+    private void doCaptcha(final int callingId, String phone,String type){
         mApiClient.loginAuthService()
-                .captcha(phone)
+                .captcha(phone,type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse>() {
@@ -191,7 +191,7 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
 
     public interface LoginAuthUiCallbacks {
         void login(String phone,String captcha);
-        void captcha(String phone);
+        void captcha(String phone,String type);
         void forget(String phone);
         void resetPassword(String phone,String captcha,String password);
         void fetchConfig();

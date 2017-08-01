@@ -131,7 +131,7 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
             return;
         }
         showLoading(R.string.label_being_something);
-        getCallbacks().captcha(code);
+        getCallbacks().captcha(code,"login");
     }
 
 
