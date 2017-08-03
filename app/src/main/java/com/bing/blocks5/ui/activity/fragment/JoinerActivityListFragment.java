@@ -40,6 +40,11 @@ public class JoinerActivityListFragment extends BaseListFragment<Activity,Activi
         getCallbacks().getActivityListByJoinIdAndState(mJoinUserId,mState,mPage);
     }
 
+    @Override
+    protected String getEmptyTitle() {
+        return "暂无活动";
+    }
+
     /**
      * @param activity_state 活动状态
      * @param join_user_id 活动参与者ID

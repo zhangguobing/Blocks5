@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -50,9 +51,14 @@ public interface ActivityService {
     @GET("activities")
     Observable<ApiResponse<List<Activity>>> getActivityListByJoinId(@Query("token") String token, @Query("join_user_id") int join_user_id, @Query("page_index") int page_index);
 
+    //收藏某个活动
     @FormUrlEncoded
     @POST("histories/activities")
     Observable<ApiResponse> collectActivity(@Field("activity_id") int activity_id,@Query("token") String token);
+
+    //取消收藏某个活动
+    @DELETE("histories/activities")
+    Observable<ApiResponse> cancelCollectActivity(@Query("token") String token, @Query("activity_id") int activity_id);
 
     //举报活动 rpt_type = 0, rpt_id 活动id
     @FormUrlEncoded

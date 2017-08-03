@@ -70,6 +70,11 @@ public class ActivityController extends BaseController<ActivityController.Activi
             }
 
             @Override
+            public void cancelCollectActivity(int activity_id) {
+                doCancelCollectActivity(getId(ui), activity_id);
+            }
+
+            @Override
             public void join(int activity_id) {
                 doJoin(getId(ui), activity_id);
             }
@@ -272,6 +277,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
                 });
     }
 
+    //收藏活动
     private void doCollectActivity(final int callingId, int activity_id){
         mApiClient.activityService()
                 .collectActivity(activity_id,mToken)
@@ -283,6 +289,29 @@ public class ActivityController extends BaseController<ActivityController.Activi
                         ActivityUi ui = findUi(callingId);
                         if(ui instanceof ActivityDetailUi){
                             ((ActivityDetailUi)ui).onCollectSuccess(response.message);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
+
+    //取消收藏活动
+    private void doCancelCollectActivity(final int callingId, int activity_id){
+        mApiClient.activityService()
+                .cancelCollectActivity(mToken,activity_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse>() {
+                    @Override
+                    public void onResponse(ApiResponse response) {
+                        ActivityUi ui = findUi(callingId);
+                        if(ui instanceof ActivityDetailUi){
+                            ((ActivityDetailUi)ui).cancelCollectSuccess(response.message);
                         }
                     }
 
@@ -386,6 +415,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void getActivityListByJoinIdAndState(int join_user_id, int activity_state, int page_index);
         void getActivityById(int activity_id);
         void collectActivity(int activity_id);
+        void cancelCollectActivity(int activity_id);
         void join(int activity_id);
         void report(int activity_id,String content);
         void start(int activity_id);
@@ -412,6 +442,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
     public interface ActivityDetailUi extends ActivityUi{
         void getActivitySuccess(Activity activity);
         void onCollectSuccess(String msg);
+        void cancelCollectSuccess(String msg);
         void joinSuccess();
         void reportSuccess();
     }

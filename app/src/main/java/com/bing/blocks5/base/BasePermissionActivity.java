@@ -9,6 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
+
+import com.bing.blocks5.R;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,13 +91,33 @@ public abstract class BasePermissionActivity extends BaseActivity{
             if (verifyPermissions(grantResults)) {
                 permissionSuccess();
             } else {
-                new AlertDialog.Builder(this)
-                        .setTitle("提示信息")
-                        .setMessage("当前应用缺少必要权限，该功能暂时无法使用。如若需要，请单击【确定】按钮前往设置中心进行权限授权。")
-                        .setNegativeButton("取消", (dialog, which) -> permissionFail())
-                        .setPositiveButton("确定", (dialog, which) -> startAppSettings()).show();
+                showLackPermissionDialog();
             }
         }
+    }
+
+    private void showLackPermissionDialog(){
+        final NormalDialog dialog = new NormalDialog(this);
+        int color = ContextCompat.getColor(this, R.color.primary_text);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.isTitleShow(true)
+                .title("提示信息")
+                .cornerRadius(5)
+                .content("当前应用缺少必要权限，该功能暂时无法使用。如若需要，请单击【确定】按钮前往设置中心进行权限授权。")
+                .contentGravity(Gravity.CENTER)
+                .contentTextColor(color)
+                .dividerColor(R.color.divider)
+                .btnTextSize(15.5f, 15.5f)
+                .btnTextColor(color,color)
+                .widthScale(0.75f)
+                .show();
+        dialog.setOnBtnClickL(() -> {
+            dialog.dismiss();
+            permissionFail();
+        }, () -> {
+            dialog.dismiss();
+            startAppSettings();
+        });
     }
 
     /**

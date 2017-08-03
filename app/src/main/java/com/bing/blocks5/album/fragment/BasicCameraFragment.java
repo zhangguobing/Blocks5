@@ -16,7 +16,6 @@
 package com.bing.blocks5.album.fragment;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -24,11 +23,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 
 import com.bing.blocks5.R;
 import com.bing.blocks5.album.base.NoFragment;
 import com.bing.blocks5.album.util.AlbumUtils;
+import com.flyco.dialog.widget.NormalDialog;
 
 import java.io.File;
 import java.util.Random;
@@ -103,18 +103,29 @@ abstract class BasicCameraFragment extends NoFragment {
                 for (int grantResult : grantResults) {
                     allow = grantResult == PackageManager.PERMISSION_GRANTED;
                 }
-                if (allow) cameraWithPermission();
-                else
-                    new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.album_dialog_permission_failed)
-                            .setMessage(R.string.album_permission_camera_failed_hint)
-                            .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    onUserCamera();
-                                }
-                            })
+                if (allow){
+                    cameraWithPermission();
+                }else{
+                    final NormalDialog dialog = new NormalDialog(getContext());
+                    int color = ContextCompat.getColor(getContext(), R.color.primary_text);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.isTitleShow(true)
+                            .title(getString(R.string.album_dialog_permission_failed))
+                            .cornerRadius(5)
+                            .content(getString(R.string.album_permission_camera_failed_hint))
+                            .contentGravity(Gravity.CENTER)
+                            .contentTextColor(color)
+                            .dividerColor(R.color.divider)
+                            .btnTextSize(15.5f, 15.5f)
+                            .btnTextColor(color,color)
+                            .widthScale(0.75f)
+                            .btnText(getString(R.string.album_dialog_sure))
                             .show();
+                    dialog.setOnBtnClickL(() -> {
+                        dialog.dismiss();
+                        onUserCamera();
+                    });
+                }
                 break;
             }
             default: {

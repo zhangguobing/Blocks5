@@ -16,7 +16,6 @@
 package com.bing.blocks5.album;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -25,10 +24,11 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.flyco.dialog.widget.NormalDialog;
 import com.yanzhenjie.mediascanner.MediaScanner;
 import com.bing.blocks5.R;
 import com.bing.blocks5.album.base.CompatActivity;
@@ -162,17 +162,25 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback, Gall
                     AlbumFragment albumFragment = NoFragment.instantiate(this, AlbumFragment.class, mArgument);
                     startFragment(albumFragment);
                 } else {
-                    new AlertDialog.Builder(this)
-                            .setCancelable(false)
-                            .setTitle(R.string.album_dialog_permission_failed)
-                            .setMessage(R.string.album_permission_storage_failed_hint)
-                            .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    onAlbumCancel();
-                                }
-                            })
+                    final NormalDialog dialog = new NormalDialog(this);
+                    int color = ContextCompat.getColor(this, R.color.primary_text);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.isTitleShow(true)
+                            .title(getString(R.string.album_dialog_permission_failed))
+                            .cornerRadius(5)
+                            .content(getString(R.string.album_permission_storage_failed_hint))
+                            .contentGravity(Gravity.CENTER)
+                            .contentTextColor(color)
+                            .dividerColor(R.color.divider)
+                            .btnTextSize(15.5f, 15.5f)
+                            .btnTextColor(color,color)
+                            .widthScale(0.75f)
+                            .btnText(getString(R.string.album_dialog_sure))
                             .show();
+                    dialog.setOnBtnClickL(() -> {
+                        dialog.dismiss();
+                        onAlbumCancel();
+                    });
                 }
                 break;
             }

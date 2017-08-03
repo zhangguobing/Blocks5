@@ -180,14 +180,11 @@ public class AlbumFragment extends BasicCameraFragment {
                 mToolBarColor);
         mAlbumContentAdapter.setAddPhotoClickListener(mAddPhotoListener);
         mAlbumContentAdapter.setOnCheckListener(mItemCheckListener);
-        mAlbumContentAdapter.setItemClickListener(new OnCompatItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                List<AlbumImage> albumImages = mAlbumFolders.get(mCurrentFolderPosition).getImages();
-                AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(), AlbumPreviewFragment.class, argument);
-                previewFragment.bindAlbumImages(albumImages, mCheckedImages, position);
-                startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
-            }
+        mAlbumContentAdapter.setItemClickListener((view, position) -> {
+            List<AlbumImage> albumImages = mAlbumFolders.get(mCurrentFolderPosition).getImages();
+            AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(), AlbumPreviewFragment.class, argument);
+            previewFragment.bindAlbumImages(albumImages, mCheckedImages, position);
+            startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
         });
         mRvContentList.setAdapter(mAlbumContentAdapter);
 
@@ -256,14 +253,11 @@ public class AlbumFragment extends BasicCameraFragment {
                         mToolBarColor,
                         mNavigationColor,
                         mAlbumFolders,
-                        new OnCompatItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                if (mAlbumFolders.size() > position) {
-                                    mCurrentFolderPosition = position;
-                                    showImageFromFolder(mCurrentFolderPosition);
-                                    mLayoutManager.scrollToPosition(0);
-                                }
+                        (view, position) -> {
+                            if (mAlbumFolders.size() > position) {
+                                mCurrentFolderPosition = position;
+                                showImageFromFolder(mCurrentFolderPosition);
+                                mLayoutManager.scrollToPosition(0);
                             }
                         });
             if (!mAlbumFolderDialog.isShowing())
@@ -359,16 +353,13 @@ public class AlbumFragment extends BasicCameraFragment {
     /**
      * The preview button is clicked.
      */
-    private View.OnClickListener mPreviewClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(mCheckedImages.size() > 0) {
-                AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(),
-                        AlbumPreviewFragment.class,
-                        getArguments());
-                previewFragment.bindAlbumImages(mCheckedImages, mCheckedImages, 0);
-                startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
-            }
+    private View.OnClickListener mPreviewClick = v -> {
+        if(mCheckedImages.size() > 0) {
+            AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(),
+                    AlbumPreviewFragment.class,
+                    getArguments());
+            previewFragment.bindAlbumImages(mCheckedImages, mCheckedImages, 0);
+            startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
         }
     };
 

@@ -33,6 +33,11 @@ public class FavouriteActivity extends BaseListActivity<Activity,ActivityViewHol
     }
 
     @Override
+    protected String getEmptyTitle() {
+        return "暂无收藏";
+    }
+
+    @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         mRecyclerView.addItemDecoration(new BottomSpaceItemDecoration(DensityUtil.dp2px(this,20)));

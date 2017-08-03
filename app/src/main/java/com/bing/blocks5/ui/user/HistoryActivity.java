@@ -33,6 +33,11 @@ public class HistoryActivity extends BaseListActivity<Activity,ActivityViewHolde
     }
 
     @Override
+    protected String getEmptyTitle() {
+        return "暂无历史活动";
+    }
+
+    @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         mRecyclerView.addItemDecoration(new BottomSpaceItemDecoration(DensityUtil.dp2px(this,20)));

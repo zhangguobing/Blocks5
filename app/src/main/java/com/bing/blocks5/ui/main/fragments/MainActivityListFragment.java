@@ -53,6 +53,11 @@ public class MainActivityListFragment extends BaseListFragment<Activity,Activity
     }
 
     @Override
+    protected String getEmptyTitle() {
+        return "暂无活动";
+    }
+
+    @Override
     protected BaseController getPresenter() {
         return new ActivityController();
     }

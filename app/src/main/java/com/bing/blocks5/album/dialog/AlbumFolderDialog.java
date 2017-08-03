@@ -68,14 +68,11 @@ public class AlbumFolderDialog extends BottomSheetDialog {
         ColorStateList stateList = SelectorUtils.createColorStateList(
                 ContextCompat.getColor(context, R.color.album_ColorPrimaryBlack),
                 toolbarColor);
-        rvContentList.setAdapter(new AlbumFolderAdapter(stateList, albumFolders, new OnCompatItemClickListener() {
-            @Override
-            public void onItemClick(final View view, final int position) {
-                behaviorHide();
-                if (mItemClickListener != null && mCurrentPosition != position) {
-                    mCurrentPosition = position;
-                    mItemClickListener.onItemClick(view, position);
-                }
+        rvContentList.setAdapter(new AlbumFolderAdapter(stateList, albumFolders, (view, position) -> {
+            behaviorHide();
+            if (mItemClickListener != null && mCurrentPosition != position) {
+                mCurrentPosition = position;
+                mItemClickListener.onItemClick(view, position);
             }
         }));
     }

@@ -182,18 +182,19 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
 
                 @Override
                 public void performAction(View view) {
-                    showTopRightMenu(view);
+                    if(mActivity == null) return;
+                    showTopRightMenu(view,mActivity.getIs_collect());
                 }
             });
         }
     }
 
 
-    private void showTopRightMenu(View view){
-        if(mActivity == null) return;
+    private void showTopRightMenu(View view, int is_collect){
         TopRightMenu topRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(R.mipmap.ic_favourite_6dp, "收藏"));
+        menuItems.add(new MenuItem(is_collect == 0 ? R.mipmap.ic_favourite_6dp : R.mipmap.ic_favorite_2_6dp,
+                is_collect == 0 ? "收藏" : "取消收藏"));
         menuItems.add(new MenuItem(R.mipmap.ic_baoming_list_6dp, "报名列表"));
         menuItems.add(new MenuItem(R.mipmap.ic_scan_6dp, "扫一扫"));
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
@@ -211,7 +212,11 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                     if(position == 0){
                         //收藏
                         showLoading(R.string.label_being_something);
-                        getCallbacks().collectActivity(Integer.valueOf(mActivityId));
+                        if(mActivity.getIs_collect() == 0){
+                            getCallbacks().collectActivity(Integer.valueOf(mActivityId));
+                        }else{
+                            getCallbacks().cancelCollectActivity(Integer.valueOf(mActivityId));
+                        }
                     }else if(position == 1){
                         SignUpListActivity.create(this,Integer.valueOf(mActivityId));
                     }else if(position == 2){
@@ -293,7 +298,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         mPriceContentTv.setText(activity.getPrice_content());
         mActivityContentTv.setText(activity.getContent());
         mNeedIdentitySwitch.setChecked("0".equals(activity.getNeed_identity()));
-        mJoinBtn.setEnabled(activity.getState() == 1);
+        mJoinBtn.setEnabled(activity.getState() == 1 && activity.getIs_join() == 0);
         mUserId = activity.getUser_id();
         initBanner(activity);
         initDanmakuView(activity.getComments());
@@ -341,6 +346,14 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     public void onCollectSuccess(String msg) {
         cancelLoading();
         ToastUtil.showText("收藏成功");
+        mActivity.setIs_collect(1);
+    }
+
+    @Override
+    public void cancelCollectSuccess(String msg) {
+        cancelLoading();
+        ToastUtil.showText("取消收藏成功");
+        mActivity.setIs_collect(0);
     }
 
     @Override
@@ -348,6 +361,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         cancelLoading();
         ToastUtil.showText("报名成功");
         mJoinBtn.setEnabled(false);
+        mActivity.setIs_join(1);
     }
 
     @Override
@@ -360,7 +374,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     public void onClick(View view){
         switch (view.getId()){
             case R.id.rl_message:
-                ActivityMessageActivity.create(this,mActivityId);
+                ActivityMessageActivity.create(this,mActivity);
                 break;
             case R.id.btn_join:
                 showLoading(R.string.label_being_something);

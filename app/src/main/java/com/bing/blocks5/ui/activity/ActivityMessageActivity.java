@@ -11,6 +11,7 @@ import android.view.View;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseActivity;
 import com.bing.blocks5.base.ContentView;
+import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.event.ActivityMessageFilterEvent;
 import com.bing.blocks5.ui.activity.fragment.MessageFragment;
 import com.bing.blocks5.ui.main.adapter.FragmentAdapter;
@@ -30,28 +31,28 @@ import butterknife.OnClick;
 @ContentView(R.layout.activity_activity_message)
 public class ActivityMessageActivity extends BaseActivity {
 
-    private static final String EXTRA_ACTIVITY_ID = "activity_id";
+    private static final String EXTRA_ACTIVITY = "activity";
 
     @Bind(R.id.tab_layout)
     TabLayout mTabLayout;
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
 
-    public static void create(Context context,String activity_id){
+    public static void create(Context context, Activity activity){
         Intent intent = new Intent(context,ActivityMessageActivity.class);
-        intent.putExtra(EXTRA_ACTIVITY_ID, activity_id);
+        intent.putExtra(EXTRA_ACTIVITY, activity);
         context.startActivity(intent);
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        String activity_id = getIntent().getStringExtra(EXTRA_ACTIVITY_ID);
+        Activity activity = getIntent().getParcelableExtra(EXTRA_ACTIVITY);
         List<String> titles = new ArrayList<>();
         titles.add("游客留言");
         titles.add("队友留言");
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(MessageFragment.newInstance("0",activity_id));
-        fragments.add(MessageFragment.newInstance("1",activity_id));
+        fragments.add(MessageFragment.newInstance("0",activity.getId()+"",activity.getGuest_notice(),activity.getGuest_notice_time()));
+        fragments.add(MessageFragment.newInstance("1",activity.getId()+"",activity.getTeam_notice(),activity.getTeam_notice_time()));
         mViewPager.setOffscreenPageLimit(0);
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);

@@ -159,7 +159,6 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
             if (mPage == 1) {
                 if(mAdapter.getItemCount() == 0){
                     mMultiStateView.setState(MultiStateView.STATE_EMPTY)
-                            .setIcon(getEmptyIcon())
                             .setTitle(getEmptyTitle());
                 }
             } else {

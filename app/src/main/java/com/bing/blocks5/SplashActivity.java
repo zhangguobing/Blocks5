@@ -43,16 +43,14 @@ public class SplashActivity extends BasePermissionActivity{
         super.initView(savedInstanceState);
 //        setImmersiveMode();
         StatusBarUtil.setStatusBarTranslucent(this,false);
-//        RegisterNextActivity.create(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        new Handler().postDelayed(() -> requestPermission(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+        new Handler().postDelayed(() -> requestPermission(new String[]{
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}),2000);

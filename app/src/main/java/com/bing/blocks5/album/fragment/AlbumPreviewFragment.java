@@ -111,30 +111,27 @@ public class AlbumPreviewFragment extends NoFragment {
     private void initializeCheckBox() {
         //noinspection RestrictedApi
         mCheckBox.setSupportButtonTintList(SelectorUtils.createColorStateList(Color.WHITE, mToolBarColor));
-        mCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isChecked = mCheckBox.isChecked();
-                AlbumImage albumImage = mAlbumImages.get(mCurrentItemPosition);
-                albumImage.setChecked(isChecked);
+        mCheckBox.setOnClickListener(v -> {
+            boolean isChecked = mCheckBox.isChecked();
+            AlbumImage albumImage = mAlbumImages.get(mCurrentItemPosition);
+            albumImage.setChecked(isChecked);
 
-                if (isChecked) {
-                    if (mCheckedImages.size() >= mAllowSelectCount) {
-                        Toast.makeText(
-                                getContext(),
-                                String.format(Locale.getDefault(), getString(R.string.album_check_limit), mAllowSelectCount),
-                                Toast.LENGTH_LONG).show();
+            if (isChecked) {
+                if (mCheckedImages.size() >= mAllowSelectCount) {
+                    Toast.makeText(
+                            getContext(),
+                            String.format(Locale.getDefault(), getString(R.string.album_check_limit), mAllowSelectCount),
+                            Toast.LENGTH_LONG).show();
 
-                        mCheckBox.setChecked(false);
-                        albumImage.setChecked(false);
-                    } else {
-                        mCheckedImages.add(albumImage);
-                    }
+                    mCheckBox.setChecked(false);
+                    albumImage.setChecked(false);
                 } else {
-                    mCheckedImages.remove(albumImage);
+                    mCheckedImages.add(albumImage);
                 }
-                setCheckedCountUI(mCheckedImages.size());
+            } else {
+                mCheckedImages.remove(albumImage);
             }
+            setCheckedCountUI(mCheckedImages.size());
         });
     }
 

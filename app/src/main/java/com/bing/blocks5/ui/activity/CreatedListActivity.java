@@ -31,6 +31,11 @@ public class CreatedListActivity extends BaseListActivity<Activity,ActivityViewH
 
     private int mUserId;
 
+    @Override
+    protected String getEmptyTitle() {
+        return "暂无活动";
+    }
+
     public static void create(Context context, int user_id, String title){
         Intent intent = new Intent(context, CreatedListActivity.class);
         intent.putExtra(EXTRA_USER_ID,user_id);

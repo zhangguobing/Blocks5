@@ -40,6 +40,11 @@ public class CreatorActivityListFragment extends BaseListFragment<Activity,Activ
         getCallbacks().getActivityList(mState, mUserId,mPage);
     }
 
+    @Override
+    protected String getEmptyTitle() {
+        return "暂无活动";
+    }
+
     /**
      * @param activity_state 活动状态
      * @param user_id 活动创建者ID

@@ -1,5 +1,8 @@
 package com.bing.blocks5.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -7,37 +10,7 @@ import java.util.List;
  * email：bing901222@qq.com
  */
 
-public class Activity {
-
-    /**
-     * id : 1
-     * user_id : 1
-     * activity_type_id : 1
-     * title : 活动标题
-     * city : 深圳
-     * area : 南山
-     * content :
-     * man_num : 3
-     * woman_num : 3
-     * price_total : 200
-     * price_type : 1
-     * price_content : 0
-     * begin_at : 2016-02-05 00:00:00
-     * end_at : 2016-02-09 00:00:00
-     * state : 0
-     * need_identity : 0
-     * cover_url : http://a.com/b.jpg
-     * img_url_1 : http://a.com/b.jpg
-     * img_url_2 :
-     * img_url_3 :
-     * created_at : 2017-04-12 09:47:33
-     * creator : {"id":1,"nick_name":"不小不大","sex":"男","avatar":"","credit":100,"identity_state":0}
-     * is_collect : 1
-     * is_join : 0
-     * man_left : 3
-     * woman_left : 3
-     */
-
+public class Activity implements Parcelable {
     private int id;
     private int user_id;
     private int activity_type_id;
@@ -59,12 +32,75 @@ public class Activity {
     private String img_url_2;
     private String img_url_3;
     private String created_at;
+    private String updated_at;
+    private String check_user;
+    private String down_time;
+    private String team_notice;
+    private String team_notice_time;
+    private String guest_notice;
+    private String guest_notice_time;
     private CreatorBean creator;
     private List<Comment> comments;
     private int is_collect;
     private int is_join;
     private int man_left;
     private int woman_left;
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public String getCheck_user() {
+        return check_user;
+    }
+
+    public void setCheck_user(String check_user) {
+        this.check_user = check_user;
+    }
+
+    public String getDown_time() {
+        return down_time;
+    }
+
+    public void setDown_time(String down_time) {
+        this.down_time = down_time;
+    }
+
+    public String getTeam_notice() {
+        return team_notice;
+    }
+
+    public void setTeam_notice(String team_notice) {
+        this.team_notice = team_notice;
+    }
+
+    public String getTeam_notice_time() {
+        return team_notice_time;
+    }
+
+    public void setTeam_notice_time(String team_notice_time) {
+        this.team_notice_time = team_notice_time;
+    }
+
+    public String getGuest_notice() {
+        return guest_notice;
+    }
+
+    public void setGuest_notice(String guest_notice) {
+        this.guest_notice = guest_notice;
+    }
+
+    public String getGuest_notice_time() {
+        return guest_notice_time;
+    }
+
+    public void setGuest_notice_time(String guest_notice_time) {
+        this.guest_notice_time = guest_notice_time;
+    }
 
     public int getId() {
         return id;
@@ -428,4 +464,95 @@ public class Activity {
         result = 31 * result + woman_left;
         return result;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeInt(this.user_id);
+        dest.writeInt(this.activity_type_id);
+        dest.writeString(this.title);
+        dest.writeString(this.city);
+        dest.writeString(this.area);
+        dest.writeString(this.content);
+        dest.writeInt(this.man_num);
+        dest.writeInt(this.woman_num);
+        dest.writeInt(this.price_total);
+        dest.writeInt(this.price_type);
+        dest.writeString(this.price_content);
+        dest.writeString(this.begin_at);
+        dest.writeString(this.end_at);
+        dest.writeInt(this.state);
+        dest.writeString(this.need_identity);
+        dest.writeString(this.cover_url);
+        dest.writeString(this.img_url_1);
+        dest.writeString(this.img_url_2);
+        dest.writeString(this.img_url_3);
+        dest.writeString(this.created_at);
+        dest.writeString(this.updated_at);
+        dest.writeString(this.check_user);
+        dest.writeString(this.down_time);
+        dest.writeString(this.team_notice);
+        dest.writeString(this.team_notice_time);
+        dest.writeString(this.guest_notice);
+        dest.writeString(this.guest_notice_time);
+        dest.writeInt(this.is_collect);
+        dest.writeInt(this.is_join);
+        dest.writeInt(this.man_left);
+        dest.writeInt(this.woman_left);
+    }
+
+    public Activity() {
+    }
+
+    protected Activity(Parcel in) {
+        this.id = in.readInt();
+        this.user_id = in.readInt();
+        this.activity_type_id = in.readInt();
+        this.title = in.readString();
+        this.city = in.readString();
+        this.area = in.readString();
+        this.content = in.readString();
+        this.man_num = in.readInt();
+        this.woman_num = in.readInt();
+        this.price_total = in.readInt();
+        this.price_type = in.readInt();
+        this.price_content = in.readString();
+        this.begin_at = in.readString();
+        this.end_at = in.readString();
+        this.state = in.readInt();
+        this.need_identity = in.readString();
+        this.cover_url = in.readString();
+        this.img_url_1 = in.readString();
+        this.img_url_2 = in.readString();
+        this.img_url_3 = in.readString();
+        this.created_at = in.readString();
+        this.updated_at = in.readString();
+        this.check_user = in.readString();
+        this.down_time = in.readString();
+        this.team_notice = in.readString();
+        this.team_notice_time = in.readString();
+        this.guest_notice = in.readString();
+        this.guest_notice_time = in.readString();
+        this.is_collect = in.readInt();
+        this.is_join = in.readInt();
+        this.man_left = in.readInt();
+        this.woman_left = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Activity> CREATOR = new Parcelable.Creator<Activity>() {
+        @Override
+        public Activity createFromParcel(Parcel source) {
+            return new Activity(source);
+        }
+
+        @Override
+        public Activity[] newArray(int size) {
+            return new Activity[size];
+        }
+    };
 }

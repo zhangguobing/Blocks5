@@ -49,6 +49,11 @@ implements UserViewHolder.IUserOperateListener,UserController.UserListUi {
     }
 
     @Override
+    protected String getEmptyTitle() {
+        return "搜索不到匹配的用户";
+    }
+
+    @Override
     protected boolean getEnableRefresh() {
         return false;
     }

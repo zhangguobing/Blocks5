@@ -31,6 +31,11 @@ public class JoinListActivity extends BaseListActivity<Activity,ActivityViewHold
 
     private int mJoinUserId;
 
+    @Override
+    protected String getEmptyTitle() {
+        return "暂无活动";
+    }
+
     public static void create(Context context, int join_user_id, String title){
         Intent intent = new Intent(context, JoinListActivity.class);
         intent.putExtra(EXTRA_JOIN_USER_ID,join_user_id);

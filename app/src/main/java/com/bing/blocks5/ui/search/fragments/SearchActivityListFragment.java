@@ -34,6 +34,10 @@ implements UserController.UserUi{
         return MultiStateView.STATE_CONTENT;
     }
 
+    @Override
+    protected String getEmptyTitle() {
+        return "搜索不到匹配的活动";
+    }
 
     @Override
     protected void onItemClick(int position, Activity item) {

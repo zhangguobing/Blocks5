@@ -35,6 +35,10 @@ public class FollowOrFansActivity extends BaseListActivity<User,UserViewHolder,A
     private int follow_type;
     private int user_id;
 
+    @Override
+    protected String getEmptyTitle() {
+        return follow_type == TYPE_FOLLOW ? "暂无关注" : "暂无粉丝";
+    }
 
     public static void create(Context context, int follow_type, int user_id){
         Intent intent = new Intent(context, FollowOrFansActivity.class);

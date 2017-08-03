@@ -95,12 +95,7 @@ public class AlbumNullFragment extends BasicCameraFragment {
     /**
      * Camera click.
      */
-    private View.OnClickListener mCameraClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            cameraUnKnowPermission(randomJPGPath());
-        }
-    };
+    private View.OnClickListener mCameraClickListener = v -> cameraUnKnowPermission(randomJPGPath());
 
     @Override
     protected void onCameraBack(String imagePath) {

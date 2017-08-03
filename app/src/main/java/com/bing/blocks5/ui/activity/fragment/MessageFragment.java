@@ -2,7 +2,9 @@ package com.bing.blocks5.ui.activity.fragment;
 
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,6 +61,8 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
 
     private static final String EXTRA_IS_TEAM = "is_team";
     private static final String EXTRA_ACTIVITY_ID = "activity_id";
+    private static final String EXTRA_NOTICE_CONTENT = "notice_content";
+    private static final String EXTRA_NOTICE_TIME = "notice_time";
 
     @Bind(R.id.multi_state_view)
     public MultiStateView mMultiStateView;
@@ -76,6 +80,10 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     View mNoticeBoardLayout;
     @Bind(R.id.tv_notice_board_title)
     TextView mNoticeBoardTitleTv;
+    @Bind(R.id.tv_notice_content)
+    TextView mNoticeContentTv;
+    @Bind(R.id.tv_notice_time)
+    TextView mNoticeTimeTv;
 
     private CommentAdapter mAdapter;
 
@@ -99,11 +107,15 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     //是否是过滤留言列表
     private boolean isFilter;
 
-    public static MessageFragment newInstance(String is_team,String activity_id) {
+    private TopSheetBehavior mBehavior;
+
+    public static MessageFragment newInstance(String is_team,String activity_id,String notice_content,String notice_time) {
         Bundle args = new Bundle();
         MessageFragment fragment = new MessageFragment();
         args.putString(EXTRA_IS_TEAM,is_team);
         args.putString(EXTRA_ACTIVITY_ID, activity_id);
+        args.putString(EXTRA_NOTICE_CONTENT,notice_content);
+        args.putString(EXTRA_NOTICE_TIME,notice_time);
         fragment.setArguments(args);
         return fragment;
     }
@@ -112,6 +124,8 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     protected void initView(Bundle savedInstanceState) {
         is_team = getArguments().getString(EXTRA_IS_TEAM);
         activity_id = getArguments().getString(EXTRA_ACTIVITY_ID);
+        String notice_content = getArguments().getString(EXTRA_NOTICE_CONTENT);
+        String notice_time = getArguments().getString(EXTRA_NOTICE_TIME);
 
         MessageHeadView headerView = new MessageHeadView(getContext());
         mRefreshLayout.setHeaderView(headerView);
@@ -137,6 +151,27 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         mDownImg.setOnClickListener(this);
 
         mNoticeBoardTitleTv.setText("0".equals(is_team) ? "游客公告栏" : "团队公告栏");
+        mNoticeContentTv.setText(notice_content);
+        mNoticeTimeTv.setText(notice_time);
+
+        mBehavior = TopSheetBehavior.from(mNoticeBoardLayout);
+        mBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, @TopSheetBehavior.State int newState) {
+                if(newState == TopSheetBehavior.STATE_COLLAPSED){
+                    isNoticeBoardExpand = false;
+                    ObjectAnimator.ofFloat(mDownImg,View.ROTATION.getName(),-180,0).start();
+                }else if(newState == TopSheetBehavior.STATE_EXPANDED){
+                    isNoticeBoardExpand = true;
+                    ObjectAnimator.ofFloat(mDownImg,View.ROTATION.getName(),180).start();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
 
         mContentEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -171,11 +206,9 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
      */
     public void toggleNoticeBoard() {
         if(isNoticeBoardExpand){
-            TopSheetBehavior.from(mNoticeBoardLayout).setState(TopSheetBehavior.STATE_COLLAPSED);
-            ObjectAnimator.ofFloat(mDownImg,View.ROTATION.getName(),-180,0).start();
+            mBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
         }else{
-            TopSheetBehavior.from(mNoticeBoardLayout).setState(TopSheetBehavior.STATE_EXPANDED);
-            ObjectAnimator.ofFloat(mDownImg,View.ROTATION.getName(),180).start();
+            mBehavior.setState(TopSheetBehavior.STATE_EXPANDED);
         }
         isNoticeBoardExpand = !isNoticeBoardExpand;
     }

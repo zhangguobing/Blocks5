@@ -29,7 +29,6 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     private static final String EXTRA_ACTIVITY_ID = "extra_activity_id";
     private static final String EXTRA_IS_SIGN = "extra_is_sign";
 
-
     private int activity_id;
     private int is_sign;
 
@@ -50,6 +49,10 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
         loadData();
     }
 
+    @Override
+    protected String getEmptyTitle() {
+        return "暂无成员";
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
