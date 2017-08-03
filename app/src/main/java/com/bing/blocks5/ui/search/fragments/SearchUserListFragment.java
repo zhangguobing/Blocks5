@@ -82,6 +82,10 @@ implements UserViewHolder.IUserOperateListener,UserController.UserListUi {
 
     @Subscribe
     public void onUserList(UserSearchEvent event){
+        if(event.user == null){
+            mAdapter.clearItems();
+            return;
+        }
         List<User> list = new ArrayList<>();
         list.add(event.user);
         onFinishRequest(list);

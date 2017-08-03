@@ -70,6 +70,7 @@ public class SearchController extends BaseController<SearchController.SearchUi,S
                     @Override
                     public void onFailure(ResponseError error) {
                         findUi(callingId).onResponseError(error);
+                        EventUtil.sendEvent(new UserSearchEvent(null));
                     }
                 });
     }
