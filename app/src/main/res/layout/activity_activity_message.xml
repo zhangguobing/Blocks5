@@ -34,6 +34,7 @@
                 app:tabMode="scrollable"
                 app:tabGravity="center"
                 android:layout_centerInParent="true"
+                app:tabBackground="@null"
                 android:overScrollMode="never"
                 app:tabTextAppearance="@android:style/TextAppearance.Holo.Medium"
                 app:tabTextColor="@color/white"

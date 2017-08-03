@@ -32,6 +32,7 @@
                 app:tabIndicatorColor="@color/red"
                 app:tabIndicatorHeight="2dp"
                 app:tabMode="scrollable"
+                app:tabBackground="@null"
                 android:background="?android:windowBackground"
                 android:overScrollMode="never"
                 app:tabTextColor="@color/gray"
