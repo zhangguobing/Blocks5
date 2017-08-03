@@ -12,7 +12,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.google.zxing.Result;
 import com.google.zxing.client.android.CaptureFragment;
 import com.google.zxing.client.result.ResultParser;
@@ -81,13 +84,25 @@ public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserContr
 
     private void requestPermission(final String permission, String rationale, final int requestCode){
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.mis_permission_dialog_title)
-                    .setMessage(rationale)
-                    .setPositiveButton(R.string.mis_permission_dialog_ok, (dialog, which) ->
-                            ActivityCompat.requestPermissions(ScanBarCodeActivity.this, new String[]{permission}, requestCode))
-                    .setNegativeButton(R.string.mis_permission_dialog_cancel, null)
-                    .create().show();
+            final NormalDialog dialog = new NormalDialog(this);
+            int color = ContextCompat.getColor(this,R.color.primary_text);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.isTitleShow(true)
+                    .title(getString(R.string.mis_permission_dialog_title))
+                    .cornerRadius(5)
+                    .content(rationale)
+                    .contentGravity(Gravity.CENTER)
+                    .contentTextColor(color)
+                    .dividerColor(R.color.divider)
+                    .btnTextSize(15.5f, 15.5f)
+                    .btnTextColor(color,color)
+                    .widthScale(0.75f)
+                    .btnText(getString(R.string.mis_permission_dialog_ok),getString(R.string.mis_permission_dialog_cancel))
+                    .show();
+            dialog.setOnBtnClickL(() -> {
+                dialog.dismiss();
+                ActivityCompat.requestPermissions(ScanBarCodeActivity.this, new String[]{permission}, requestCode);
+            }, dialog::dismiss);
         }else{
             ActivityCompat.requestPermissions(this, new String[]{permission}, requestCode);
         }
