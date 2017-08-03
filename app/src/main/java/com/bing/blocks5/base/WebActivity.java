@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -58,7 +59,7 @@ public class WebActivity extends BaseActivity implements ChromeClientCallbackMan
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mContainer,new LinearLayout.LayoutParams(-1,-1) )
                 .useDefaultIndicator()
-                .defaultProgressBarColor()
+                .setIndicatorColor(ContextCompat.getColor(this,R.color.red))
                 .setReceivedTitleCallback(this)
                 .setWebViewClient(mWebViewClient)
 //                .setWebChromeClient(mWebChromeClient)
