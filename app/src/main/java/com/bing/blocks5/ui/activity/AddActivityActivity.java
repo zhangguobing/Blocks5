@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
+import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.util.AsyncRun;
 import com.bing.blocks5.util.ImageLoadUtil;
@@ -268,16 +269,25 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     private void showAreaPickerView() {
         List<Config.ActivityAreasBean> areasBeanList = ConfigManager.getInstance().getConfig().getActivity_areas();
         if(areasBeanList != null && areasBeanList.size() > 0){
-            List<String> activityAreas = areasBeanList.get(0).getAreas();
-            OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
-                mSelectAreaTv.setText(activityAreas.get(options1));
-                mSelectedArea = activityAreas.get(options1);
-            })
-            .setTextColorCenter(ContextCompat.getColor(this,R.color.primary_text))
-            .setContentTextSize(18)
-            .build();
-            pvOptions.setPicker(activityAreas);
-            pvOptions.show();
+            String currentCity = AppCookie.getCity();
+            boolean isFind = false;
+            for (Config.ActivityAreasBean activityArea : areasBeanList){
+                if(activityArea.getCity().equals(currentCity)){
+                    isFind = true;
+                    List<String> activityAreas = activityArea.getAreas();
+                    OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
+                        mSelectAreaTv.setText(activityAreas.get(options1));
+                        mSelectedArea = activityAreas.get(options1);
+                    })
+                            .setTextColorCenter(ContextCompat.getColor(this,R.color.primary_text))
+                            .setContentTextSize(18)
+                            .build();
+                    pvOptions.setPicker(activityAreas);
+                    pvOptions.show();
+                    break;
+                }
+            }
+            if(!isFind) ToastUtil.showText("暂不支持当前城市");
         }
     }
 
@@ -327,7 +337,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     @Override
     public void createActivitySuccess(String msg) {
         cancelLoading();
-        ToastUtil.showText(msg);
+        ToastUtil.showText("创建成功");
         finish();
     }
 
@@ -337,7 +347,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
         CreateActivityParams params = new CreateActivityParams();
         params.activity_type_id = ConfigManager.getInstance().getConfig().getActivity_types().get(mSelectedTypePosition).getId();
         params.title = mActivityNameEt.getText().toString().trim();
-        params.city =  ConfigManager.getInstance().getConfig().getActivity_areas().get(0).getCity();
+        params.city =  AppCookie.getCity();
         params.area = mSelectedArea;
         params.man_num = mSelectedPeopleNum.get(0);
         params.woman_num = mSelectedPeopleNum.get(1);
@@ -352,11 +362,11 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
             View childView = mPictureContainer.getChildAt(i);
             String url = childView.getTag().toString();
             if(i == 0){
-                params.image_url_1 = url;
+                params.img_url_1 = url;
             }else if(i == 1){
-                params.image_url_2 = url;
+                params.img_url_2 = url;
             }else if(i == 2){
-                params.image_url_3 = url;
+                params.img_url_3 = url;
             }
         }
         params.content = mActivityContentEt.getText().toString().trim();

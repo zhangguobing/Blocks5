@@ -56,8 +56,8 @@ public interface UserService {
     @POST("user/base")
     Observable<ApiResponse<User>> updateUser(@Query("token") String token, @Field("age") int age, @Field("job") String job,
                                                        @Field("addr") String address, @Field("avatar") String avatar, @Field("content") String content,
-                                                       @Field("image_url_1") String image_url_1, @Field("image_url_2") String image_url_2,
-                                                       @Field("image_url_3") String image_url_3);
+                                                       @Field("img_url_1") String image_url_1, @Field("img_url_2") String image_url_2,
+                                                       @Field("img_url_3") String image_url_3);
 
     @GET("feedbacks")
     Observable<ApiResponse<List<FeedBack>>> getFeedBack(@Query("token") String token, @Query("page_index") int page_index);

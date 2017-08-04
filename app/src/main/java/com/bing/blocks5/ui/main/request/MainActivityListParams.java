@@ -3,6 +3,8 @@ package com.bing.blocks5.ui.main.request;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.bing.blocks5.AppConfig;
+import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.util.TimeUtil;
 
 /**
@@ -23,6 +25,7 @@ public class MainActivityListParams implements Parcelable {
     public static MainActivityListParams getDefault(){
         MainActivityListParams  params = new MainActivityListParams();
         params.state = "1";
+        params.city = AppCookie.getCity();
         params.begin_at = TimeUtil.getStartTime(0);
         params.end_at = TimeUtil.getEndTime(7);
         return params;

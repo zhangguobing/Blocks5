@@ -19,16 +19,20 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
+import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.model.event.MainActivityListFilterEvent;
 import com.bing.blocks5.ui.main.fragments.MainActivityListFragment;
 import com.bing.blocks5.ui.main.request.MainActivityListParams;
 import com.bing.blocks5.util.AMapLocationUtil;
 import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.TimeUtil;
+import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.DropDownView;
 import com.bing.blocks5.widget.FlowRadioButton;
 import com.bing.blocks5.widget.FlowRadioGroup;
 import com.bumptech.glide.Glide;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.orhanobut.logger.Logger;
 import com.youth.banner.loader.ImageLoader;
@@ -90,7 +94,8 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
     //是否已经获取到全局配置
     private boolean isRecievedConfig = false;
 
-    private String mLocationCity;
+    //系统当前的城市
+    private String mCurrentCity = AppCookie.getCity();
     private List<Config.ActivityAreasBean> ActivityAreasList;
 
     private List<String> areaOptions = new ArrayList<>();
@@ -167,6 +172,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         addChildOptionToRadioGroup(mTimeRadioGroup,timeOptions,0);
 
         mCityTextView = (TextView) expandedView.findViewById(R.id.tv_city);
+        mCityTextView.setText(mCurrentCity);
 
         mDropDownView.setHeaderView(collapsedView);
         mDropDownView.setExpandedView(expandedView);
@@ -177,18 +183,46 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
     }
 
     private void setLocationSuccess(AMapLocation aMapLocation){
-        isLocationSuccess = true;
-        mLocationCity = aMapLocation.getCity();
-        params.city = mLocationCity;
-        mCityTextView.setText(mLocationCity);
-        changeActivityAreaByCity(mLocationCity);
+        if(!mCurrentCity.equals(aMapLocation.getCity())){
+            showLocationChangeDialog(aMapLocation.getCity());
+        }
         Logger.d("AMapLocation : ", aMapLocation);
-        EventUtil.sendEvent(new MainActivityListFilterEvent(params));
     }
 
     private void setLocationFail(int errorCode, String errMsg){
-        mCityTextView.setText("定位失败");
+        ToastUtil.showText("定位失败");
         Logger.d("AMapLocation : ", "errcode:"+ errorCode + ",errMsg:"+errMsg);
+    }
+
+    /**
+     * 显示位置发生改变dialog
+     * @locationCity 定位到的城市
+     */
+    private void showLocationChangeDialog(String locationCity){
+        int color = ContextCompat.getColor(this,R.color.primary_text);
+        final NormalDialog dialog = new NormalDialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.isTitleShow(false)
+                .cornerRadius(5)
+                .content("系统检测到你当前位置位于"+ locationCity +",是否将当前城市设为" + locationCity +"?")
+                .contentGravity(Gravity.CENTER)
+                .contentTextColor(color)
+                .dividerColor(R.color.divider)
+                .btnTextSize(15.5f, 15.5f)
+                .btnTextColor(color,color)
+                .btnText("否","好的")
+                .widthScale(0.75f)
+                .show();
+        dialog.setOnBtnClickL(dialog::dismiss, () -> {
+            dialog.dismiss();
+            AppCookie.saveCity(locationCity);
+            isLocationSuccess = true;
+            mCurrentCity = locationCity;
+            params.city = mCurrentCity;
+            mCityTextView.setText(mCurrentCity);
+            changeActivityAreaByCity(mCurrentCity);
+            EventUtil.sendEvent(new MainActivityListFilterEvent(params));
+        });
     }
 
     private static class AMapLocationListener implements AMapLocationUtil.AMapLocationUtilListener {
@@ -266,7 +300,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         initViewPager(config.getActivity_types());
         ActivityAreasList = config.getActivity_areas();
         isRecievedConfig = true;
-        changeActivityAreaByCity(mLocationCity);
+        changeActivityAreaByCity(mCurrentCity);
     }
 
     private void changeActivityAreaByCity(String city) {
@@ -398,6 +432,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
             case R.id.btn_ok:
                 mDropDownView.collapseDropDown();
                 params.city = mCityTextView.getText().toString();
+                AppCookie.saveCity(params.city);
                 params.sort_type = mSortRadioGroup.getCheckedRadioButtonId() == R.id.rb_newest_time ? null : "credit";
                 params.state = mProprotyRadioGroup.getCheckedRadioButtonId() == R.id.rb_concentration ? "1":"2";
                 if(areaOptions != null && areaOptions.size() > 0){

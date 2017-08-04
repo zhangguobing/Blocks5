@@ -60,4 +60,20 @@ public class AppCookie {
     public static String getUploadToken(){
         return PreferenceUtil.getString(Constants.Persistence.UPLOAD_TOKEN, null);
     }
+
+    /**
+     * 保存当前的城市
+     * @param city
+     */
+    public static void saveCity(String city){
+        PreferenceUtil.set(Constants.Persistence.CITY, city);
+    }
+
+    /**
+     * 获取当前的城市
+     * @return
+     */
+    public static String getCity(){
+        return PreferenceUtil.getString(Constants.Persistence.CITY,AppConfig.DEFAULT_CITY);
+    }
 }

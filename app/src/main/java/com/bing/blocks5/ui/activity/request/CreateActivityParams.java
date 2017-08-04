@@ -19,8 +19,8 @@ public class CreateActivityParams {
     public String price_content;
     public int need_identity;
     public String cover_url;
-    public String image_url_1 = "";
-    public String image_url_2 = "";
-    public String image_url_3= "";
+    public String img_url_1 = "";
+    public String img_url_2 = "";
+    public String img_url_3 = "";
     public String content;
 }

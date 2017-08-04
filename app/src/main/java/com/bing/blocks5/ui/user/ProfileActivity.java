@@ -392,6 +392,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         if(!TextUtils.isEmpty(user.getImg_url_3())){
             imageUrls.add(user.getImg_url_3());
         }
+        mAblumContainer.removeAllViews();
         for (String imageUrl : imageUrls){
             addChildViewToAlbum(imageUrl);
         }

@@ -80,7 +80,7 @@ implements UserController.UserUi{
 
     @Subscribe
     public void onActivityList(ActivitySearchEvent event){
-        if(event.activities == null || event.activities.isEmpty()) mAdapter.clearItems();
+//        if(event.activities == null || event.activities.isEmpty()) mAdapter.clearItems();
         onFinishRequest(event.activities);
     }
 

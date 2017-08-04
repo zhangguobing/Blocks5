@@ -36,5 +36,7 @@ public class AppConfig {
     /**
      * 应用名称
      */
-    public static String APP_NAME = Blocks5App.getContext().getString(R.string.app_name);
+    public static final String APP_NAME = Blocks5App.getContext().getString(R.string.app_name);
+
+    public static final String DEFAULT_CITY = "北京市";
 }
