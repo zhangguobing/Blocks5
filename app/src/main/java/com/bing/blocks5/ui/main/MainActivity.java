@@ -31,7 +31,6 @@ import com.bing.blocks5.widget.DropDownView;
 import com.bing.blocks5.widget.FlowRadioButton;
 import com.bing.blocks5.widget.FlowRadioGroup;
 import com.bumptech.glide.Glide;
-import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.orhanobut.logger.Logger;
@@ -89,8 +88,6 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
     private FlowRadioGroup mTimeRadioGroup;
     private TextView mCityTextView;
 
-    //是否已经定位成功
-    private boolean isLocationSuccess = false;
     //是否已经获取到全局配置
     private boolean isRecievedConfig = false;
 
@@ -196,7 +193,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
 
     /**
      * 显示位置发生改变dialog
-     * @locationCity 定位到的城市
+     * @param locationCity 定位到的城市
      */
     private void showLocationChangeDialog(String locationCity){
         int color = ContextCompat.getColor(this,R.color.primary_text);
@@ -216,7 +213,6 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         dialog.setOnBtnClickL(dialog::dismiss, () -> {
             dialog.dismiss();
             AppCookie.saveCity(locationCity);
-            isLocationSuccess = true;
             mCurrentCity = locationCity;
             params.city = mCurrentCity;
             mCityTextView.setText(mCurrentCity);
@@ -304,7 +300,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
     }
 
     private void changeActivityAreaByCity(String city) {
-        if(isRecievedConfig && isLocationSuccess){
+        if(isRecievedConfig){
             areaOptions.clear();
             areaOptions.add("所有地区");
             for (Config.ActivityAreasBean activityArea: ActivityAreasList){
@@ -383,8 +379,8 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
 
         List<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < titles.size(); i++) {
-            params.type_id =  activityTypesBeans.get(i).getId();
-            fragments.add(MainActivityListFragment.newInstance(params));
+            params.activity_type_id =  activityTypesBeans.get(i).getId();
+            fragments.add(MainActivityListFragment.newInstance(params.activity_type_id));
         }
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         TabLayout tablayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -438,8 +434,13 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
                 if(areaOptions != null && areaOptions.size() > 0){
                     params.area = areaOptions.get(mAreaRadioGroup.getCheckedRadioButtonId());
                 }
-                if(mTimeRadioGroup.getCheckedRadioButtonId() > 0){
-                    params.end_at = TimeUtil.getEndTime(mTimeRadioGroup.getCheckedRadioButtonId()-1);
+                if(mTimeRadioGroup.getCheckedRadioButtonId() == 0){
+                    params.end_at = TimeUtil.getEndTime(7);
+                    params.begin_at = TimeUtil.getStartTime(0);
+                }else{
+                    int offset = mTimeRadioGroup.getCheckedRadioButtonId()-1;
+                    params.end_at = TimeUtil.getEndTime(offset);
+                    params.begin_at = TimeUtil.getStartTime(offset);
                 }
                 EventUtil.sendEvent(new MainActivityListFilterEvent(params));
                 break;

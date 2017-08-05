@@ -5,7 +5,7 @@ apply plugin: 'bugly'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.bing.blocks5"
         minSdkVersion 14
@@ -26,14 +26,18 @@ android {
         debug {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('C:/Users/XuTianyu/.android/debug.keystore')
+            storeFile file('/Users/tian/blocks5.keystore/debug.keystore')
             storePassword 'android'
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
         release {
             keyAlias 'blocks5ReleaseKeyStore'
             keyPassword 'zgb10011000101'
-            storeFile file('D:/Android/MyProjects/Blocks5/release_keystore.jks')
+            storeFile file('/Users/tian/blocks5.keystore/release.keystore')
             storePassword 'zgb10011000101'
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
 
@@ -60,7 +64,7 @@ android {
                 File outputDirectory = new File(outputFile.parent);
                 def fileName
                 if (variant.buildType.name == "release") {
-                    fileName = "blocks5_v${defaultConfig.versionName}.apk"
+                    fileName = "blocks5_v${defaultConfig.versionName}_release.apk"
                 }else{
                     fileName = "blocks5_v${defaultConfig.versionName}_beta.apk"
                 }

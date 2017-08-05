@@ -10,7 +10,6 @@ import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.ui.activity.request.CreateActivityParams;
 import com.bing.blocks5.ui.main.request.MainActivityListParams;
-import com.mob.MobApplication;
 
 import java.util.HashMap;
 import java.util.List;
@@ -168,13 +167,16 @@ public class ActivityController extends BaseController<ActivityController.Activi
     private void doGetActivityList(final int callingId, MainActivityListParams params, int page_index){
         Map<String,String> map = new HashMap<>();
         map.put("token",mToken);
-        map.put("type_id",params.type_id+"");
+        map.put("activity_type_id",params.activity_type_id +"");
         map.put("page_index",page_index+"");
         if(!TextUtils.isEmpty(params.city)){
             map.put("city",params.city);
         }
         if(!TextUtils.isEmpty(params.sort_type)){
             map.put("sort_type",params.sort_type);
+        }
+        if(!TextUtils.isEmpty(params.area) && !params.area.equals("所有地区")){
+            map.put("area",params.area);
         }
         map.put("begin_at",params.begin_at);
         map.put("end_at",params.end_at);

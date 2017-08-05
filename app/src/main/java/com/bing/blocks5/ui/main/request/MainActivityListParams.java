@@ -3,7 +3,6 @@ package com.bing.blocks5.ui.main.request;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.bing.blocks5.AppConfig;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.util.TimeUtil;
 
@@ -14,7 +13,7 @@ import com.bing.blocks5.util.TimeUtil;
 
 public class MainActivityListParams implements Parcelable {
 
-    public int type_id;
+    public int activity_type_id;
     public String city;
     public String sort_type;
     public String state;
@@ -38,7 +37,7 @@ public class MainActivityListParams implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.type_id);
+        dest.writeInt(this.activity_type_id);
         dest.writeString(this.city);
         dest.writeString(this.sort_type);
         dest.writeString(this.state);
@@ -51,7 +50,7 @@ public class MainActivityListParams implements Parcelable {
     }
 
     protected MainActivityListParams(Parcel in) {
-        this.type_id = in.readInt();
+        this.activity_type_id = in.readInt();
         this.city = in.readString();
         this.sort_type = in.readString();
         this.state = in.readString();
