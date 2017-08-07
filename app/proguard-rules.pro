@@ -260,9 +260,10 @@
 
 #OkHttp3
 -keep class com.squareup.okhttp3.** { *;}
+-keep class okhttp3.internal.**{*;}
 -dontwarn com.squareup.okhttp3.**
 -dontwarn okhttp3.logging.**
--keep class okhttp3.internal.**{*;}
+-keep class okio.** {*;}
 -dontwarn okio.**
 -dontwarn javax.annotation.Nullable
 -dontwarn javax.annotation.ParametersAreNonnullByDefault
