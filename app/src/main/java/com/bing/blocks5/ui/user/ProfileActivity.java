@@ -365,7 +365,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     @Override
     public void updateUserCallback(User user) {
         cancelLoading();
-        setUser(user);
+        finish();
         ToastUtil.showText("保存成功");
     }
 
