@@ -6,7 +6,7 @@ import android.support.design.widget.AppBarLayout;
 
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.event.MainActivityListFilterEvent;
-import com.bing.blocks5.ui.main.request.MainActivityListParams;
+import com.bing.blocks5.model.request.MainActivityListParams;
 import com.bing.blocks5.util.EventUtil;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.bing.blocks5.base.BaseAdapter;

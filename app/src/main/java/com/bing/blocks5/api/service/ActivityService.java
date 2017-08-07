@@ -3,7 +3,7 @@ package com.bing.blocks5.api.service;
 import com.bing.blocks5.api.ApiResponse;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.Comment;
-import com.bing.blocks5.ui.activity.request.CreateActivityParams;
+import com.bing.blocks5.model.request.CreateActivityParams;
 
 import java.util.List;
 import java.util.Map;

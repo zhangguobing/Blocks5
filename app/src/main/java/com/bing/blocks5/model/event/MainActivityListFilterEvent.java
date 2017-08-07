@@ -1,6 +1,6 @@
 package com.bing.blocks5.model.event;
 
-import com.bing.blocks5.ui.main.request.MainActivityListParams;
+import com.bing.blocks5.model.request.MainActivityListParams;
 
 /**
  * author：zhangguobing on 2017/7/19 09:45

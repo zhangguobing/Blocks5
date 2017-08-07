@@ -2,7 +2,9 @@ package com.bing.blocks5.api;
 
 import com.bing.blocks5.Constants;
 
-public class HttpStatus {
+import java.io.Serializable;
+
+public class HttpStatus implements Serializable{
     private int status_code;
     private String message;
 

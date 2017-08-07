@@ -30,7 +30,7 @@ android {
         debug {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('C:/Users/XuTianyu/.android/debug.keystore')
+            storeFile file('/Users/tian/blocks5.keystore/debug.keystore')
             storePassword 'android'
             v1SigningEnabled true
             v2SigningEnabled true
@@ -38,7 +38,7 @@ android {
         release {
             keyAlias 'blocks5ReleaseKeyStore'
             keyPassword 'zgb10011000101'
-            storeFile file('D:/Android/MyProjects/Blocks5/release_keystore.jks')
+            storeFile file('/Users/tian/blocks5.keystore/release.keystore')
             storePassword 'zgb10011000101'
             v1SigningEnabled true
             v2SigningEnabled true
@@ -79,8 +79,8 @@ android {
 }
 
 bugly {
-    appId = '22554f1409'
-    appKey = '359d6cba-5c93-4b0b-a6ae-150b0cebc903'
+    appId = 'bcddf5bd1c'
+    appKey = 'ad614a78-14a3-4120-9ef3-fd9bbe7da5fb'
 }
 
 dependencies {

@@ -8,8 +8,8 @@ import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.Comment;
-import com.bing.blocks5.ui.activity.request.CreateActivityParams;
-import com.bing.blocks5.ui.main.request.MainActivityListParams;
+import com.bing.blocks5.model.request.CreateActivityParams;
+import com.bing.blocks5.model.request.MainActivityListParams;
 
 import java.util.HashMap;
 import java.util.List;

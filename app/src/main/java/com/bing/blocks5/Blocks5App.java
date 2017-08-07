@@ -30,9 +30,6 @@ public class Blocks5App extends MobApplication{
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        //bugly
-        CrashReport.initCrashReport(getApplicationContext(), "22554f1409", AppConfig.DEBUG);
-
     }
 
     @Override
@@ -42,6 +39,9 @@ public class Blocks5App extends MobApplication{
         mInstance = this;
 
         MultiDex.install(this);
+
+        //bugly
+        CrashReport.initCrashReport(getApplicationContext(), "bcddf5bd1c", AppConfig.DEBUG);
 
         // 吐司初始化
         ToastUtil.init(this);

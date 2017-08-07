@@ -20,11 +20,13 @@ import android.support.annotation.Nullable;
 
 import com.bing.blocks5.Constants;
 
+import java.io.Serializable;
+
 /**
  * Common class used by API responses.
  * @param <T>
  */
-public class ApiResponse<T> {
+public class ApiResponse<T> implements Serializable{
     public int code;
     @Nullable
     public T data;

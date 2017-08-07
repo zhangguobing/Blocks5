@@ -1,4 +1,4 @@
-package com.bing.blocks5.ui.main.request;
+package com.bing.blocks5.model.request;
 
 import android.os.Parcel;
 import android.os.Parcelable;

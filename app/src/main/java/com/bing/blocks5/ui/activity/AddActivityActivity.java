@@ -35,7 +35,7 @@ import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Config;
 import com.bing.blocks5.controller.ActivityController;
 import com.bing.blocks5.repository.ConfigManager;
-import com.bing.blocks5.ui.activity.request.CreateActivityParams;
+import com.bing.blocks5.model.request.CreateActivityParams;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.SwitchButton;
 import com.bing.blocks5.widget.TitleBar;

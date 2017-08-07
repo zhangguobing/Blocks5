@@ -22,7 +22,7 @@ import com.amap.api.location.AMapLocation;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.model.event.MainActivityListFilterEvent;
 import com.bing.blocks5.ui.main.fragments.MainActivityListFragment;
-import com.bing.blocks5.ui.main.request.MainActivityListParams;
+import com.bing.blocks5.model.request.MainActivityListParams;
 import com.bing.blocks5.util.AMapLocationUtil;
 import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.TimeUtil;
