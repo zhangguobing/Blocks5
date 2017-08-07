@@ -14,6 +14,10 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
 
     compileOptions {
@@ -26,7 +30,7 @@ android {
         debug {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('/Users/tian/blocks5.keystore/debug.keystore')
+            storeFile file('C:/Users/XuTianyu/.android/debug.keystore')
             storePassword 'android'
             v1SigningEnabled true
             v2SigningEnabled true
@@ -34,7 +38,7 @@ android {
         release {
             keyAlias 'blocks5ReleaseKeyStore'
             keyPassword 'zgb10011000101'
-            storeFile file('/Users/tian/blocks5.keystore/release.keystore')
+            storeFile file('D:/Android/MyProjects/Blocks5/release_keystore.jks')
             storePassword 'zgb10011000101'
             v1SigningEnabled true
             v2SigningEnabled true
@@ -49,7 +53,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled true
             shrinkResources false
             signingConfig signingConfigs.release

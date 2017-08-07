@@ -1,5 +1,6 @@
 package com.bing.blocks5;
 
+import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.aitangba.swipeback.ActivityLifecycleHelper;
@@ -13,6 +14,7 @@ import com.bing.blocks5.ui.activity.ActivityDetailActivity;
 import com.bing.blocks5.util.GsonHelper;
 import com.bing.blocks5.util.PreferenceUtil;
 import com.bing.blocks5.util.ToastUtil;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import cn.campusapp.router.Router;
 
@@ -24,6 +26,14 @@ import cn.campusapp.router.Router;
 public class Blocks5App extends MobApplication{
     private static Blocks5App mInstance;
     private RefWatcher mRefWatcher;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        //bugly
+        CrashReport.initCrashReport(getApplicationContext(), "22554f1409", AppConfig.DEBUG);
+
+    }
 
     @Override
     public void onCreate() {
