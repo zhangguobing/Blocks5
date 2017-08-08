@@ -60,7 +60,7 @@ public class ForgetPwdActivity extends BasePresenterActivity<LoginAuthController
             ToastUtil.showText("请输入手机号码");
             return;
         }
-        if(length < 11 || !ValidatorUtil.checkCellphone(mPhoneEditText.getText().toString())){
+        if(length < 11 || !phone.startsWith("1")){
             ToastUtil.showText("请输入正确的手机号码");
             return;
         }
@@ -85,7 +85,7 @@ public class ForgetPwdActivity extends BasePresenterActivity<LoginAuthController
             ToastUtil.showText("请输入手机号码");
             return;
         }
-        if(length < 11 || !ValidatorUtil.checkCellphone(mPhoneEditText.getText().toString())){
+        if(length < 11 || !phone.startsWith("1")){
             ToastUtil.showText("请输入正确的手机号码");
             return;
         }

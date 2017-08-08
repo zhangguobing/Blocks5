@@ -126,7 +126,7 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
             ToastUtil.showText("请输入手机号码");
             return;
         }
-        if(code.length() < 11 || !ValidatorUtil.checkCellphone(mCodeTelEditText.getText().toString())){
+        if(code.length() < 11 || !code.startsWith("1")){
             ToastUtil.showText("请输入正确的手机号码");
             return;
         }
@@ -175,7 +175,7 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
                 ToastUtil.showText("请输入手机号码");
                 return;
             }
-            if(length < 11 || !ValidatorUtil.checkCellphone(mCodeTelEditText.getText().toString())){
+            if(length < 11 || !mCodeTelEditText.getText().toString().startsWith("1")){
                 ToastUtil.showText("请输入正确的手机号码");
                 return;
             }
@@ -192,7 +192,7 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
                 ToastUtil.showText("请输入手机号码");
                 return;
             }
-            if(length < 11 || !ValidatorUtil.checkCellphone(tel)){
+            if(length < 11 || !tel.startsWith("1")){
                 ToastUtil.showText("请输入正确的手机号码");
                 return;
             }

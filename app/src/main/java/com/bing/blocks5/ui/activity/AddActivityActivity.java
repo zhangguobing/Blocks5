@@ -208,6 +208,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                 .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryDark))
                 .selectCount(selectCount)
+                .camera(false)
                 .columnCount(3)
                 .title("相册")
                 .start();
@@ -356,7 +357,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
         params.price_total = Integer.parseInt(mTotalPriceEt.getText().toString().trim());
         params.price_type = mPriceTypeRg.getCheckedRadioButtonId();
         params.price_content = mPriceContentEt.getText().toString().trim();
-        params.need_identity = mNeedIdentitySwitch.isChecked() ? 0 : 1;
+        params.need_identity = mNeedIdentitySwitch.isChecked() ? 1 : 0;
         params.cover_url = mCoverUrl;
         for (int i = 0; i < mPictureContainer.getChildCount(); i++) {
             View childView = mPictureContainer.getChildAt(i);

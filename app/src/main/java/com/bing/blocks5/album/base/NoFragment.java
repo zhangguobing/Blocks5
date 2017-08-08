@@ -101,7 +101,7 @@ public class NoFragment extends Fragment {
     /**
      * Toolbar.
      */
-    private Toolbar mToolbar;
+//    private Toolbar mToolbar;
 
     /**
      * CompatActivity.
@@ -156,101 +156,101 @@ public class NoFragment extends Fragment {
      *
      * @param toolbar {@link Toolbar}.
      */
-    public final void setToolbar(@NonNull Toolbar toolbar) {
-        this.mToolbar = toolbar;
-        onCreateOptionsMenu(mToolbar.getMenu(), new SupportMenuInflater(mActivity));
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return onOptionsItemSelected(item);
-            }
-        });
-    }
+//    public final void setToolbar(@NonNull Toolbar toolbar) {
+//        this.mToolbar = toolbar;
+//        onCreateOptionsMenu(mToolbar.getMenu(), new SupportMenuInflater(mActivity));
+//        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                return onOptionsItemSelected(item);
+//            }
+//        });
+//    }
 
     /**
      * Display home up button.
      *
      * @param drawableId drawable id.
      */
-    public final void displayHomeAsUpEnabled(@DrawableRes int drawableId) {
-        displayHomeAsUpEnabled(ContextCompat.getDrawable(mActivity, drawableId));
-    }
+//    public final void displayHomeAsUpEnabled(@DrawableRes int drawableId) {
+//        displayHomeAsUpEnabled(ContextCompat.getDrawable(mActivity, drawableId));
+//    }
 
     /**
      * Display home up button.
      *
      * @param drawable {@link Drawable}.
      */
-    public final void displayHomeAsUpEnabled(Drawable drawable) {
-        mToolbar.setNavigationIcon(drawable);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!onInterceptToolbarBack())
-                    finish();
-            }
-        });
-    }
+//    public final void displayHomeAsUpEnabled(Drawable drawable) {
+//        mToolbar.setNavigationIcon(drawable);
+//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!onInterceptToolbarBack())
+//                    finish();
+//            }
+//        });
+//    }
 
     /**
      * Override this method, intercept backPressed of ToolBar.
      *
      * @return true, other wise false.
      */
-    public boolean onInterceptToolbarBack() {
-        return false;
-    }
+//    public boolean onInterceptToolbarBack() {
+//        return false;
+//    }
 
     /**
      * Get Toolbar.
      *
      * @return {@link Toolbar}.
      */
-    protected final
-    @Nullable
-    Toolbar getToolbar() {
-        return mToolbar;
-    }
+//    protected final
+//    @Nullable
+//    Toolbar getToolbar() {
+//        return mToolbar;
+//    }
 
     /**
      * Set title.
      *
      * @param title title.
      */
-    protected void setTitle(CharSequence title) {
-        if (mToolbar != null)
-            mToolbar.setTitle(title);
-    }
+//    protected void setTitle(CharSequence title) {
+//        if (mToolbar != null)
+//            mToolbar.setTitle(title);
+//    }
 
     /**
      * Set title.
      *
      * @param titleId string resource id from {@code string.xml}.
      */
-    protected void setTitle(int titleId) {
-        if (mToolbar != null)
-            mToolbar.setTitle(titleId);
-    }
+//    protected void setTitle(int titleId) {
+//        if (mToolbar != null)
+//            mToolbar.setTitle(titleId);
+//    }
 
     /**
      * Set sub title.
      *
      * @param title sub title.
      */
-    protected void setSubtitle(CharSequence title) {
-        if (mToolbar != null)
-            mToolbar.setSubtitle(title);
-    }
+//    protected void setSubtitle(CharSequence title) {
+//        if (mToolbar != null)
+//            mToolbar.setSubtitle(title);
+//    }
 
     /**
      * Set sub title.
      *
      * @param titleId string resource id from {@code string.xml}.
      */
-    protected void setSubtitle(int titleId) {
-        if (mToolbar != null)
-            mToolbar.setSubtitle(titleId);
-    }
+//    protected void setSubtitle(int titleId) {
+//        if (mToolbar != null)
+//            mToolbar.setSubtitle(titleId);
+//    }
 
     // ------------------------- Stack ------------------------- //
 

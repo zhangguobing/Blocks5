@@ -33,7 +33,7 @@
                     <com.youth.banner.Banner
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="match_parent"
                         app:delay_time="5000"
                         app:image_scale_type="center_crop"
                         app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected"/>
@@ -101,7 +101,7 @@
                         android:id="@+id/iv_radar"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@mipmap/ic_radar_normal"
+                        android:src="@mipmap/ic_radar_selected"
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="5dp"
                         android:layout_below="@id/iv_barcode"/>

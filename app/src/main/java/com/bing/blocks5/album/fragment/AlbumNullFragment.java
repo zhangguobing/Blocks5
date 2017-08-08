@@ -58,10 +58,6 @@ public class AlbumNullFragment extends BasicCameraFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        setToolbar((Toolbar) view.findViewById(R.id.toolbar));
-        displayHomeAsUpEnabled(R.drawable.album_ic_back_white);
-        setTitle(R.string.album_title_not_found_image);
-
         TitleBar titleBar  = (TitleBar) view.findViewById(R.id.title_bar);
         titleBar.setTitleColor(ContextCompat.getColor(getContext(),R.color.white));
         titleBar.setSubTitleColor(ContextCompat.getColor(getContext(),R.color.white));
@@ -70,6 +66,7 @@ public class AlbumNullFragment extends BasicCameraFragment {
         titleBar.setLeftClickListener(v -> {
             finish();
         });
+        titleBar.setTitle(getString(R.string.album_title_not_found_image));
 
         mBtnCamera = (AppCompatButton) view.findViewById(R.id.btn_camera);
         mBtnCamera.setOnClickListener(mCameraClickListener);

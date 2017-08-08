@@ -17,7 +17,7 @@ public class FeedBack {
 
     private int id;
     private int user_id;
-    private String is_reply;
+    private int is_reply;
     private String content;
     private String created_at;
     private int send_state;
@@ -46,11 +46,11 @@ public class FeedBack {
         this.user_id = user_id;
     }
 
-    public String getIs_reply() {
+    public int getIs_reply() {
         return is_reply;
     }
 
-    public void setIs_reply(String is_reply) {
+    public void setIs_reply(int is_reply) {
         this.is_reply = is_reply;
     }
 

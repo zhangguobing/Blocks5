@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.model.ShareInfo;
 import com.bing.blocks5.ui.common.GalleryActivity;
+import com.bing.blocks5.util.ClickUtils;
 import com.bing.blocks5.util.ShareUtil;
 import com.bing.blocks5.widget.opendanmaku.DanmakuItem;
 import com.bing.blocks5.widget.opendanmaku.DanmakuView;
@@ -114,6 +115,8 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     private Activity mActivity;
 
     private List<String> imageUrls;
+
+    private boolean isRadarOpened = true;
 
     public static void create(Context context, String activity_id){
         Intent intent = new Intent(context,ActivityDetailActivity.class);
@@ -324,7 +327,10 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
 
 
     private void initDanmakuView(List<Comment> comments){
-        if(comments == null || comments.size() == 0) return;
+        if(comments == null || comments.size() == 0){
+            mDanmakuView.setVisibility(View.GONE);
+            return;
+        }
         List<IDanmakuItem> list = new ArrayList<>();
         for (int i = 0; i < comments.size(); i++) {
             list.add(new DanmakuItem(this,comments.get(i).getContent(),mDanmakuView.getWidth()));
@@ -370,7 +376,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         ToastUtil.showText("举报成功");
     }
 
-    @OnClick({R.id.rl_message,R.id.btn_join,R.id.iv_barcode,R.id.iv_user_avatar})
+    @OnClick({R.id.rl_message,R.id.btn_join,R.id.iv_barcode,R.id.iv_user_avatar,R.id.iv_radar})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.rl_message:
@@ -385,6 +391,17 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 break;
             case R.id.iv_user_avatar:
                 UserDetailActivity.create(this,mUserId);
+                break;
+            case R.id.iv_radar:
+                if(ClickUtils.isFastDoubleClick()) return;
+                if(isRadarOpened){
+                    mRadarImg.setImageResource(R.mipmap.ic_radar_normal);
+                    mDanmakuView.hide();
+                }else{
+                    mRadarImg.setImageResource(R.mipmap.ic_radar_selected);
+                    mDanmakuView.show();
+                }
+                isRadarOpened = !isRadarOpened;
                 break;
         }
     }

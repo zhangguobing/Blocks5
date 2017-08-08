@@ -25,7 +25,6 @@
 
     <LinearLayout
         style="@style/album_MatchParent"
-        android:layout_below="@+id/app_bar_layout"
         android:gravity="center"
         android:orientation="vertical">
 

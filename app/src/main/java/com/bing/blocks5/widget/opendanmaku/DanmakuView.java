@@ -259,12 +259,14 @@ public class DanmakuView extends View {
     public void show() {
         status = STATUS_RUNNING;
         invalidate();
+        setVisibility(View.VISIBLE);
     }
 
     /**隐藏弹幕,暂停播放*/
     public void hide() {
         status = STATUS_PAUSE;
         invalidate();
+        setVisibility(View.GONE);
     }
 
     /**清空正在播放和等待播放的弹幕*/

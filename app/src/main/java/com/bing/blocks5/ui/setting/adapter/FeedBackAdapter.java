@@ -41,7 +41,7 @@ public class FeedBackAdapter extends BaseAdapter<FeedBack,RecyclerView.ViewHolde
     @Override
     public int getItemViewType(int position) {
         FeedBack feedBack = getItem(position);
-        return feedBack.getUser_id() == AppCookie.getUserInfo().getId() ? TYPE_TEXT_RIGHT: TYPE_TEXT_LEFT;
+        return feedBack.getIs_reply() == 0 ? TYPE_TEXT_RIGHT: TYPE_TEXT_LEFT;
     }
 
     @Override

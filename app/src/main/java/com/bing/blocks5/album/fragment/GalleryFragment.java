@@ -156,7 +156,7 @@ public class GalleryFragment extends NoFragment {
                 mCurrentItemPosition = position;
                 mCheckBox.setChecked(mCheckedList[position]);
                 // noinspection ConstantConditions
-                getToolbar().setTitle(mCurrentItemPosition + 1 + " / " + mCheckedPaths.size());
+                mTitleBar.setTitle(mCurrentItemPosition + 1 + " / " + mCheckedPaths.size());
             }
         };
         mViewPager.addOnPageChangeListener(pageChangeListener);
