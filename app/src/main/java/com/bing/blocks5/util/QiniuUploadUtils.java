@@ -42,7 +42,7 @@ public class QiniuUploadUtils {
 
 	public interface QiniuUploadUtilsListener {
 		public void onStart();
-		public void onSuccess(String fileUrl);
+		public void onSuccess(String originUrl,String destUrl);
 		public void onError(int errorCode, String msg);
 		public void onProgress(int progress);
 	}
@@ -133,7 +133,7 @@ public class QiniuUploadUtils {
                     if (info != null && info.isOK()) {// 上传成功
                         String fileRealUrl = getRealUrl(fileUrlUUID);
                         if(listener != null){
-                            listener.onSuccess(fileRealUrl);
+                            listener.onSuccess(filePath,fileRealUrl);
                         }
                     } else {
 						Log.i("qiniu", "Upload Fail");

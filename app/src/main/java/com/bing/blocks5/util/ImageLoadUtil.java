@@ -12,6 +12,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bing.blocks5.R;
 
+import java.io.File;
+
 /**
  * author：zhangguobing on 2017/7/2 14:35
  * email：bing901222@qq.com

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bing.blocks5.util.AsyncRun;
 import com.bing.blocks5.util.QiniuUploadUtils;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
@@ -36,6 +37,7 @@ import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 
 import org.json.JSONArray;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,8 +79,13 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     ImageView mAvatarImg;
     @Bind(R.id.ablum_container)
     LinearLayout mAblumContainer;
+    @Bind(R.id.iv_album)
+    ImageView mAlbumImg;
 
     private KProgressHUD mUploadProgressDialog;
+
+    private static final int ALBUM_MAX_COUNT = 3;
+    private List<String> mAlbumUrls = new ArrayList<>();
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -137,7 +144,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                 fromAlbum(1, ACTIVITY_REQUEST_SELECT_AVATAR);
                 break;
             case R.id.iv_album:
-                fromAlbum(3, ACTIVITY_REQUEST_SELECT_ABLUM);
+                fromAlbum(ALBUM_MAX_COUNT - mAblumContainer.getChildCount(), ACTIVITY_REQUEST_SELECT_ABLUM);
                 break;
             case R.id.tv_select_area:
                 showPickerView();
@@ -180,13 +187,15 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         String image_url_3 = "";
         for (int i = 0; i < mAblumContainer.getChildCount(); i++) {
             View childView = mAblumContainer.getChildAt(i);
-            String url = childView.getTag().toString();
-            if(i == 0){
-                image_url_1 = url;
-            }else if(i == 1){
-                image_url_2 = url;
-            }else if(i == 2){
-                image_url_3 = url;
+            if(childView.getTag() != null){
+                String url = childView.getTag().toString();
+                if(i == 0){
+                    image_url_1 = url;
+                }else if(i == 1){
+                    image_url_2 = url;
+                }else if(i == 2){
+                    image_url_3 = url;
+                }
             }
         }
         getCallbacks().updateUser(age,job,address,mAvatarUrl,content,image_url_1,image_url_2,image_url_3);
@@ -195,15 +204,24 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     /**
      * 往容器内添加相应的子View
      */
-    private void addChildViewToAlbum(String imageUrl){
+    private void addChildViewToAlbum(String filePath,String imageUrl,boolean isLoadRemoteUrl){
         ImageView imageView = new ImageView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.width = DensityUtil.dp2px(this,42);
         layoutParams.leftMargin = DensityUtil.dp2px(this,20);
         imageView.setLayoutParams(layoutParams);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mAblumContainer.addView(imageView);
-        ImageLoadUtil.loadImage(imageView,imageUrl,this);
+        if(!TextUtils.isEmpty(filePath)){
+            ImageLoadUtil.loadImage(imageView,filePath,this);
+        }
+        if(isLoadRemoteUrl){
+            ImageLoadUtil.loadImage(imageView,imageUrl,this);
+        }
         imageView.setTag(imageUrl);
+        if(mAblumContainer.getChildCount() == 3){
+            mAlbumImg.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -235,9 +253,9 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                         }
 
                         @Override
-                        public void onSuccess(String fileUrl) {
+                        public void onSuccess(String filePath,String fileUrl) {
                             mUploadProgressDialog.dismiss();
-                            ImageLoadUtil.loadAvatar(mAvatarImg,fileUrl,ProfileActivity.this);
+                            ImageLoadUtil.loadAvatar(mAvatarImg,filePath,ProfileActivity.this);
                             mAvatarUrl = fileUrl;
                         }
 
@@ -265,10 +283,10 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                         }
 
                         @Override
-                        public void onSuccess(String fileUrl) {
+                        public void onSuccess(String originUrl,String destUrl) {
                             AsyncRun.runInMain(() -> {
                                 mUploadProgressDialog.dismiss();
-                                addChildViewToAlbum(fileUrl);
+                                addChildViewToAlbum(originUrl,destUrl,false);
                             });
                         }
 
@@ -372,7 +390,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     private void setUser(User user){
         mAvatarUrl = user.getAvatar();
         ImageLoadUtil.loadAvatar(mAvatarImg,user.getAvatar(),this);
-        initAblum(user);
+        initAlbum(user);
         mNickNameTv.setText(user.getNick_name());
         mSexTv.setText(user.getSex());
         mAgeTv.setText(user.getAge()+"");
@@ -381,20 +399,23 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         mContentEt.setText(user.getContent());
     }
 
-    private void initAblum(User user){
-        List<String> imageUrls = new ArrayList<>();
+    private void initAlbum(User user){
+        mAlbumUrls.clear();
         if(!TextUtils.isEmpty(user.getImg_url_1())){
-            imageUrls.add(user.getImg_url_1());
+            mAlbumUrls.add(user.getImg_url_1());
         }
         if(!TextUtils.isEmpty(user.getImg_url_2())){
-            imageUrls.add(user.getImg_url_2());
+            mAlbumUrls.add(user.getImg_url_2());
         }
         if(!TextUtils.isEmpty(user.getImg_url_3())){
-            imageUrls.add(user.getImg_url_3());
+            mAlbumUrls.add(user.getImg_url_3());
+        }
+        if(mAlbumUrls.size() == ALBUM_MAX_COUNT){
+            mAlbumImg.setVisibility(View.GONE);
         }
         mAblumContainer.removeAllViews();
-        for (String imageUrl : imageUrls){
-            addChildViewToAlbum(imageUrl);
+        for (String imageUrl : mAlbumUrls){
+            addChildViewToAlbum(null,imageUrl,true);
         }
     }
 }

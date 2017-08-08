@@ -61,6 +61,11 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     private static final int ACTIVITY_REQUEST_SELECT_COVER = 100;
     private static final int ACTIVITY_REQUEST_SELECT_PICTURE = 101;
 
+    /**
+     * 上次图片的最大个数
+     */
+    private static final int PICTURE_MAX_COUNT = 3;
+
     @NotEmpty(message = "请输入开始时间")
     @Bind(R.id.tv_start_time)
     TextView mStartTimeTv;
@@ -172,7 +177,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_upload_pictures:
-                fromAlbum(3,ACTIVITY_REQUEST_SELECT_PICTURE);
+                fromAlbum(PICTURE_MAX_COUNT - mPictureContainer.getChildCount(),ACTIVITY_REQUEST_SELECT_PICTURE);
                 break;
             case R.id.iv_upload_cover:
                 fromAlbum(1,ACTIVITY_REQUEST_SELECT_COVER);
@@ -396,10 +401,10 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                         }
 
                         @Override
-                        public void onSuccess(String fileUrl) {
+                        public void onSuccess(String originFilePath,String destUrl) {
                             mUploadProgressDialog.dismiss();
-                            ImageLoadUtil.loadImage(mCoverImg,fileUrl,AddActivityActivity.this);
-                            mCoverUrl = fileUrl;
+                            ImageLoadUtil.loadImage(mCoverImg,originFilePath,AddActivityActivity.this);
+                            mCoverUrl = destUrl;
                         }
 
                         @Override
@@ -426,10 +431,10 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                         }
 
                         @Override
-                        public void onSuccess(String fileUrl) {
+                        public void onSuccess(String originFilePath,String fileUrl) {
                             AsyncRun.runInMain(() -> {
                                 mUploadProgressDialog.dismiss();
-                                addChildViewToPicture(fileUrl);
+                                addChildViewToPicture(originFilePath,fileUrl);
                             });
                         }
 
@@ -456,14 +461,15 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     /**
      * 往容器内添加相应的子View
      */
-    private void addChildViewToPicture(String imageUrl){
+    private void addChildViewToPicture(String filePath,String imageUrl){
         ImageView imageView = new ImageView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.width = DensityUtil.dp2px(this,42);
         layoutParams.leftMargin = DensityUtil.dp2px(this,20);
         imageView.setLayoutParams(layoutParams);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mPictureContainer.addView(imageView);
-        ImageLoadUtil.loadImage(imageView,imageUrl,this);
+        ImageLoadUtil.loadImage(imageView,filePath,this);
         imageView.setTag(imageUrl);
     }
 }

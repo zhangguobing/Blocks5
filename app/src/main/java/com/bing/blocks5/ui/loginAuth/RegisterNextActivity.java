@@ -145,11 +145,7 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
                 .start();
     }
 
-    /**
-     * Preview image.
-     *
-     * @param position current position.
-     */
+
 //    private void previewImage(int position) {
 //        Album.gallery(this)
 //                .requestCode(ACTIVITY_REQUEST_PREVIEW_PHOTO)
@@ -177,10 +173,10 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
                         }
 
                         @Override
-                        public void onSuccess(String fileUrl) {
+                        public void onSuccess(String filePath,String destUrl) {
                             mUploadProgressDialog.dismiss();
-                            ImageLoadUtil.loadAvatar(mAvatarImage,fileUrl,RegisterNextActivity.this);
-                            mAvatarUrl = fileUrl;
+                            ImageLoadUtil.loadAvatar(mAvatarImage,filePath,RegisterNextActivity.this);
+                            mAvatarUrl = destUrl;
                         }
 
                         @Override
