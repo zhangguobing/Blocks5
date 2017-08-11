@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
 import com.bing.blocks5.model.LoginBean;
+import com.bing.blocks5.model.User;
+import com.bing.blocks5.model.event.UserInfoChangeEvent;
 import com.bing.blocks5.ui.activity.CreatedActivity;
 import com.bing.blocks5.ui.activity.JoinActivity;
 import com.bing.blocks5.ui.common.GalleryActivity;
@@ -28,7 +30,9 @@ import com.bing.blocks5.ui.user.FavouriteActivity;
 import com.bing.blocks5.ui.user.FollowOrFansActivity;
 import com.bing.blocks5.ui.user.HistoryActivity;
 import com.bing.blocks5.ui.user.ProfileActivity;
+import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.ImageLoadUtil;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -166,5 +170,29 @@ public class DrawerMenuFragment extends Fragment {
         intent.putExtra(GalleryActivity.PHOTO_SELECT_H_TAG, height);
         startActivity(intent);
         getActivity().overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventUtil.register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventUtil.unregister(this);
+    }
+
+    @Subscribe
+    public void onUserInfoChange(UserInfoChangeEvent event){
+        if(event.user != null){
+            User user = event.user;
+            mAvatarUrl = user.getAvatar();
+            ImageLoadUtil.loadAvatar(mAvatarImg,user.getAvatar(),getContext());
+            LoginBean.User loginUser = AppCookie.getUserInfo();
+            loginUser.setAvatar(user.getAvatar());
+            AppCookie.saveUserInfo(loginUser);
+        }
     }
 }

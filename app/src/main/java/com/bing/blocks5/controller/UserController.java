@@ -6,6 +6,8 @@ import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.FeedBack;
 import com.bing.blocks5.model.User;
+import com.bing.blocks5.model.event.UserInfoChangeEvent;
+import com.bing.blocks5.util.EventUtil;
 
 import java.util.List;
 
@@ -191,7 +193,9 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
                     public void onResponse(ApiResponse<User> response) {
                         UserUi userUi = findUi(callingId);
                         if(userUi instanceof ProfileUi){
-                            ((ProfileUi)userUi).updateUserCallback(response.data);
+                            User user = response.data;
+                            ((ProfileUi)userUi).updateUserCallback(user);
+                            EventUtil.sendEvent(new UserInfoChangeEvent(user));
                         }
                     }
 

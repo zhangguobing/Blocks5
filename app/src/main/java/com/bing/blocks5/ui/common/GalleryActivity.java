@@ -71,7 +71,7 @@ public class GalleryActivity extends AppCompatActivity{
             }
         });
 
-        GalleryAdapter galleryAdapter = new GalleryAdapter(this, urls, locationW, locationH, locationX, locationY, position);
+        GalleryAdapter galleryAdapter = new GalleryAdapter(this, urls, locationW, locationH, locationX, locationY);
         viewPager.setAdapter(galleryAdapter);
         viewPager.setCurrentItem(position);
     }

@@ -187,8 +187,8 @@
  }
 
  # picasso
- -keep class com.squareup.picasso.** {*; }
- -dontwarn com.squareup.picasso.**
+ #-keep class com.squareup.picasso.** {*; }
+ #-dontwarn com.squareup.picasso.**
 
  #glide
  -keep public class * implements com.bumptech.glide.module.GlideModule

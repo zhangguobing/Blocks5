@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.squareup.picasso.Picasso;
 import com.bing.blocks5.R;
 import com.bing.blocks5.widget.SmoothImageView;
 
@@ -25,16 +24,14 @@ public class GalleryAdapter extends PagerAdapter{
     private Activity activity;
     private String[] urls;
     private int locationW, locationH, locationX, locationY;
-    private int pos;
 
-    public GalleryAdapter(Activity activity, String[] urls, int w, int h, int x, int y, int pos) {
+    public GalleryAdapter(Activity activity, String[] urls, int w, int h, int x, int y) {
         this.activity = activity;
         this.urls = urls;
         this.locationH = h;
         this.locationW = w;
         this.locationX = x;
         this.locationY = y;
-        this.pos = pos;
     }
 
     @Override
@@ -44,36 +41,30 @@ public class GalleryAdapter extends PagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        SmoothImageView smoothImageView = (SmoothImageView) LayoutInflater.from(activity).inflate(R.layout.item_gallery, null);
-        container.addView(smoothImageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        SmoothImageView smoothImageView = (SmoothImageView) LayoutInflater.from(activity).inflate(R.layout.item_gallery,container,false);
+        container.addView(smoothImageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         smoothImageView.setOriginalInfo(locationW, locationH, locationX, locationY);
         smoothImageView.transformIn();
 
-        Picasso.with(activity).load(urls[position]).into(smoothImageView);
-//        Glide.with(activity)
-//                .load(urls[position])
-//                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                .priority(Priority.IMMEDIATE)
-//                .into(smoothImageView);
+        Glide.with(activity)
+                .load(urls[position])
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                .placeholder(R.mipmap.img_error)
+                .error(R.mipmap.img_error)
+                .dontAnimate()
+                .priority(Priority.IMMEDIATE)
+                .into(smoothImageView);
 
-        smoothImageView.setOnTransformListener(mode -> {
-            if (mode == 2) {
-                activity.finish();
-                activity.overridePendingTransition(0, 0);
-            }
-        });
         smoothImageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float v, float v1) {
-                activity.finish();
-                activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finishActivity();
             }
 
             @Override
             public void onOutsidePhotoTap() {
-                activity.finish();
-                activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finishActivity();
             }
         });
         return smoothImageView;
@@ -87,5 +78,10 @@ public class GalleryAdapter extends PagerAdapter{
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    private void finishActivity(){
+        activity.finish();
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

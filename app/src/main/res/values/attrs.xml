@@ -61,4 +61,11 @@
     <declare-styleable name="FlowRadioGroup">
         <attr name="radio_columu_num" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="password_edit_text">
+        <attr name="show_drawable" format="integer"/>
+        <attr name="hide_drawable" format="integer"/>
+        <attr name="password_visible" format="boolean"/>
+    </declare-styleable>
+
 </resources>
