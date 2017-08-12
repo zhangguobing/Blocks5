@@ -3,6 +3,7 @@ package com.bing.blocks5.ui.main.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.bing.blocks5.ui.user.HistoryActivity;
 import com.bing.blocks5.ui.user.ProfileActivity;
 import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.util.ViewUtil;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

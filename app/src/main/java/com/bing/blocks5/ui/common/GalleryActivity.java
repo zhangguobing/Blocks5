@@ -1,6 +1,7 @@
 package com.bing.blocks5.ui.common;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -22,6 +23,7 @@ public class GalleryActivity extends AppCompatActivity{
     public static final String PHOTO_SELECT_Y_TAG = "PHOTO_SELECT_Y_TAG";
     public static final String PHOTO_SELECT_W_TAG = "PHOTO_SELECT_W_TAG";
     public static final String PHOTO_SELECT_H_TAG = "PHOTO_SELECT_H_TAG";
+    public static final String PHOTO_ORIGIN_BITMAP = "PHOTO_ORIGIN_BITMAP";
 
     private int locationX;
     private int locationY;
@@ -29,6 +31,7 @@ public class GalleryActivity extends AppCompatActivity{
     private int locationH;
     private int position;
     private String[] urls;
+    private Bitmap bitmap;
 
     private TextView mIndicatorTv;
 
@@ -47,6 +50,7 @@ public class GalleryActivity extends AppCompatActivity{
             locationY = intent.getIntExtra(PHOTO_SELECT_Y_TAG, 0);
             locationW = intent.getIntExtra(PHOTO_SELECT_W_TAG, 0);
             locationH = intent.getIntExtra(PHOTO_SELECT_H_TAG, 0);
+            bitmap = intent.getParcelableExtra(PHOTO_ORIGIN_BITMAP);
         }
 
         mIndicatorTv = (TextView) findViewById(R.id.tv_indicator);
@@ -71,7 +75,7 @@ public class GalleryActivity extends AppCompatActivity{
             }
         });
 
-        GalleryAdapter galleryAdapter = new GalleryAdapter(this, urls, locationW, locationH, locationX, locationY);
+        GalleryAdapter galleryAdapter = new GalleryAdapter(this, urls, locationW, locationH, locationX, locationY, bitmap);
         viewPager.setAdapter(galleryAdapter);
         viewPager.setCurrentItem(position);
     }

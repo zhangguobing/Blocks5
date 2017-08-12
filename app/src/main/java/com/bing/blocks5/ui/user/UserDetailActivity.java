@@ -25,6 +25,7 @@ import com.bing.blocks5.ui.activity.JoinListActivity;
 import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.ToastUtil;
+import com.bing.blocks5.util.ViewUtil;
 import com.flyco.dialog.widget.NormalDialog;
 
 import java.util.ArrayList;
@@ -269,6 +270,7 @@ implements UserController.UserDetailUi{
         intent.putExtra(GalleryActivity.PHOTO_SELECT_Y_TAG, location[1]);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_W_TAG, width);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_H_TAG, height);
+        intent.putExtra(GalleryActivity.PHOTO_ORIGIN_BITMAP,ViewUtil.drawableToBitmap(((ImageView)v).getDrawable()));
         startActivity(intent);
         overridePendingTransition(0, 0);
     }
