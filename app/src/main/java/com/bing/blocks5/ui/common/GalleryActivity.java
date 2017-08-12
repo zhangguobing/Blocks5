@@ -23,7 +23,6 @@ public class GalleryActivity extends AppCompatActivity{
     public static final String PHOTO_SELECT_Y_TAG = "PHOTO_SELECT_Y_TAG";
     public static final String PHOTO_SELECT_W_TAG = "PHOTO_SELECT_W_TAG";
     public static final String PHOTO_SELECT_H_TAG = "PHOTO_SELECT_H_TAG";
-    public static final String PHOTO_ORIGIN_BITMAP = "PHOTO_ORIGIN_BITMAP";
 
     private int locationX;
     private int locationY;
@@ -50,7 +49,6 @@ public class GalleryActivity extends AppCompatActivity{
             locationY = intent.getIntExtra(PHOTO_SELECT_Y_TAG, 0);
             locationW = intent.getIntExtra(PHOTO_SELECT_W_TAG, 0);
             locationH = intent.getIntExtra(PHOTO_SELECT_H_TAG, 0);
-            bitmap = intent.getParcelableExtra(PHOTO_ORIGIN_BITMAP);
         }
 
         mIndicatorTv = (TextView) findViewById(R.id.tv_indicator);

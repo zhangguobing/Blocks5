@@ -2,7 +2,6 @@ package com.bing.blocks5.ui.common.adapter;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ public class GalleryAdapter extends PagerAdapter{
     private Activity activity;
     private String[] urls;
     private int locationW, locationH, locationX, locationY;
-    private Bitmap bitmap;
 
     public GalleryAdapter(Activity activity, String[] urls, int w, int h, int x, int y, Bitmap bitmap) {
         this.activity = activity;
@@ -34,7 +32,6 @@ public class GalleryAdapter extends PagerAdapter{
         this.locationW = w;
         this.locationX = x;
         this.locationY = y;
-        this.bitmap = bitmap;
     }
 
     @Override
@@ -53,7 +50,6 @@ public class GalleryAdapter extends PagerAdapter{
         Glide.with(activity)
                 .load(urls[position])
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .placeholder(bitmap == null ? null : new BitmapDrawable(bitmap))
                 .error(R.mipmap.img_error)
                 .into(smoothImageView);
 
