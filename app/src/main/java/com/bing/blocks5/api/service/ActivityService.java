@@ -82,4 +82,8 @@ public interface ActivityService {
     @FormUrlEncoded
     @POST("activities/{activityId}/comments")
     Observable<ApiResponse<Comment>> addActivityComment(@Path("activityId") String activityId,@Query("token") String token, @Field("content") String content, @Field("is_team") int is_team);
+
+    //取消活动
+    @POST("activities/{id}/cancel")
+    Observable<ApiResponse<Activity>> cancelActivity(@Path("id") String activityId,@Query("token") String token);
 }

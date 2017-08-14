@@ -11,6 +11,7 @@ import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.LoginAuthController;
+import com.bing.blocks5.model.LoginBean;
 import com.bing.blocks5.util.CountDownTimerUtils;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.util.ValidatorUtil;
@@ -88,7 +89,7 @@ public class RegisterActivity extends BasePresenterActivity<LoginAuthController.
     }
 
     @Override
-    public void loginFinish() {
+    public void loginFinish(LoginBean loginBean) {
         cancelLoading();
         RegisterNextActivity.create(this);
     }

@@ -31,6 +31,7 @@ import com.bing.blocks5.ui.user.FavouriteActivity;
 import com.bing.blocks5.ui.user.FollowOrFansActivity;
 import com.bing.blocks5.ui.user.HistoryActivity;
 import com.bing.blocks5.ui.user.ProfileActivity;
+import com.bing.blocks5.util.AndroidBug54971Workaround;
 import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.ViewUtil;
@@ -67,6 +68,7 @@ public class DrawerMenuFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AndroidBug54971Workaround.assistActivity(view);
         ButterKnife.bind(this,view);
         initView();
     }

@@ -70,7 +70,7 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
                     public void onResponse(ApiResponse<LoginBean> response) {
                         LoginAuthUi ui = findUi(callingId);
                         if(ui instanceof LoginUi){
-                            ((LoginUi) ui).loginFinish();
+                            ((LoginUi) ui).loginFinish(response.data);
                         }
                         // 发送用户账户改变的事件
                         EventUtil.sendEvent(new UserChangeEvent(response.data));
@@ -202,7 +202,7 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
 
     }
     public interface LoginUi extends LoginAuthUi {
-        void loginFinish();
+        void loginFinish(LoginBean loginBean);
         void receiveCaptcha(String message);
     }
 

@@ -37,7 +37,7 @@ public class CreatorActivityListFragment extends BaseListFragment<Activity,Activ
         Bundle bundle = getArguments();
         mState = bundle.getInt(EXTRA_ACTIVITY_STATE);
         mUserId = bundle.getInt(EXTRA_USER_ID);
-        getCallbacks().getActivityList(mState, mUserId,mPage);
+        getCallbacks().getActivityList(mUserId, mState, mPage);
     }
 
     @Override

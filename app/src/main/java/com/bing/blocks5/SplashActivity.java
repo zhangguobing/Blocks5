@@ -46,6 +46,11 @@ public class SplashActivity extends BasePermissionActivity{
     }
 
     @Override
+    protected boolean isFixAndroidBug54971Workaround() {
+        return false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         new Handler().postDelayed(() -> requestPermission(new String[]{

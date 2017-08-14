@@ -11,14 +11,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.model.ShareInfo;
 import com.bing.blocks5.ui.common.GalleryActivity;
@@ -67,7 +70,7 @@ import butterknife.OnClick;
 
 @ContentView(R.layout.activity_activity_detail)
 public class ActivityDetailActivity extends BasePresenterActivity<ActivityController.ActivityUiCallbacks>
-   implements ActivityController.ActivityDetailUi{
+   implements ActivityController.ActivityDetailUi,View.OnClickListener{
 
     @Bind(R.id.rg_price_type)
     RadioGroup mPriceTypeRg;
@@ -101,12 +104,13 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     TextView mStartTimeTv;
     @Bind(R.id.tv_end_time)
     TextView mEndTimeTv;
-    @Bind(R.id.btn_join)
     Button mJoinBtn;
     @Bind(R.id.banner)
     Banner mBanner;
     @Bind(R.id.danmakuView)
     DanmakuView mDanmakuView;
+    @Bind(R.id.container)
+    LinearLayout mContainer;
 
     private static final String EXTRA_ACTIVITY_ID = "activityId";
 
@@ -186,18 +190,69 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 @Override
                 public void performAction(View view) {
                     if(mActivity == null) return;
-                    showTopRightMenu(view,mActivity.getIs_collect());
+                    if(mActivity.getCreator() != null &&
+                            AppCookie.getUserInfo().getId() == mActivity.getCreator().getId()){
+                        showUserSelfMenu(view);
+                    }else{
+                        showOthersMenu(view);
+                    }
                 }
             });
         }
     }
 
 
-    private void showTopRightMenu(View view, int is_collect){
+
+    /**
+     * 显示用户自己的菜单选项
+     */
+    private void showUserSelfMenu(View view){
         TopRightMenu topRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(is_collect == 0 ? R.mipmap.ic_favourite_6dp : R.mipmap.ic_favorite_2_6dp,
-                is_collect == 0 ? "收藏" : "取消收藏"));
+        menuItems.add(new MenuItem(R.mipmap.ic_filter, "筛选"));
+        menuItems.add(new MenuItem(R.mipmap.ic_message_6dp, "留言"));
+        menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
+        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, "签到列表"));
+        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, "取消活动"));
+        topRightMenu
+                .setHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
+                .setWidth(320)
+                .showIcon(true)
+                .dimBackground(true)
+                .needAnimationStyle(true)
+                .setAnimationStyle(R.style.TRM_ANIM_STYLE)
+                .addMenuList(menuItems)
+                .setOnMenuItemClickListener(position -> {
+                    if(position == 0){
+                          //筛选
+                        SignUpListActivity.create(this,Integer.valueOf(mActivityId));
+                    }else if(position == 1){
+                         //留言
+                        ActivityMessageActivity.create(this,mActivity);
+                    }else if(position == 2){
+                        //分享
+                        showShareDialog();
+                    }else if(position == 3){
+                        //签到列表
+                    }else if(position == 4){
+                        //取消活动
+                        showLoading(R.string.label_being_something);
+                        getCallbacks().cancelActivity(mActivityId);
+                    }
+                })
+                .showAsDropDown(view, -205, 0);
+
+    }
+
+
+    /**
+     * 显示其他人的菜单选项
+     */
+    private void showOthersMenu(View view){
+        TopRightMenu topRightMenu = new TopRightMenu(this);
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem(mActivity.getIs_collect() == 0 ? R.mipmap.ic_favourite_6dp : R.mipmap.ic_favorite_2_6dp,
+                mActivity.getIs_collect() == 0 ? "收藏" : "取消收藏"));
         menuItems.add(new MenuItem(R.mipmap.ic_baoming_list_6dp, "报名列表"));
         menuItems.add(new MenuItem(R.mipmap.ic_scan_6dp, "扫一扫"));
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
@@ -281,6 +336,12 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     @Override
     public void getActivitySuccess(Activity activity) {
         cancelLoading();
+        setActivityUi(activity);
+        mActivity = activity;
+    }
+
+
+    private void setActivityUi(Activity activity){
         getTitleBar().setTitle(ActivityDataConvert.getActivityStateById(activity.getState()+""));
         ImageLoadUtil.loadAvatar(mAvatarImg,activity.getCreator().getAvatar(),this);
         mNickNameSexTv.setText(activity.getCreator().getNick_name());
@@ -301,11 +362,22 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         mPriceContentTv.setText(activity.getPrice_content());
         mActivityContentTv.setText(activity.getContent());
         mNeedIdentitySwitch.setChecked("0".equals(activity.getNeed_identity()));
-        mJoinBtn.setEnabled(activity.getState() == 1 && activity.getIs_join() == 0);
         mUserId = activity.getUser_id();
         initBanner(activity);
         initDanmakuView(activity.getComments());
-        mActivity = activity;
+        View footView;
+        if(AppCookie.getUserInfo().getId() == activity.getCreator().getId()){
+            footView = LayoutInflater.from(this).inflate(R.layout.layout_activity_detail_bottom_user,mContainer,false);
+            footView.findViewById(R.id.rl_filter).setOnClickListener(this);
+            footView.findViewById(R.id.rl_message).setOnClickListener(this);
+        }else{
+            footView = View.inflate(this, R.layout.layout_activity_detail_bottom_others, null);
+            footView.findViewById(R.id.rl_message).setOnClickListener(this);
+            mJoinBtn = (Button) footView.findViewById(R.id.btn_join);
+            mJoinBtn.setOnClickListener(this);
+            mJoinBtn.setEnabled(activity.getState() == 1 && activity.getIs_join() == 0);
+        }
+        mContainer.addView(footView);
     }
 
 
@@ -376,7 +448,14 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         ToastUtil.showText("举报成功");
     }
 
-    @OnClick({R.id.rl_message,R.id.btn_join,R.id.iv_barcode,R.id.iv_user_avatar,R.id.iv_radar})
+    @Override
+    public void cancelActivitySuccess(Activity activity) {
+        cancelLoading();
+        ToastUtil.showText("取消成功");
+        setActivityUi(activity);
+    }
+
+    @OnClick({R.id.iv_barcode,R.id.iv_user_avatar,R.id.iv_radar})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.rl_message:
@@ -402,6 +481,9 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                     mDanmakuView.show();
                 }
                 isRadarOpened = !isRadarOpened;
+                break;
+            case R.id.rl_filter:
+                SignUpListActivity.create(this,Integer.valueOf(mActivityId));
                 break;
         }
     }

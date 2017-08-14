@@ -24,6 +24,7 @@ import com.bing.blocks5.model.event.MainActivityListFilterEvent;
 import com.bing.blocks5.ui.main.fragments.MainActivityListFragment;
 import com.bing.blocks5.model.request.MainActivityListParams;
 import com.bing.blocks5.util.AMapLocationUtil;
+import com.bing.blocks5.util.AndroidBug54971Workaround;
 import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.TimeUtil;
 import com.bing.blocks5.util.ToastUtil;
@@ -68,7 +69,7 @@ import cn.campusapp.router.Router;
 public class MainActivity extends BasePresenterActivity<LoginAuthController.LoginAuthUiCallbacks>
    implements LoginAuthController.HomeUi,SlidingActivityBase,View.OnClickListener {
 
-    private static final int REQEUEST_CODE_SELECT_CITY = 1001;
+    private static final int REQUEST_CODE_SELECT_CITY = 1001;
     @Bind(R.id.banner)
     HomeBanner mBanner;
     @Bind(R.id.view_pager)
@@ -423,7 +424,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
                 SearchActivity.create(this);
                 break;
             case R.id.tv_other_city:
-                OtherCityActivity.create(this,REQEUEST_CODE_SELECT_CITY);
+                OtherCityActivity.create(this, REQUEST_CODE_SELECT_CITY);
                 break;
             case R.id.btn_ok:
                 mDropDownView.collapseDropDown();
@@ -452,7 +453,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             switch (requestCode){
-                case REQEUEST_CODE_SELECT_CITY:
+                case REQUEST_CODE_SELECT_CITY:
                     String selectCity = data.getStringExtra(OtherCityActivity.EXTRA_RESULT);
                     mCityTextView.setText(selectCity);
                     changeActivityAreaByCity(selectCity);

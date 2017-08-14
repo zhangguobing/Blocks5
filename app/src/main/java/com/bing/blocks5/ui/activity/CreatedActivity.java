@@ -83,9 +83,9 @@ public class CreatedActivity extends BaseActivity{
         titles.add("活动进行中");
         titles.add("活动结束");
         List<Fragment> fragments = new ArrayList<>();
+        fragments.add(CreatorActivityListFragment.newInstance(0,user_id));
         fragments.add(CreatorActivityListFragment.newInstance(1,user_id));
         fragments.add(CreatorActivityListFragment.newInstance(2,user_id));
-        fragments.add(CreatorActivityListFragment.newInstance(3,user_id));
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);
     }

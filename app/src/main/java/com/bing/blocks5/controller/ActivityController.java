@@ -97,6 +97,11 @@ public class ActivityController extends BaseController<ActivityController.Activi
             public void addComment(String activity_id, String content, int is_team) {
                 doAddComment(getId(ui), activity_id, content, is_team);
             }
+
+            @Override
+            public void cancelActivity(String activity_id) {
+                doCancelActivity(getId(ui), activity_id);
+            }
         };
     }
 
@@ -324,6 +329,28 @@ public class ActivityController extends BaseController<ActivityController.Activi
                 });
     }
 
+    //取消活动
+    private void doCancelActivity(final int callingId, String activity_id){
+        mApiClient.activityService()
+                .cancelActivity(activity_id,mToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<Activity>>() {
+                    @Override
+                    public void onResponse(ApiResponse<Activity> response) {
+                        ActivityUi ui = findUi(callingId);
+                        if(ui instanceof ActivityDetailUi){
+                            ((ActivityDetailUi)ui).cancelActivitySuccess(response.data);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
 
     private void doReportActivity(final int callingId, int activity_id, String content){
         mApiClient.activityService()
@@ -423,6 +450,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void start(int activity_id);
         void getComments(String activity_id,Map<String,String> paramsMap);
         void addComment(String activity_id,String content, int is_team);
+        void cancelActivity(String activity_id);
     }
 
     public interface ActivityUi extends BaseController.Ui<ActivityUiCallbacks>{
@@ -447,6 +475,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void cancelCollectSuccess(String msg);
         void joinSuccess();
         void reportSuccess();
+        void cancelActivitySuccess(Activity activity);
     }
 
     public interface CommentUi extends ActivityUi{

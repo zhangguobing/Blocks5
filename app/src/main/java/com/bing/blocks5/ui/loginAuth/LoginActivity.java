@@ -16,6 +16,7 @@ import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.LoginAuthController;
+import com.bing.blocks5.model.LoginBean;
 import com.bing.blocks5.ui.main.MainActivity;
 import com.bing.blocks5.util.ActivityStack;
 import com.bing.blocks5.util.CountDownTimerUtils;
@@ -208,10 +209,14 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
     }
 
     @Override
-    public void loginFinish() {
+    public void loginFinish(LoginBean loginBean) {
        cancelLoading();
-       MainActivity.create(this);
-       ActivityStack.create().appLogin();
+       if(loginBean.getUser() == null){
+           RegisterNextActivity.create(this);
+       }else{
+           MainActivity.create(this);
+           ActivityStack.create().appLogin();
+       }
     }
 
     @Override

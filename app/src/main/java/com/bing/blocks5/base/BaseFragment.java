@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bing.blocks5.util.AndroidBug54971Workaround;
 import com.bing.blocks5.util.HideKeyBoardUtil;
 
 import butterknife.ButterKnife;
@@ -29,6 +30,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AndroidBug54971Workaround.assistActivity(view);
         ButterKnife.bind(this, view);
         handleArguments(getArguments());
         initView(savedInstanceState);

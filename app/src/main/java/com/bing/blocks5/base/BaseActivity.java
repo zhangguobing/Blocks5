@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.aitangba.swipeback.SwipeBackActivity;
+import com.bing.blocks5.util.AndroidBug54971Workaround;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.bing.blocks5.Blocks5App;
 import com.bing.blocks5.R;
@@ -35,9 +36,9 @@ public abstract class BaseActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         onBeforeContentView();
         setContentView(getLayoutId());
+        if(isFixAndroidBug54971Workaround())  AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         ButterKnife.bind(this);
         initTitleBar();
         initView(savedInstanceState);
@@ -55,6 +56,10 @@ public abstract class BaseActivity extends SwipeBackActivity {
 
     protected void onBeforeContentView(){
 
+    }
+
+    protected boolean isFixAndroidBug54971Workaround(){
+        return true;
     }
 
     protected void initTitleBar(){
