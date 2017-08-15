@@ -60,12 +60,12 @@ public class CreatorActivityListFragment extends BaseListFragment<Activity,Activ
 
     @Override
     protected void refreshPage() {
-        getCallbacks().getActivityList(mState, mUserId,mPage = 1);
+        getCallbacks().getActivityList(mUserId, mState ,mPage = 1);
     }
 
     @Override
     protected void nextPage() {
-        getCallbacks().getActivityList(mState, mUserId,mPage);
+        getCallbacks().getActivityList(mUserId, mState ,mPage);
     }
 
     @Override

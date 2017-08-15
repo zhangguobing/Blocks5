@@ -5,6 +5,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.view.View;
 
 import com.bing.blocks5.api.ResponseError;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -154,6 +155,10 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
         } else {
             if (mPage == 1) {
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
+                        .setButton(view -> {
+                            mMultiStateView.setState(MultiStateView.STATE_LOADING);
+                            refreshPage();
+                        })
                         .setTitle(getEmptyTitle());
             } else {
                 ToastUtil.showText("没有更多了");

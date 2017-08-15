@@ -102,6 +102,8 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     ImageView mCoverImg;
     @Bind(R.id.picture_container)
     LinearLayout mPictureContainer;
+    @Bind(R.id.iv_upload_pictures)
+    ImageView mUploadPicturesImg;
 
     //选中的类型位置
     private int mSelectedTypePosition = -1;
@@ -344,6 +346,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     public void createActivitySuccess(String msg) {
         cancelLoading();
         ToastUtil.showText("创建成功");
+        CreatedActivity.create(this,AppCookie.getUserInfo().getId(),"我创建的活动");
         finish();
     }
 
@@ -471,5 +474,9 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
         mPictureContainer.addView(imageView);
         ImageLoadUtil.loadImage(imageView,filePath,this);
         imageView.setTag(imageUrl);
+
+        if(mPictureContainer.getChildCount() == PICTURE_MAX_COUNT){
+            mUploadPicturesImg.setVisibility(View.GONE);
+        }
     }
 }

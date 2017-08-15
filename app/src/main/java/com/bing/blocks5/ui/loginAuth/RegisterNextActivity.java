@@ -223,6 +223,35 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
 //    }
 
     private void completeRegisterClick(){
+        if (mNickNameEt.getText().toString().trim().length() == 0) {
+            ToastUtil.showText("请输入昵称");
+            return;
+        }
+        if (mRadioGroup.getCheckedRadioButtonId() == -1) {
+            ToastUtil.showText("请选择性别");
+            return;
+        }
+        if (mPwdEt.getText().toString().trim().length() == 0) {
+            ToastUtil.showText("请输入密码");
+            return;
+        }
+        if (mConfirmPwdEt.getText().toString().trim().length() == 0) {
+            ToastUtil.showText("请输入确认密码");
+            return;
+        }
+        if (mPwdEt.getText().toString().trim().length() < 8) {
+            ToastUtil.showText("请输入至少8位密码");
+            return;
+        }
+        if (!mPwdEt.getText().toString().trim().equals(mConfirmPwdEt.getText().toString().trim())) {
+            ToastUtil.showText("密码不一致");
+            return;
+        }
+
+        showCannotUpdateSexDialog();
+    }
+
+    private void showCannotUpdateSexDialog(){
         final NormalDialog dialog = new NormalDialog(this);
         int color = ContextCompat.getColor(this,R.color.primary_text);
         dialog.setCanceledOnTouchOutside(false);
@@ -238,30 +267,6 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
                 .widthScale(0.75f)
                 .show();
         dialog.setOnBtnClickL(dialog::dismiss, () -> {
-            if (mNickNameEt.getText().toString().trim().length() == 0) {
-                ToastUtil.showText("请输入昵称");
-                return;
-            }
-            if (mRadioGroup.getCheckedRadioButtonId() == -1) {
-                ToastUtil.showText("请选择性别");
-                return;
-            }
-            if (mPwdEt.getText().toString().trim().length() == 0) {
-                ToastUtil.showText("请输入密码");
-                return;
-            }
-            if (mConfirmPwdEt.getText().toString().trim().length() == 0) {
-                ToastUtil.showText("请输入确认密码");
-                return;
-            }
-            if (mPwdEt.getText().toString().trim().length() < 8) {
-                ToastUtil.showText("请输入至少8位密码");
-                return;
-            }
-            if (!mPwdEt.getText().toString().trim().equals(mConfirmPwdEt.getText().toString().trim())) {
-                ToastUtil.showText("密码不一致");
-                return;
-            }
             showLoading(R.string.label_being_something);
             String sex = mRadioGroup.getCheckedRadioButtonId() == R.id.rb_male ? "男" : "女";
             getCallbacks().register(AppCookie.getToken(),mNickNameEt.getText().toString().trim(),

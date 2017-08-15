@@ -158,6 +158,10 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
         } else {
             if (mPage == 1) {
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
+                        .setButton(view -> {
+                            mMultiStateView.setState(MultiStateView.STATE_LOADING);
+                            refreshPage();
+                        })
                         .setTitle(getEmptyTitle());
             } else {
                 ToastUtil.showText("没有更多了");

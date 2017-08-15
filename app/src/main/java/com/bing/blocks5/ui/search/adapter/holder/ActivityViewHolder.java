@@ -38,6 +38,8 @@ public class ActivityViewHolder extends BaseViewHolder<Activity> {
     TextView mStateAndAreaTv;
     @Bind(R.id.tv_activity_people_num_and_left)
     TextView mPeopleNumAndLeftTv;
+    @Bind(R.id.creator_avatar_img)
+    ImageView mCreatorAvatarImg;
 
     private List<Config.ActivityTypesBean> mActivityTypes;
     private List<Config.ActivityStatesBean> mActivityStates;
@@ -50,8 +52,8 @@ public class ActivityViewHolder extends BaseViewHolder<Activity> {
 
     public void bind(Activity activity){
         ImageLoadUtil.loadImage(mActivityImage,activity.getCover_url(),getContext());
+        ImageLoadUtil.loadAvatar(mCreatorAvatarImg,activity.getCreator().getAvatar(),getContext());
         mActivityTypeTv.setText(ActivityDataConvert.getActivityTypeNameById(activity.getActivity_type_id()));
-//        mActivityTypeTv.setText(getActivityTypeNameById(activity.getActivity_type_id()));
         mActivityTimeTv.setText(activity.getCreated_at() + "-" + activity.getEnd_at());
         mCreatorNameAndSex.setText(activity.getCreator().getNick_name());
         int sexDrawableId = "男".equals(activity.getCreator().getSex()) ? R.mipmap.ic_male : R.mipmap.ic_female;
@@ -59,7 +61,6 @@ public class ActivityViewHolder extends BaseViewHolder<Activity> {
         sexDrawable.setBounds(0,0,sexDrawable.getIntrinsicWidth(),sexDrawable.getIntrinsicHeight());
         mCreatorNameAndSex.setCompoundDrawables(null,null,sexDrawable,null);
         mCeatorCredit.setText("信用：" + activity.getCreator().getCredit());
-//        mStateAndAreaTv.setText(getActivityStateById(activity.getState()+"")+ "|" + activity.getArea());
         mStateAndAreaTv.setText(ActivityDataConvert.getActivityStateById(activity.getState()+"") + "|" + activity.getArea());
         mPeopleNumAndLeftTv.setText(activity.getMan_num() + "男" + activity.getWoman_num() + "女"+"(余" +
         activity.getMan_left() + "男" + activity.getWoman_left() + "女)");
