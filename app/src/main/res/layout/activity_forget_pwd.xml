@@ -101,7 +101,7 @@
                     android:layout_gravity="bottom"
                     android:contentDescription="@null"/>
 
-                <com.bing.blocks5.widget.BlocksEditText
+                <com.bing.blocks5.widget.PasswordEditText
                     android:id="@+id/et_pwd"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

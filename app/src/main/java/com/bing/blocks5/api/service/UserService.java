@@ -22,7 +22,7 @@ import rx.Observable;
 
 public interface UserService {
     @FormUrlEncoded
-    @POST("register")
+    @POST("user/register")
     Observable<ApiResponse> register(@Query("token") String token, @Field("nick_name") String nickName,
                                      @Field("sex") String sex,@Field("password") String password,
                                      @Field("avatar") String avatar);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -41,7 +42,6 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
 
     private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
     private static final int ACTIVITY_REQUEST_TAKE_PICTURE = 101;
-    private static final int ACTIVITY_REQUEST_PREVIEW_PHOTO = 102;
 
     @Bind(R.id.radio_group)
     RadioGroup mRadioGroup;
@@ -135,16 +135,6 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
                 .start();
     }
 
-    /**
-     * Take a picture from fromCamera.
-     */
-    private void fromCamera() {
-        Album.camera(this)
-                .requestCode(ACTIVITY_REQUEST_TAKE_PICTURE)
-//                .imagePath() // Specify the image path, optional.
-                .start();
-    }
-
 
 //    private void previewImage(int position) {
 //        Album.gallery(this)
@@ -193,34 +183,8 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
                 }
                 break;
             }
-//            case ACTIVITY_REQUEST_TAKE_PICTURE: {
-//                if (resultCode == RESULT_OK) {
-//                    List<String> imageList = Album.parseResult(data);
-//                    mImageList.addAll(imageList);
-//                    refreshImage();
-//                }
-//                break;
-//            }
-//            case ACTIVITY_REQUEST_PREVIEW_PHOTO: {
-//                if (resultCode == RESULT_OK) {
-//                    mImageList = Album.parseResult(data);
-//                    refreshImage();
-//                }
-//                break;
-//            }
         }
     }
-
-    /**
-     * Process selection results.
-     */
-//    private void refreshImage() {
-//        if (mImageList == null || mImageList.size() == 0) {
-//            mAvatarImage.setImageResource(R.mipmap.ic_user_avatar_white);
-//        } else {
-//            Album.getAlbumConfig().getImageLoader().loadImage(mAvatarImage, mImageList.get(0), mAvatarImage.getMeasuredWidth(), mAvatarImage.getMeasuredHeight());
-//        }
-//    }
 
     private void completeRegisterClick(){
         if (mNickNameEt.getText().toString().trim().length() == 0) {
@@ -245,6 +209,11 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
         }
         if (!mPwdEt.getText().toString().trim().equals(mConfirmPwdEt.getText().toString().trim())) {
             ToastUtil.showText("密码不一致");
+            return;
+        }
+
+        if(TextUtils.isEmpty(mAvatarUrl)){
+            ToastUtil.showText("请上传头像");
             return;
         }
 

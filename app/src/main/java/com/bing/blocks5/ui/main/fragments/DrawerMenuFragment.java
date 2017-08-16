@@ -98,7 +98,7 @@ public class DrawerMenuFragment extends Fragment {
     @OnClick({R.id.ll_profile,R.id.ll_setting,R.id.iv_avatar,
          R.id.ll_my_created_activity,R.id.ll_my_join_activity,
             R.id.ll_collect,R.id.ll_history,R.id.ll_follow,
-         R.id.ll_followed})
+         R.id.ll_followed,R.id.user_info_layout})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_avatar:
@@ -134,6 +134,10 @@ public class DrawerMenuFragment extends Fragment {
                 break;
             case R.id.ll_followed:
                 FollowOrFansActivity.create(getContext(),FollowOrFansActivity.TYPE_FOLLOWED,AppCookie.getUserInfo().getId());
+                hideSlideMenu();
+                break;
+            case R.id.user_info_layout:
+                ProfileActivity.create(getActivity());
                 hideSlideMenu();
                 break;
         }

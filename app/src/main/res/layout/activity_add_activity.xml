@@ -81,6 +81,7 @@
                         android:hint="请输入名称"
                         android:padding="15dp"
                         android:textColor="@color/primary_text"
+                        android:maxLines="1"
                         android:textSize="15sp" />
 
                 </LinearLayout>
@@ -261,6 +262,7 @@
                         android:gravity="end"
                         android:hint="总费用"
                         android:inputType="number"
+                        android:maxLines="1"
                         android:padding="15dp"
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />

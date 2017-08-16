@@ -10,6 +10,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.bing.blocks5.R;
 
@@ -58,11 +59,11 @@ public class PasswordEditText extends AppCompatEditText {
 
         mHideDrawable.setBounds(0, 0, mHideDrawable.getIntrinsicWidth(), mHideDrawable.getIntrinsicHeight());
         mShowDrawable.setBounds(0, 0, mShowDrawable.getIntrinsicWidth(), mShowDrawable.getIntrinsicHeight());
-        if (mPasswordVisible) {
-            showPassword();
-        } else {
-            hidePassword();
-        }
+
+        setOnFocusChangeListener((view, hasFocus) -> {
+            Drawable mCurrentDrawable = mPasswordVisible ? mHideDrawable : mShowDrawable;
+            setCompoundDrawablesWithIntrinsicBounds(null, null, hasFocus ? mCurrentDrawable : null, null);
+        });
 
     }
 

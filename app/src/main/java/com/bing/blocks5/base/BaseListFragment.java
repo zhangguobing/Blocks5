@@ -81,6 +81,10 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
         mMultiStateView.setState(getDefaultState());
     }
 
+    protected boolean isShowReloadWhenEmpty(){
+        return true;
+    }
+
     protected void refreshPage() {}
 
     protected void nextPage() {}
@@ -155,11 +159,13 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
         } else {
             if (mPage == 1) {
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
-                        .setButton(view -> {
-                            mMultiStateView.setState(MultiStateView.STATE_LOADING);
-                            refreshPage();
-                        })
                         .setTitle(getEmptyTitle());
+                if(isShowReloadWhenEmpty()){
+                    mMultiStateView.setButton(view -> {
+                        mMultiStateView.setState(MultiStateView.STATE_LOADING);
+                        refreshPage();
+                    });
+                }
             } else {
                 ToastUtil.showText("没有更多了");
             }
