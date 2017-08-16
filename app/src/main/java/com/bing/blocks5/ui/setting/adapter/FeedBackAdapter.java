@@ -70,7 +70,6 @@ public class FeedBackAdapter extends BaseAdapter<FeedBack,RecyclerView.ViewHolde
     }
 
     private void setTime(FeedBack feedBack, TextView text_time, int pos) {
-
         if(pos == 0){
             //第一条显示时间
             text_time.setVisibility(View.VISIBLE);
@@ -89,7 +88,11 @@ public class FeedBackAdapter extends BaseAdapter<FeedBack,RecyclerView.ViewHolde
 
     /**显示头像*/
     private void setPhoto(FeedBack feedBack, BaseMessageHolder holder, int pos) {
-        ImageLoadUtil.loadAvatar(holder.image_photo,AppCookie.getUserInfo().getAvatar() ,holder.itemView.getContext());
+        if(feedBack.getIs_reply() == 1){
+            holder.image_photo.setImageResource(R.mipmap.ic_customer_service);
+        }else{
+            ImageLoadUtil.loadAvatar(holder.image_photo,AppCookie.getUserInfo().getAvatar() ,holder.itemView.getContext());
+        }
         holder.image_photo.setOnClickListener(outsideClickListener);
         holder.image_photo.setTag(R.id.tag_click_content,pos);
     }
