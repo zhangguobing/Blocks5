@@ -30,7 +30,6 @@ public class GalleryActivity extends AppCompatActivity{
     private int locationH;
     private int position;
     private String[] urls;
-    private Bitmap bitmap;
 
     private TextView mIndicatorTv;
 
@@ -73,7 +72,7 @@ public class GalleryActivity extends AppCompatActivity{
             }
         });
 
-        GalleryAdapter galleryAdapter = new GalleryAdapter(this, urls, locationW, locationH, locationX, locationY, bitmap);
+        GalleryAdapter galleryAdapter = new GalleryAdapter(this, urls, locationW, locationH, locationX, locationY);
         viewPager.setAdapter(galleryAdapter);
         viewPager.setCurrentItem(position);
     }

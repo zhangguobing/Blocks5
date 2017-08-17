@@ -25,7 +25,7 @@ public class GalleryAdapter extends PagerAdapter{
     private String[] urls;
     private int locationW, locationH, locationX, locationY;
 
-    public GalleryAdapter(Activity activity, String[] urls, int w, int h, int x, int y, Bitmap bitmap) {
+    public GalleryAdapter(Activity activity, String[] urls, int w, int h, int x, int y) {
         this.activity = activity;
         this.urls = urls;
         this.locationH = h;
