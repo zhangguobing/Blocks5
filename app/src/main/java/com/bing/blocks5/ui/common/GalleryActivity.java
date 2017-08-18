@@ -3,13 +3,20 @@ package com.bing.blocks5.ui.common;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.bing.blocks5.R;
 import com.bing.blocks5.ui.common.adapter.GalleryAdapter;
+import com.bing.blocks5.widget.TitleBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * author：zhangguobing on 2017/7/5 14:35
@@ -23,15 +30,23 @@ public class GalleryActivity extends AppCompatActivity{
     public static final String PHOTO_SELECT_Y_TAG = "PHOTO_SELECT_Y_TAG";
     public static final String PHOTO_SELECT_W_TAG = "PHOTO_SELECT_W_TAG";
     public static final String PHOTO_SELECT_H_TAG = "PHOTO_SELECT_H_TAG";
+    public static final String PHOTO_IS_SHOW_TITLE_BAR = "PHOTO_IS_SHOW_TITLE_BAR";
+
+    public static final String KEY_OUTPUT_IMAGE_URLS_LIST = "key_output_image_urls_list";
 
     private int locationX;
     private int locationY;
     private int locationW;
     private int locationH;
     private int position;
-    private String[] urls;
+    private ArrayList<String> urls;
+    //是否显示标题栏 默认不显示
+    private boolean isShowTitleBar;
 
     private TextView mIndicatorTv;
+
+    private ViewPager mViewPager;
+    private GalleryAdapter mGalleryAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,21 +56,24 @@ public class GalleryActivity extends AppCompatActivity{
         Intent intent = getIntent();
         if (intent != null) {
             Bundle b = intent.getExtras();
-            urls = b.getStringArray(PHOTO_SOURCE_ID);
+            urls = b.getStringArrayList(PHOTO_SOURCE_ID);
 
             position = intent.getIntExtra(PHOTO_SELECT_POSITION, 0);
             locationX = intent.getIntExtra(PHOTO_SELECT_X_TAG, 0);
             locationY = intent.getIntExtra(PHOTO_SELECT_Y_TAG, 0);
             locationW = intent.getIntExtra(PHOTO_SELECT_W_TAG, 0);
             locationH = intent.getIntExtra(PHOTO_SELECT_H_TAG, 0);
+            isShowTitleBar = intent.getBooleanExtra(PHOTO_IS_SHOW_TITLE_BAR,false);
         }
 
-        mIndicatorTv = (TextView) findViewById(R.id.tv_indicator);
-        mIndicatorTv.setText(position+1 + "/" + urls.length);
+        initTitleBar();
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.setOffscreenPageLimit(urls.length);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mIndicatorTv = (TextView) findViewById(R.id.tv_indicator);
+        mIndicatorTv.setText(position+1 + "/" + urls.size());
+
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mViewPager.setOffscreenPageLimit(urls.size());
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -63,7 +81,7 @@ public class GalleryActivity extends AppCompatActivity{
 
             @Override
             public void onPageSelected(int position) {
-                mIndicatorTv.setText(position+1 + "/" + urls.length);
+                mIndicatorTv.setText(position+1 + "/" + urls.size());
             }
 
             @Override
@@ -72,8 +90,87 @@ public class GalleryActivity extends AppCompatActivity{
             }
         });
 
-        GalleryAdapter galleryAdapter = new GalleryAdapter(this, urls, locationW, locationH, locationX, locationY);
-        viewPager.setAdapter(galleryAdapter);
-        viewPager.setCurrentItem(position);
+        mGalleryAdapter = new GalleryAdapter(this, urls, locationW, locationH,
+                locationX, locationY, isShowTitleBar);
+        mViewPager.setAdapter(mGalleryAdapter);
+        mViewPager.setCurrentItem(position);
     }
+
+
+    /**
+     * 删除当前图片
+     */
+    private void deleteCurrentImage(){
+        int position = mViewPager.getCurrentItem();
+        mGalleryAdapter.remove(position);
+    }
+
+    private void initTitleBar(){
+        if(isShowTitleBar){
+            TitleBar titleBar = (TitleBar) findViewById(R.id.title_bar);
+            titleBar.setVisibility(View.VISIBLE);
+            titleBar.setTitle("相册");
+            titleBar.setTitleColor(ContextCompat.getColor(this,R.color.white));
+            titleBar.setLeftImageResource(R.mipmap.ic_navigate_back);
+            titleBar.setLeftClickListener(view -> finish());
+            titleBar.setActionTextColor(ContextCompat.getColor(this,R.color.white));
+            titleBar.addAction(new TitleBar.Action() {
+                @Override
+                public String getText() {
+                    return "删除";
+                }
+
+                @Override
+                public int getDrawable() {
+                    return 0;
+                }
+
+                @Override
+                public void performAction(View view) {
+                    //删除图片
+                    deleteCurrentImage();
+                    if(urls.size() > 0){
+                        mIndicatorTv.setText("1/" + urls.size());
+                        mViewPager.setCurrentItem(0);
+                    }else{
+                        mIndicatorTv.setVisibility(View.GONE);
+                    }
+                }
+            });
+            titleBar.addAction(new TitleBar.Action() {
+                @Override
+                public String getText() {
+                    return null;
+                }
+
+                @Override
+                public int getDrawable() {
+                    return R.drawable.album_ic_done_white;
+                }
+
+                @Override
+                public void performAction(View view) {
+                    //完成
+                    Intent intent = new Intent();
+                    intent.putExtra(KEY_OUTPUT_IMAGE_URLS_LIST,mGalleryAdapter.getList());
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }
+            });
+        }
+    }
+
+    /**
+     * Resolve the newest photo url list
+     * @param intent
+     * @return
+     */
+    public static @NonNull ArrayList<String> parseResult(Intent intent){
+       ArrayList<String> urlList = intent.getStringArrayListExtra(KEY_OUTPUT_IMAGE_URLS_LIST);
+       if(urlList == null){
+           urlList = new ArrayList<>();
+       }
+       return urlList;
+    }
+
 }

@@ -2,6 +2,8 @@ package com.bing.blocks5.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +21,7 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.base.BaseController;
+import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.util.AsyncRun;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.QiniuUploadUtils;
@@ -56,10 +59,11 @@ import butterknife.OnClick;
  */
 @ContentView(R.layout.activity_add_activity)
 public class AddActivityActivity extends BasePresenterActivity<ActivityController.ActivityUiCallbacks>
-      implements ActivityController.CreateActivityUi,Validator.ValidationListener {
+      implements ActivityController.CreateActivityUi,Validator.ValidationListener,View.OnClickListener {
 
     private static final int ACTIVITY_REQUEST_SELECT_COVER = 100;
     private static final int ACTIVITY_REQUEST_SELECT_PICTURE = 101;
+    private static final int ACTIVITY_REQUEST_EDIT_PICTURE = 102;
 
     /**
      * 上次图片的最大个数
@@ -119,6 +123,8 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     private KProgressHUD mUploadProgressDialog;
 
     private String mCoverUrl = "";
+
+    private ArrayList<String> mPictureUrls = new ArrayList<>();
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -201,6 +207,13 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                 break;
             case R.id.btn_create_activity:
                 mValidator.validate();
+                break;
+            case R.id.add_activity_picture_id:
+                if(view.getTag() != null && mPictureUrls.size() > 0){
+                    String url = (String) view.getTag();
+                    int index = mPictureUrls.indexOf(url);
+                    if(index != -1) showGallery(view,index);
+                }
                 break;
         }
     }
@@ -393,70 +406,81 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case ACTIVITY_REQUEST_SELECT_COVER: {
-                if (resultCode == RESULT_OK && data != null) {
-                    String filePath = Album.parseResult(data).get(0);
-                    QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
-                        @Override
-                        public void onStart() {
-                            mUploadProgressDialog.show();
-                        }
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case ACTIVITY_REQUEST_SELECT_COVER: {
+                    if (data != null) {
+                        String filePath = Album.parseResult(data).get(0);
+                        QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                            @Override
+                            public void onStart() {
+                                mUploadProgressDialog.show();
+                            }
 
-                        @Override
-                        public void onSuccess(String originFilePath,String destUrl) {
-                            mUploadProgressDialog.dismiss();
-                            ImageLoadUtil.loadImage(mCoverImg,originFilePath,AddActivityActivity.this);
-                            mCoverUrl = destUrl;
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String msg) {
-                            mUploadProgressDialog.dismiss();
-                            ToastUtil.showText("上传异常");
-                        }
-
-                        @Override
-                        public void onProgress(int progress) {
-                            mUploadProgressDialog.setProgress(progress);
-                        }
-                    });
-                }
-                break;
-            }
-            case ACTIVITY_REQUEST_SELECT_PICTURE:
-                if(resultCode == RESULT_OK && data != null) {
-                    List<String> filePaths = Album.parseResult(data);
-                    QiniuUploadUtils.getInstance().uploadImages(filePaths, new QiniuUploadUtils.QiniuUploadUtilsListener() {
-                        @Override
-                        public void onStart() {
-                            AsyncRun.runInMain(() -> mUploadProgressDialog.show());
-                        }
-
-                        @Override
-                        public void onSuccess(String originFilePath,String fileUrl) {
-                            AsyncRun.runInMain(() -> {
+                            @Override
+                            public void onSuccess(String originFilePath,String destUrl) {
                                 mUploadProgressDialog.dismiss();
-                                addChildViewToPicture(originFilePath,fileUrl);
-                            });
-                        }
+                                ImageLoadUtil.loadImage(mCoverImg,originFilePath,AddActivityActivity.this);
+                                mCoverUrl = destUrl;
+                            }
 
-                        @Override
-                        public void onError(int errorCode, String msg) {
-                            AsyncRun.runInMain(() -> {
+                            @Override
+                            public void onError(int errorCode, String msg) {
                                 mUploadProgressDialog.dismiss();
                                 ToastUtil.showText("上传异常");
-                            });
+                            }
 
-                        }
-
-                        @Override
-                        public void onProgress(int progress) {
-                            AsyncRun.runInMain(() -> mUploadProgressDialog.setProgress(progress));
-                        }
-                    });
+                            @Override
+                            public void onProgress(int progress) {
+                                mUploadProgressDialog.setProgress(progress);
+                            }
+                        });
+                    }
                     break;
                 }
+                case ACTIVITY_REQUEST_SELECT_PICTURE:
+                    if(data != null) {
+                        List<String> filePaths = Album.parseResult(data);
+                        QiniuUploadUtils.getInstance().uploadImages(filePaths, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                            @Override
+                            public void onStart() {
+                                AsyncRun.runInMain(() -> mUploadProgressDialog.show());
+                            }
+
+                            @Override
+                            public void onSuccess(String originFilePath,String fileUrl) {
+                                AsyncRun.runInMain(() -> {
+                                    mUploadProgressDialog.dismiss();
+                                    addChildViewToPicture(originFilePath,fileUrl);
+                                    mPictureUrls.add(fileUrl);
+                                });
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String msg) {
+                                AsyncRun.runInMain(() -> {
+                                    mUploadProgressDialog.dismiss();
+                                    ToastUtil.showText("上传异常");
+                                });
+
+                            }
+
+                            @Override
+                            public void onProgress(int progress) {
+                                AsyncRun.runInMain(() -> mUploadProgressDialog.setProgress(progress));
+                            }
+                        });
+                        break;
+                    }
+                case ACTIVITY_REQUEST_EDIT_PICTURE:
+                    mPictureUrls.clear();
+                    mPictureUrls.addAll(GalleryActivity.parseResult(data));
+                    mPictureContainer.removeAllViews();
+                    for (String imageUrl : mPictureUrls){
+                        addChildViewToPicture(null,imageUrl);
+                    }
+                    break;
+            }
         }
     }
 
@@ -469,14 +493,46 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.width = DensityUtil.dp2px(this,42);
         layoutParams.leftMargin = DensityUtil.dp2px(this,20);
+        imageView.setId(R.id.add_activity_picture_id);
         imageView.setLayoutParams(layoutParams);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setOnClickListener(this);
         mPictureContainer.addView(imageView);
         ImageLoadUtil.loadImage(imageView,filePath,this);
+        if(filePath == null && imageUrl != null) ImageLoadUtil.loadImage(imageView,imageUrl,this);
         imageView.setTag(imageUrl);
 
         if(mPictureContainer.getChildCount() == PICTURE_MAX_COUNT){
             mUploadPicturesImg.setVisibility(View.GONE);
         }
+    }
+
+
+    private void showGallery(View v,int position) {
+        int[] location = new int[2];
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Rect frame = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            int statusBarHeight = frame.top;
+            v.getLocationOnScreen(location);
+            location[1] += statusBarHeight;
+        } else {
+            v.getLocationOnScreen(location);
+        }
+        v.invalidate();
+        int width = v.getWidth();
+        int height = v.getHeight();
+
+        Intent intent = new Intent(this, GalleryActivity.class);
+        Bundle b = new Bundle();
+        b.putStringArrayList(GalleryActivity.PHOTO_SOURCE_ID, mPictureUrls);
+        intent.putExtras(b);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_POSITION, position);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_X_TAG, location[0]);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_Y_TAG, location[1]);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_W_TAG, width);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_H_TAG, height);
+        intent.putExtra(GalleryActivity.PHOTO_IS_SHOW_TITLE_BAR, true);
+        startActivityForResult(intent,ACTIVITY_REQUEST_EDIT_PICTURE);
     }
 }

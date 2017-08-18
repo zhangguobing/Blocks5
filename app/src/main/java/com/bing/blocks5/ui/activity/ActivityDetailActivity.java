@@ -118,7 +118,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     private int mUserId;
     private Activity mActivity;
 
-    private List<String> imageUrls;
+    private ArrayList<String> imageUrls;
 
     private boolean isRadarOpened = true;
 
@@ -506,7 +506,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
 
         Intent intent = new Intent(this, GalleryActivity.class);
         Bundle b = new Bundle();
-        b.putStringArray(GalleryActivity.PHOTO_SOURCE_ID, imageUrls.toArray(new String[imageUrls.size()]));
+        b.putStringArrayList(GalleryActivity.PHOTO_SOURCE_ID, imageUrls);
         intent.putExtras(b);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_POSITION, position);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_X_TAG, location[0]);

@@ -76,7 +76,7 @@ implements UserController.UserDetailUi{
     public static final String EXTRA_USER = "extra_user";
     public static final String EXTRA_USER_ID = "extra_user_id";
 
-    private String[] gallery_urls;
+    private ArrayList<String> gallery_urls;
 
     private int user_id;
     private boolean is_follow = false;
@@ -144,18 +144,16 @@ implements UserController.UserDetailUi{
     }
 
     private void initGalleryUrls(User user){
-        List<String> list = new ArrayList<>();
+        gallery_urls = new ArrayList<>();
         if(!TextUtils.isEmpty(user.getImg_url_1())){
-            list.add(user.getImg_url_1());
+            gallery_urls.add(user.getImg_url_1());
         }
         if(!TextUtils.isEmpty(user.getImg_url_2())){
-            list.add(user.getImg_url_2());
+            gallery_urls.add(user.getImg_url_2());
         }
         if(!TextUtils.isEmpty(user.getImg_url_3())){
-            list.add(user.getImg_url_3());
+            gallery_urls.add(user.getImg_url_3());
         }
-        gallery_urls = new String[list.size()];
-        list.toArray(gallery_urls);
     }
 
     @OnClick({R.id.iv_back,R.id.layout_his_create_activity,R.id.layout_his_join_activity,
@@ -263,7 +261,7 @@ implements UserController.UserDetailUi{
 
         Intent intent = new Intent(this, GalleryActivity.class);
         Bundle b = new Bundle();
-        b.putStringArray(GalleryActivity.PHOTO_SOURCE_ID, gallery_urls);
+        b.putStringArrayList(GalleryActivity.PHOTO_SOURCE_ID, gallery_urls);
         intent.putExtras(b);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_POSITION, position);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_X_TAG, location[0]);

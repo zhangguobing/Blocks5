@@ -12,6 +12,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bing.blocks5.R;
 import com.bing.blocks5.widget.SmoothImageView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -22,21 +26,23 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class GalleryAdapter extends PagerAdapter{
 
     private Activity activity;
-    private String[] urls;
+    private ArrayList<String> urls;
     private int locationW, locationH, locationX, locationY;
+    private boolean isShowTitleBar;
 
-    public GalleryAdapter(Activity activity, String[] urls, int w, int h, int x, int y) {
+    public GalleryAdapter(Activity activity, ArrayList<String> urls, int w, int h, int x, int y,boolean isShowTitleBar) {
         this.activity = activity;
         this.urls = urls;
         this.locationH = h;
         this.locationW = w;
         this.locationX = x;
         this.locationY = y;
+        this.isShowTitleBar = isShowTitleBar;
     }
 
     @Override
     public int getCount() {
-        return urls.length;
+        return urls.size();
     }
 
     @Override
@@ -48,22 +54,24 @@ public class GalleryAdapter extends PagerAdapter{
         smoothImageView.transformIn();
 
         Glide.with(activity)
-                .load(urls[position])
+                .load(urls.get(position))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .error(R.mipmap.img_error)
                 .into(smoothImageView);
 
-        smoothImageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-            @Override
-            public void onPhotoTap(View view, float v, float v1) {
-                finishActivity();
-            }
+        if(!isShowTitleBar){
+            smoothImageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                @Override
+                public void onPhotoTap(View view, float v, float v1) {
+                    finishActivity();
+                }
 
-            @Override
-            public void onOutsidePhotoTap() {
-                finishActivity();
-            }
-        });
+                @Override
+                public void onOutsidePhotoTap() {
+                    finishActivity();
+                }
+            });
+        }
         return smoothImageView;
     }
 
@@ -80,5 +88,23 @@ public class GalleryAdapter extends PagerAdapter{
     private void finishActivity(){
         activity.finish();
         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    /**
+     * 删除某张图片
+     * @param position
+     */
+    public void remove(int position){
+        urls.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<String> getList(){
+        return urls;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

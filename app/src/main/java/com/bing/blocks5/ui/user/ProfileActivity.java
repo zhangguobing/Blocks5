@@ -2,6 +2,8 @@ package com.bing.blocks5.ui.user;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -15,9 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.util.AsyncRun;
 import com.bing.blocks5.util.QiniuUploadUtils;
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
@@ -37,7 +39,6 @@ import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 
 import org.json.JSONArray;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,14 +51,16 @@ import butterknife.OnClick;
  */
 @ContentView(R.layout.activity_profile)
 public class ProfileActivity extends BasePresenterActivity<UserController.UserUiCallbacks>
-  implements UserController.ProfileUi{
+  implements UserController.ProfileUi,View.OnClickListener{
 
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
 
     private static final int ACTIVITY_REQUEST_SELECT_AVATAR = 100;
-    private static final int ACTIVITY_REQUEST_SELECT_ABLUM = 101;
+    private static final int ACTIVITY_REQUEST_SELECT_ALBUM = 101;
+    private static final int ACTIVITY_REQUEST_EDIT_ALBUM = 102;
+
 
     private static boolean isAnimationEnter = false;
 
@@ -85,7 +88,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     private KProgressHUD mUploadProgressDialog;
 
     private static final int ALBUM_MAX_COUNT = 3;
-    private List<String> mAlbumUrls = new ArrayList<>();
+    private ArrayList<String> mAlbumUrls = new ArrayList<>();
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -144,7 +147,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                 fromAlbum(1, ACTIVITY_REQUEST_SELECT_AVATAR);
                 break;
             case R.id.iv_album:
-                fromAlbum(ALBUM_MAX_COUNT - mAblumContainer.getChildCount(), ACTIVITY_REQUEST_SELECT_ABLUM);
+                fromAlbum(ALBUM_MAX_COUNT - mAblumContainer.getChildCount(), ACTIVITY_REQUEST_SELECT_ALBUM);
                 break;
             case R.id.tv_select_area:
                 showPickerView();
@@ -154,6 +157,13 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                 break;
             case R.id.tv_age:
                 showAgePickerView();
+                break;
+            case R.id.profile_album_id:
+                if(view.getTag() != null && mAlbumUrls.size() > 0){
+                    String url = (String) view.getTag();
+                    int index = mAlbumUrls.indexOf(url);
+                    if(index != -1) showGallery(view,index);
+                }
                 break;
         }
     }
@@ -210,6 +220,8 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         layoutParams.width = DensityUtil.dp2px(this,42);
         layoutParams.leftMargin = DensityUtil.dp2px(this,20);
         imageView.setLayoutParams(layoutParams);
+        imageView.setId(R.id.profile_album_id);
+        imageView.setOnClickListener(this);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mAblumContainer.addView(imageView);
         if(!TextUtils.isEmpty(filePath)){
@@ -242,70 +254,80 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case ACTIVITY_REQUEST_SELECT_AVATAR: {
-                if (resultCode == RESULT_OK && data != null) {
-                    String filePath = Album.parseResult(data).get(0);
-                    QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
-                        @Override
-                        public void onStart() {
-                            mUploadProgressDialog.show();
-                        }
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case ACTIVITY_REQUEST_SELECT_AVATAR: {
+                    if (data != null) {
+                        String filePath = Album.parseResult(data).get(0);
+                        QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                            @Override
+                            public void onStart() {
+                                mUploadProgressDialog.show();
+                            }
 
-                        @Override
-                        public void onSuccess(String filePath,String fileUrl) {
-                            mUploadProgressDialog.dismiss();
-                            ImageLoadUtil.loadAvatar(mAvatarImg,filePath,ProfileActivity.this);
-                            mAvatarUrl = fileUrl;
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String msg) {
-                            mUploadProgressDialog.dismiss();
-                            ToastUtil.showText("上传异常");
-                        }
-
-                        @Override
-                        public void onProgress(int progress) {
-                            mUploadProgressDialog.setProgress(progress);
-                        }
-                    });
-                }
-                break;
-            }
-            case ACTIVITY_REQUEST_SELECT_ABLUM:
-                if(resultCode == RESULT_OK && data != null) {
-                    List<String> filePaths = Album.parseResult(data);
-                    QiniuUploadUtils.getInstance().uploadImages(filePaths, new QiniuUploadUtils.QiniuUploadUtilsListener() {
-                        @Override
-                        public void onStart() {
-                            AsyncRun.runInMain(() -> mUploadProgressDialog.show());
-                        }
-
-                        @Override
-                        public void onSuccess(String originUrl,String destUrl) {
-                            AsyncRun.runInMain(() -> {
+                            @Override
+                            public void onSuccess(String filePath,String fileUrl) {
                                 mUploadProgressDialog.dismiss();
-                                addChildViewToAlbum(originUrl,destUrl,false);
-                            });
-                        }
+                                ImageLoadUtil.loadAvatar(mAvatarImg,filePath,ProfileActivity.this);
+                                mAvatarUrl = fileUrl;
+                            }
 
-                        @Override
-                        public void onError(int errorCode, String msg) {
-                            AsyncRun.runInMain(() -> {
+                            @Override
+                            public void onError(int errorCode, String msg) {
                                 mUploadProgressDialog.dismiss();
                                 ToastUtil.showText("上传异常");
-                            });
+                            }
 
-                        }
-
-                        @Override
-                        public void onProgress(int progress) {
-                            AsyncRun.runInMain(() -> mUploadProgressDialog.setProgress(progress));
-                        }
-                    });
+                            @Override
+                            public void onProgress(int progress) {
+                                mUploadProgressDialog.setProgress(progress);
+                            }
+                        });
+                    }
                     break;
                 }
+                case ACTIVITY_REQUEST_SELECT_ALBUM:
+                    if(data != null) {
+                        List<String> filePaths = Album.parseResult(data);
+                        QiniuUploadUtils.getInstance().uploadImages(filePaths, new QiniuUploadUtils.QiniuUploadUtilsListener() {
+                            @Override
+                            public void onStart() {
+                                AsyncRun.runInMain(() -> mUploadProgressDialog.show());
+                            }
+
+                            @Override
+                            public void onSuccess(String originUrl,String destUrl) {
+                                AsyncRun.runInMain(() -> {
+                                    mUploadProgressDialog.dismiss();
+                                    addChildViewToAlbum(originUrl,destUrl,false);
+                                });
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String msg) {
+                                AsyncRun.runInMain(() -> {
+                                    mUploadProgressDialog.dismiss();
+                                    ToastUtil.showText("上传异常");
+                                });
+
+                            }
+
+                            @Override
+                            public void onProgress(int progress) {
+                                AsyncRun.runInMain(() -> mUploadProgressDialog.setProgress(progress));
+                            }
+                        });
+                        break;
+                    }
+                case ACTIVITY_REQUEST_EDIT_ALBUM:
+                    mAlbumUrls.clear();
+                    mAlbumUrls.addAll(GalleryActivity.parseResult(data));
+                    mAblumContainer.removeAllViews();
+                    for (String imageUrl : mAlbumUrls){
+                        addChildViewToAlbum(null,imageUrl,true);
+                    }
+                    break;
+            }
         }
     }
 
@@ -417,5 +439,33 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         for (String imageUrl : mAlbumUrls){
             addChildViewToAlbum(null,imageUrl,true);
         }
+    }
+
+    private void showGallery(View v,int position) {
+        int[] location = new int[2];
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Rect frame = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            int statusBarHeight = frame.top;
+            v.getLocationOnScreen(location);
+            location[1] += statusBarHeight;
+        } else {
+            v.getLocationOnScreen(location);
+        }
+        v.invalidate();
+        int width = v.getWidth();
+        int height = v.getHeight();
+
+        Intent intent = new Intent(this, GalleryActivity.class);
+        Bundle b = new Bundle();
+        b.putStringArrayList(GalleryActivity.PHOTO_SOURCE_ID, mAlbumUrls);
+        intent.putExtras(b);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_POSITION, position);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_X_TAG, location[0]);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_Y_TAG, location[1]);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_W_TAG, width);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_H_TAG, height);
+        intent.putExtra(GalleryActivity.PHOTO_IS_SHOW_TITLE_BAR, true);
+        startActivityForResult(intent,ACTIVITY_REQUEST_EDIT_ALBUM);
     }
 }

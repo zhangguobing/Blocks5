@@ -37,6 +37,8 @@ import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.ViewUtil;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -169,7 +171,9 @@ public class DrawerMenuFragment extends Fragment {
 
         Intent intent = new Intent(getActivity(), GalleryActivity.class);
         Bundle b = new Bundle();
-        b.putStringArray(GalleryActivity.PHOTO_SOURCE_ID, new String[]{mAvatarUrl});
+        ArrayList<String> urls = new ArrayList<>();
+        urls.add(mAvatarUrl);
+        b.putStringArrayList(GalleryActivity.PHOTO_SOURCE_ID, urls);
         intent.putExtras(b);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_POSITION, 0);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_X_TAG, location[0]);

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 聊天页面的id -->
     <item name="selected_view" type="id"/>
     <item type="id" name="tag_click_content"/>
+    <!-- 添加活动图片的ImageView id-->
+    <item name="add_activity_picture_id" type="id"/>
+    <!-- 个人资料页面的相册ImageView id -->
+    <item name="profile_album_id" type="id"/>
 </resources>
