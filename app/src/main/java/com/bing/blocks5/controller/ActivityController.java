@@ -183,6 +183,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         if(!TextUtils.isEmpty(params.area) && !params.area.equals("所有地区")){
             map.put("area",params.area);
         }
+        map.put("state",params.state);
         map.put("begin_at",params.begin_at);
         map.put("end_at",params.end_at);
         mApiClient.activityService()

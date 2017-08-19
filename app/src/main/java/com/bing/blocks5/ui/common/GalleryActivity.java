@@ -133,6 +133,7 @@ public class GalleryActivity extends AppCompatActivity{
                         mIndicatorTv.setText("1/" + urls.size());
                         mViewPager.setCurrentItem(0);
                     }else{
+                        titleBar.removeActionAt(0);
                         mIndicatorTv.setVisibility(View.GONE);
                     }
                 }
