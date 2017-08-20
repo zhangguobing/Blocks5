@@ -41,12 +41,14 @@
                 app:tabSelectedTextColor="@color/red"/>
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/iv_filter"
+        <TextView
+            android:id="@+id/tv_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
-            android:src="@mipmap/ic_filter" />
+            android:textColor="@color/white"
+            android:text="公告栏"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

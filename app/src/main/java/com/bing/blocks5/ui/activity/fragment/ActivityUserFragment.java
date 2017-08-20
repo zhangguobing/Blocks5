@@ -3,6 +3,7 @@ package com.bing.blocks5.ui.activity.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.bing.blocks5.ui.activity.SignUpListActivity;
 import com.squareup.otto.Subscribe;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
@@ -31,6 +32,8 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
 
     private int activity_id;
     private int is_sign;
+
+    private boolean isFirstLoad = true;
 
     public static ActivityUserFragment newInstance(int is_sign,int activity_id) {
         Bundle args = new Bundle();
@@ -100,6 +103,12 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     public void onSignUpList(List<ActivityUser> users) {
         cancelLoading();
         onFinishRequest(users);
+        if(isFirstLoad){
+            if(getActivity() instanceof SignUpListActivity){
+                ((SignUpListActivity)getActivity()).onUserLoaded(users,is_sign);
+            }
+            isFirstLoad = false;
+        }
     }
 
     @Subscribe

@@ -102,6 +102,11 @@ public class ActivityController extends BaseController<ActivityController.Activi
             public void cancelActivity(String activity_id) {
                 doCancelActivity(getId(ui), activity_id);
             }
+
+            @Override
+            public void updateNotice(String activity_id, int is_team, String content) {
+                doUpdateNotice(getId(ui),activity_id, is_team, content);
+            }
         };
     }
 
@@ -352,6 +357,27 @@ public class ActivityController extends BaseController<ActivityController.Activi
                 });
     }
 
+    private void doUpdateNotice(final int callingId, String activity_id, int is_team, String content){
+        mApiClient.activityService()
+                .updateNotice(activity_id,mToken, is_team, content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse>() {
+                    @Override
+                    public void onResponse(ApiResponse response) {
+                        ActivityUi ui = findUi(callingId);
+                        if(ui instanceof NoticeUi){
+                            ((NoticeUi)ui).updateNoticeSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
 
     private void doReportActivity(final int callingId, int activity_id, String content){
         mApiClient.activityService()
@@ -452,6 +478,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void getComments(String activity_id,Map<String,String> paramsMap);
         void addComment(String activity_id,String content, int is_team);
         void cancelActivity(String activity_id);
+        void updateNotice(String activity_id, int is_team, String content);
     }
 
     public interface ActivityUi extends BaseController.Ui<ActivityUiCallbacks>{
@@ -483,5 +510,9 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void getCommentSuccess(List<Comment> comments);
         void addCommentSuccess(Comment comment);
         void addCommentFail(String msg);
+    }
+
+    public interface NoticeUi extends ActivityUi{
+        void updateNoticeSuccess();
     }
 }

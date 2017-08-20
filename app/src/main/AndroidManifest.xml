@@ -124,7 +124,7 @@
             android:label="收藏"/>
         <activity android:name=".ui.user.HistoryActivity"
             android:screenOrientation="portrait"
-            android:label="历史"/>
+            android:label="历史记录"/>
         <activity android:name=".ui.user.FollowOrFansActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.main.OtherCityActivity"
@@ -135,6 +135,10 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.ActivityMessageActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.PublishNoticeActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait"/>
 
 
         <!-- ShareSDK 开始 -->

@@ -1,11 +1,14 @@
 package com.bing.blocks5.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * author：zhangguobing on 2017/7/20 17:47
  * email：bing901222@qq.com
  */
 
-public class Comment {
+public class Comment implements Parcelable {
     private int id;
     private int activity_id;
     private int user_id;
@@ -110,7 +113,7 @@ public class Comment {
         this.send_state = send_state;
     }
 
-    public static class CreatorBean {
+    public static class CreatorBean implements Parcelable {
 
         private int id;
         private String nick_name;
@@ -166,6 +169,87 @@ public class Comment {
         public void setIdentity_state(int identity_state) {
             this.identity_state = identity_state;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.id);
+            dest.writeString(this.nick_name);
+            dest.writeString(this.sex);
+            dest.writeString(this.avatar);
+            dest.writeInt(this.credit);
+            dest.writeInt(this.identity_state);
+        }
+
+        public CreatorBean() {
+        }
+
+        protected CreatorBean(Parcel in) {
+            this.id = in.readInt();
+            this.nick_name = in.readString();
+            this.sex = in.readString();
+            this.avatar = in.readString();
+            this.credit = in.readInt();
+            this.identity_state = in.readInt();
+        }
+
+        public static final Creator<CreatorBean> CREATOR = new Creator<CreatorBean>() {
+            @Override
+            public CreatorBean createFromParcel(Parcel source) {
+                return new CreatorBean(source);
+            }
+
+            @Override
+            public CreatorBean[] newArray(int size) {
+                return new CreatorBean[size];
+            }
+        };
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeInt(this.activity_id);
+        dest.writeInt(this.user_id);
+        dest.writeString(this.content);
+        dest.writeInt(this.is_team);
+        dest.writeString(this.created_at);
+        dest.writeParcelable(this.creator, flags);
+        dest.writeInt(this.send_state);
+    }
+
+    public Comment() {
+    }
+
+    protected Comment(Parcel in) {
+        this.id = in.readInt();
+        this.activity_id = in.readInt();
+        this.user_id = in.readInt();
+        this.content = in.readString();
+        this.is_team = in.readInt();
+        this.created_at = in.readString();
+        this.creator = in.readParcelable(CreatorBean.class.getClassLoader());
+        this.send_state = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {
+        @Override
+        public Comment createFromParcel(Parcel source) {
+            return new Comment(source);
+        }
+
+        @Override
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
 }

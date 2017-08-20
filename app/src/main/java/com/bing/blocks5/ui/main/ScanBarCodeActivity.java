@@ -116,7 +116,8 @@ public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserContr
     public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
         String result = ResultParser.parseResult(rawResult).toString();
 
-        if(result.startsWith("http://www.blocks5.com?activityId=")){
+        if(result.startsWith("http://www.blocks5.com?activityId=")
+                || result.startsWith("https://www.blocks5.com?activityId=")){
             Uri uri = Uri.parse(result);
             String activityId = uri.getQueryParameter("activityId");
             showLoading(R.string.label_being_something);
@@ -135,7 +136,7 @@ public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserContr
     @Override
     public void signSuccess(String msg) {
         cancelLoading();
-        ToastUtil.showText(msg);
+        ToastUtil.showText("签到成功");
         finish();
     }
 

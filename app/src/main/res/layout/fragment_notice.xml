@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="8dp"
+        android:textSize="14sp"
+        android:gravity="start"
+        android:inputType="text"
+        android:background="@drawable/bg_edit_text_border"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_publish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="发布"
+        style="@style/Widget.Blocks5.Button.Solid.Red" />
+
+</LinearLayout>

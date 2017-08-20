@@ -30,23 +30,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:tabIndicatorColor="@color/red"
-                app:tabIndicatorHeight="2dp"
+                app:tabIndicatorHeight="0dp"
                 app:tabMode="scrollable"
-                app:tabBackground="@null"
                 app:tabGravity="center"
                 android:layout_centerInParent="true"
+                app:tabBackground="@null"
                 android:overScrollMode="never"
                 app:tabTextAppearance="@android:style/TextAppearance.Holo.Medium"
                 app:tabTextColor="@color/white"
-                app:tabSelectedTextColor="@color/red"/>
+                app:tabSelectedTextColor="@color/red" />
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/iv_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:src="@mipmap/ic_filter" />
+            android:src="@mipmap/ic_navigate_back"
+            android:visibility="invisible"/>
 
     </LinearLayout>
 

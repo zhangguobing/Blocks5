@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.TextViewCompat;
 import android.view.View;
+import android.widget.TextView;
 
+import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseActivity;
 import com.bing.blocks5.base.ContentView;
@@ -37,6 +40,10 @@ public class ActivityMessageActivity extends BaseActivity {
     TabLayout mTabLayout;
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
+    @Bind(R.id.tv_notice)
+    TextView mNoticeTv;
+
+    private int mActivityId;
 
     public static void create(Context context, Activity activity){
         Intent intent = new Intent(context,ActivityMessageActivity.class);
@@ -51,34 +58,41 @@ public class ActivityMessageActivity extends BaseActivity {
         titles.add("游客留言");
         titles.add("队友留言");
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(MessageFragment.newInstance("0",activity.getId()+"",activity.getGuest_notice(),activity.getGuest_notice_time()));
-        fragments.add(MessageFragment.newInstance("1",activity.getId()+"",activity.getTeam_notice(),activity.getTeam_notice_time()));
+        if(activity != null){
+            mActivityId = activity.getId();
+            fragments.add(MessageFragment.newInstance("0",activity.getId()+"",activity.getGuest_notice(),activity.getGuest_notice_time()));
+            fragments.add(MessageFragment.newInstance("1",activity.getId()+"",activity.getTeam_notice(),activity.getTeam_notice_time()));
+
+            if(activity.getCreator() != null && AppCookie.getUserInfo().getId() == activity.getCreator().getId()){
+                mNoticeTv.setVisibility(View.VISIBLE);
+            }
+        }
         mViewPager.setOffscreenPageLimit(0);
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    @OnClick({R.id.iv_back,R.id.iv_filter})
+    @OnClick({R.id.iv_back,R.id.tv_notice})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.iv_filter:
-                showFilterDialog();
+            case R.id.tv_notice:
+                PublishNoticeActivity.create(this,mActivityId);
                 break;
         }
     }
 
 
-    private void showFilterDialog() {
-        final String[] contentOptions = {"全部留言", "楼主留言"};
-        final ActionSheetDialog dialog = new ActionSheetDialog(this, contentOptions, null);
-        dialog.isTitleShow(false).show();
-        dialog.setOnOperItemClickL((parent, view, position, id) -> {
-            dialog.dismiss();
-            showLoading(R.string.label_being_loading);
-            EventUtil.sendEvent(new ActivityMessageFilterEvent(position == 1));
-        });
-    }
+//    private void showFilterDialog() {
+//        final String[] contentOptions = {"全部留言", "楼主留言"};
+//        final ActionSheetDialog dialog = new ActionSheetDialog(this, contentOptions, null);
+//        dialog.isTitleShow(false).show();
+//        dialog.setOnOperItemClickL((parent, view, position, id) -> {
+//            dialog.dismiss();
+//            showLoading(R.string.label_being_loading);
+//            EventUtil.sendEvent(new ActivityMessageFilterEvent(position == 1));
+//        });
+//    }
 }

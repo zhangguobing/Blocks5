@@ -86,4 +86,9 @@ public interface ActivityService {
     //取消活动
     @POST("activities/{id}/cancel")
     Observable<ApiResponse<Activity>> cancelActivity(@Path("id") String activityId,@Query("token") String token);
+
+    //更改活动公告
+    @FormUrlEncoded
+    @POST("activities/{id}/updateNotice")
+    Observable<ApiResponse> updateNotice(@Path("id") String activityId, @Query("token") String token, @Field("is_team") int is_team, @Field("content") String content);
 }

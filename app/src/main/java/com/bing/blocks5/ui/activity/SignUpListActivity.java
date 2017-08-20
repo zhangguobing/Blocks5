@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bing.blocks5.model.ActivityUser;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.flyco.dialog.widget.NormalDialog;
 import com.bing.blocks5.R;
@@ -42,12 +43,13 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
     TabLayout mTabLayout;
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
-    @Bind(R.id.tv_confirm)
-    TextView mConfirmTv;
 
     private int activity_id;
 
     private static final String EXTRA_ACTIVITY_ID = "extra_activity_id";
+
+    private String[] mSignUpOptions = new String[]{"全部","男生","女生"};
+    private String[] mJoinOptions = new String[]{"全部","男生","女生"};
 
     public static void create(Context context,int activity_id){
         Intent intent = new Intent(context, SignUpListActivity.class);
@@ -69,26 +71,9 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
         mViewPager.setOffscreenPageLimit(0);
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mConfirmTv.setVisibility(position == 1 ? View.VISIBLE : View.GONE);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
-    @OnClick({R.id.iv_back,R.id.iv_filter,R.id.tv_confirm})
+    @OnClick({R.id.iv_back,R.id.iv_filter})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_back:
@@ -97,14 +82,11 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
             case R.id.iv_filter:
                 showFilterDialog();
                 break;
-            case R.id.tv_confirm:
-                showConfirmDialog();
-                break;
         }
     }
 
     private void showFilterDialog() {
-        final String[] contentOptions = {"全部 0 人", "男生 0 人", "女生 0 人"};
+        final String[] contentOptions = mViewPager.getCurrentItem() == 0 ? mSignUpOptions : mJoinOptions;
         final ActionSheetDialog dialog = new ActionSheetDialog(this, contentOptions, null);
         dialog.isTitleShow(false).show();
         dialog.setOnOperItemClickL((parent, view, position, id) -> {
@@ -120,26 +102,26 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
     }
 
 
-    private void showConfirmDialog(){
-        final NormalDialog dialog = new NormalDialog(this);
-        int color = ContextCompat.getColor(this,R.color.primary_text);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.isTitleShow(false)
-                .cornerRadius(5)
-                .content("活动开始之后无法再更改成员，你确定要开始吗?")
-                .contentGravity(Gravity.CENTER)
-                .contentTextColor(color)
-                .dividerColor(R.color.divider)
-                .btnTextSize(15.5f, 15.5f)
-                .btnTextColor(color,color)
-                .widthScale(0.75f)
-                .show();
-        dialog.setOnBtnClickL(() -> dialog.dismiss(), () -> {
-            dialog.dismiss();
-            showLoading(R.string.label_being_something);
-            getCallbacks().start(activity_id);
-        });
-    }
+//    private void showConfirmDialog(){
+//        final NormalDialog dialog = new NormalDialog(this);
+//        int color = ContextCompat.getColor(this,R.color.primary_text);
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.isTitleShow(false)
+//                .cornerRadius(5)
+//                .content("活动开始之后无法再更改成员，你确定要开始吗?")
+//                .contentGravity(Gravity.CENTER)
+//                .contentTextColor(color)
+//                .dividerColor(R.color.divider)
+//                .btnTextSize(15.5f, 15.5f)
+//                .btnTextColor(color,color)
+//                .widthScale(0.75f)
+//                .show();
+//        dialog.setOnBtnClickL(() -> dialog.dismiss(), () -> {
+//            dialog.dismiss();
+//            showLoading(R.string.label_being_something);
+//            getCallbacks().start(activity_id);
+//        });
+//    }
 
     @Override
     protected BaseController getPresenter() {
@@ -150,5 +132,26 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
     public void startActivitySuccess() {
         cancelLoading();
         ToastUtil.showText("活动开始成功");
+    }
+
+    public void onUserLoaded(List<ActivityUser> users, int is_sign){
+        int male_count = 0;
+        int female_count = 0;
+        for (ActivityUser user : users){
+            if("男".equals(user.getCreator().getSex())){
+                male_count++;
+            }else{
+                female_count++;
+            }
+        }
+        if(is_sign == 0){
+            mSignUpOptions[0] = "全部 "+ users.size() + "人";
+            mSignUpOptions[1] = "男生 "+ male_count + "人";
+            mSignUpOptions[2] = "女生 "+ female_count + "人";
+        }else{
+            mJoinOptions[0] = "全部 "+ users.size() + "人";
+            mJoinOptions[1] = "男生 "+ male_count + "人";
+            mJoinOptions[2] = "女生 "+ female_count + "人";
+        }
     }
 }

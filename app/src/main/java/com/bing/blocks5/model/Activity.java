@@ -3,6 +3,7 @@ package com.bing.blocks5.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -318,7 +319,7 @@ public class Activity implements Parcelable {
         this.woman_left = woman_left;
     }
 
-    public static class CreatorBean {
+    public static class CreatorBean implements Parcelable {
         /**
          * id : 1
          * nick_name : 不小不大
@@ -382,6 +383,45 @@ public class Activity implements Parcelable {
         public void setIdentity_state(int identity_state) {
             this.identity_state = identity_state;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.id);
+            dest.writeString(this.nick_name);
+            dest.writeString(this.sex);
+            dest.writeString(this.avatar);
+            dest.writeInt(this.credit);
+            dest.writeInt(this.identity_state);
+        }
+
+        public CreatorBean() {
+        }
+
+        protected CreatorBean(Parcel in) {
+            this.id = in.readInt();
+            this.nick_name = in.readString();
+            this.sex = in.readString();
+            this.avatar = in.readString();
+            this.credit = in.readInt();
+            this.identity_state = in.readInt();
+        }
+
+        public static final Creator<CreatorBean> CREATOR = new Creator<CreatorBean>() {
+            @Override
+            public CreatorBean createFromParcel(Parcel source) {
+                return new CreatorBean(source);
+            }
+
+            @Override
+            public CreatorBean[] newArray(int size) {
+                return new CreatorBean[size];
+            }
+        };
     }
 
 
@@ -465,6 +505,9 @@ public class Activity implements Parcelable {
         return result;
     }
 
+    public Activity() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -500,13 +543,12 @@ public class Activity implements Parcelable {
         dest.writeString(this.team_notice_time);
         dest.writeString(this.guest_notice);
         dest.writeString(this.guest_notice_time);
+        dest.writeParcelable(this.creator, flags);
+        dest.writeList(this.comments);
         dest.writeInt(this.is_collect);
         dest.writeInt(this.is_join);
         dest.writeInt(this.man_left);
         dest.writeInt(this.woman_left);
-    }
-
-    public Activity() {
     }
 
     protected Activity(Parcel in) {
@@ -538,13 +580,16 @@ public class Activity implements Parcelable {
         this.team_notice_time = in.readString();
         this.guest_notice = in.readString();
         this.guest_notice_time = in.readString();
+        this.creator = in.readParcelable(CreatorBean.class.getClassLoader());
+        this.comments = new ArrayList<Comment>();
+        in.readList(this.comments, Comment.class.getClassLoader());
         this.is_collect = in.readInt();
         this.is_join = in.readInt();
         this.man_left = in.readInt();
         this.woman_left = in.readInt();
     }
 
-    public static final Parcelable.Creator<Activity> CREATOR = new Parcelable.Creator<Activity>() {
+    public static final Creator<Activity> CREATOR = new Creator<Activity>() {
         @Override
         public Activity createFromParcel(Parcel source) {
             return new Activity(source);
