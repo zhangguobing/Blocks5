@@ -43,7 +43,12 @@ public class UserViewHolder extends BaseViewHolder<User> {
         Drawable sexDrawable = getDrawable(sexDrawableId);
         sexDrawable.setBounds(0,0,sexDrawable.getIntrinsicWidth(),sexDrawable.getIntrinsicHeight());
         mUserNameSexTv.setCompoundDrawables(null,null,sexDrawable,null);
-        mFocusImageBtn.setVisibility(user.getIs_follow() == 0 && user.getId() != AppCookie.getUserInfo().getId() ? View.VISIBLE : View.GONE);
+        if(user.getId() == AppCookie.getUserInfo().getId()){
+            mFocusImageBtn.setVisibility(View.GONE);
+        }else{
+            mFocusImageBtn.setVisibility(View.VISIBLE);
+            mFocusImageBtn.setImageResource(user.getIs_follow() == 0 ? R.mipmap.ic_focus : R.mipmap.ic_has_followed);
+        }
         mFocusImageBtn.setOnClickListener(v -> {
              if(mListener != null){
                  mListener.onFollowClick(user);

@@ -2,7 +2,10 @@ package com.bing.blocks5.ui.search.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 
+import com.flyco.dialog.widget.NormalDialog;
 import com.squareup.otto.Subscribe;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
@@ -98,8 +101,30 @@ implements UserViewHolder.IUserOperateListener,UserController.UserListUi {
 
     @Override
     public void onFollowClick(User user) {
-        showLoading(R.string.label_being_something);
-        getCallbacks().follow(user.getId()+"");
+        if(user.getIs_follow() == 0){
+            showLoading(R.string.label_being_something);
+            getCallbacks().follow(user.getId()+"");
+        }else{
+            final NormalDialog dialog = new NormalDialog(getContext());
+            int color = ContextCompat.getColor(getContext(),R.color.primary_text);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.isTitleShow(false)
+                    .cornerRadius(5)
+                    .content("是不是要取消关注Ta?")
+                    .contentGravity(Gravity.CENTER)
+                    .contentTextColor(color)
+                    .dividerColor(R.color.divider)
+                    .btnTextSize(15.5f, 15.5f)
+                    .btnTextColor(color,color)
+                    .widthScale(0.75f)
+                    .show();
+            dialog.setOnBtnClickL(dialog::dismiss, () -> {
+                dialog.dismiss();
+                showLoading(R.string.label_being_something);
+                getCallbacks().cancelFollow(user.getId()+"");
+            });
+
+        }
     }
 
     @Override
@@ -108,6 +133,15 @@ implements UserViewHolder.IUserOperateListener,UserController.UserListUi {
         ToastUtil.showText("关注成功");
         User user = mAdapter.getItems().get(0);
         user.setIs_follow(1);
+        mAdapter.setItem(0,user);
+    }
+
+    @Override
+    public void cancelFollowSuccess() {
+        cancelLoading();
+        ToastUtil.showText("已取消关注");
+        User user = mAdapter.getItems().get(0);
+        user.setIs_follow(0);
         mAdapter.setItem(0,user);
     }
 }

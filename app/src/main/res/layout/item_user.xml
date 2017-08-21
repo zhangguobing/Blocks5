@@ -37,8 +37,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         android:layout_centerVertical="true"
-        android:contentDescription="@null"
-        android:src="@mipmap/ic_focus" />
+        android:contentDescription="@null" />
 
     <View style="@style/Divider_Horizontal_Gray"
         android:layout_alignParentBottom="true"/>

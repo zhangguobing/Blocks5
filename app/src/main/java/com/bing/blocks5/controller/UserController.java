@@ -143,6 +143,8 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
                         UserUi ui = findUi(callingId);
                         if(ui instanceof UserDetailUi){
                             ((UserDetailUi)ui).cancelFollowSuccess();
+                        }else if(ui instanceof UserListUi){
+                            ((UserListUi)ui).cancelFollowSuccess();
                         }
                     }
 
@@ -265,6 +267,7 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
 
     public interface UserListUi extends UserUi{
         void followSuccess();
+        void cancelFollowSuccess();
     }
 
     public interface UserDetailUi extends UserUi{

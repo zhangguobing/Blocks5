@@ -113,16 +113,15 @@ public class GalleryActivity extends AppCompatActivity{
             titleBar.setTitleColor(ContextCompat.getColor(this,R.color.white));
             titleBar.setLeftImageResource(R.mipmap.ic_navigate_back);
             titleBar.setLeftClickListener(view -> finish());
-            titleBar.setActionTextColor(ContextCompat.getColor(this,R.color.white));
             titleBar.addAction(new TitleBar.Action() {
                 @Override
                 public String getText() {
-                    return "删除";
+                    return null;
                 }
 
                 @Override
                 public int getDrawable() {
-                    return 0;
+                    return R.mipmap.ic_delete;
                 }
 
                 @Override

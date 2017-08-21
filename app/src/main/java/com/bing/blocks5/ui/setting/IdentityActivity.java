@@ -52,10 +52,10 @@ public class IdentityActivity extends BasePresenterActivity<UserController.UserU
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         User user = getIntent().getParcelableExtra(EXTRA_USER);
-        if(user != null && user.getIdentity_state() == 3){
+        if(user != null && (user.getIdentity_state() == 3 || user.getIdentity_state() == 1)){
             mIdentityNameEt.setText(user.getIdentity_name());
             mIdentityCodeEt.setText(user.getIdentity_code());
-            mIdentityBtn.setText("已认证");
+            mIdentityBtn.setText(user.getIdentity_state() == 3 ? "已认证" : "待审核");
             mIdentityNameEt.setEnabled(false);
             mIdentityCodeEt.setEnabled(false);
             mIdentityBtn.setEnabled(false);
