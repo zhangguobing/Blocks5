@@ -29,8 +29,8 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
             }
 
             @Override
-            public void getUsersByActivityId(int is_sign, int activity_id, String sex) {
-                doGetUsersByActivityId(getId(ui),is_sign, activity_id, sex);
+            public void getUsersByActivityId(int is_sign, int activity_id, String sex, int state, int page_index, String page_size) {
+                doGetUsersByActivityId(getId(ui),is_sign, activity_id, sex, state, page_index, page_size);
             }
 
             @Override
@@ -45,9 +45,10 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
         };
     }
 
-    private void doGetUsersByActivityId(final int callingId, int is_sign, int activity_id, String sex){
+    private void doGetUsersByActivityId(final int callingId, int is_sign, int activity_id, String sex,
+                                   int state, int page_index, String page_size){
         mApiClient.activityUserService()
-                .getUsersByActivityId(activity_id, mToken, is_sign, sex)
+                .getUsersByActivityId(activity_id, mToken, state, page_index, is_sign, sex, page_size)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<List<ActivityUser>>>() {
@@ -135,7 +136,7 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
 
     public interface ActivityUserUiCallbacks{
         void sign(int activity_id);
-        void getUsersByActivityId(int is_sign,int activity_id,String sex);
+        void getUsersByActivityId(int is_sign,int activity_id,String sex, int state, int page_index, String page_size);
         void getHistoryOrCollectActivity(boolean is_collect, int page_index, int page_size);
         void getFollowers(int follow_type, int page_index, int page_size, int user_id);
     }

@@ -52,8 +52,6 @@ import com.bing.blocks5.widget.bottomsharedialog.BottomShareDialog;
 import com.bing.blocks5.widget.toprightmenu.MenuItem;
 import com.bing.blocks5.widget.toprightmenu.TopRightMenu;
 import com.youth.banner.Banner;
-import com.youth.banner.WeakHandler;
-import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
@@ -209,10 +207,10 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     private void showUserSelfMenu(View view){
         TopRightMenu topRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(R.mipmap.ic_filter, "筛选"));
+        menuItems.add(new MenuItem(R.drawable.ic_filter_2, "筛选"));
         menuItems.add(new MenuItem(R.mipmap.ic_message_6dp, "留言"));
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
-        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, "签到列表"));
+        menuItems.add(new MenuItem(R.mipmap.ic_sign_list, "签到列表"));
         menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, "取消活动"));
         topRightMenu
                 .setHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
@@ -234,6 +232,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                         showShareDialog();
                     }else if(position == 3){
                         //签到列表
+                        SignInActivity.create(this,mActivity);
                     }else if(position == 4){
                         //取消活动
                         showLoading(R.string.label_being_something);

@@ -27,7 +27,8 @@ public interface ActivityUserService {
     //获取当前活动报名的用户
     @GET("activities/{activityId}/users")
     Observable<ApiResponse<List<ActivityUser>>> getUsersByActivityId(@Path("activityId") int activityId, @Query("token") String token,
-                                                                     @Query("is_sign") int is_sign, @Query("sex") String sex);
+                                                                     @Query("state") int state, @Query("page_index") int page_index,
+                                                                     @Query("is_sign") int is_sign, @Query("sex") String sex, @Query("page_size") String page_size);
     //报名参加某个活动
     @POST("activities/{activityId}/users")
     Observable<ApiResponse> joinActivity(@Path("activityId") int activity_id, @Query("token") String token);

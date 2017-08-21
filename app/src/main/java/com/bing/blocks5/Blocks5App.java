@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.aitangba.swipeback.ActivityLifecycleHelper;
+import com.bing.blocks5.polling.PollingLog;
+import com.bing.blocks5.polling.PollingManager;
 import com.mob.MobApplication;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
@@ -60,6 +62,10 @@ public class Blocks5App extends MobApplication{
 
         //初始化路由
         initRouter();
+
+        //初始化轮询组件
+        PollingLog.log(BuildConfig.DEBUG);
+        PollingManager.setup(this);
     }
 
     public static Blocks5App getContext(){

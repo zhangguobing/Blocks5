@@ -139,6 +139,9 @@
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.SignInActivity"
+            android:label="签到"
+            android:screenOrientation="portrait"/>
 
 
         <!-- ShareSDK 开始 -->

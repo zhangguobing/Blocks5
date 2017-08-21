@@ -64,18 +64,13 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     }
 
     @Override
-    protected boolean getEnableLoadMore() {
-        return false;
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         EventUtil.unregister(this);
     }
 
     private void loadData(){
-        getCallbacks().getUsersByActivityId(is_sign, activity_id,"");
+        getCallbacks().getUsersByActivityId(is_sign, activity_id,"", 0, mPage = 1, "10");
     }
 
 
@@ -115,7 +110,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     public void onFilterChange(ActivityUserFilterEvent event){
         if(isVisible() && getUserVisibleHint()){
             showLoading(R.string.label_being_loading);
-            getCallbacks().getUsersByActivityId(is_sign, activity_id,event.sex);
+            getCallbacks().getUsersByActivityId(is_sign, activity_id,event.sex, 0 , mPage = 1, "10");
         }
     }
 }

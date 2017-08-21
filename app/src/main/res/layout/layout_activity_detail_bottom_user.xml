@@ -21,7 +21,7 @@
             <ImageView
                 android:layout_width="17dp"
                 android:layout_height="17dp"
-                android:src="@mipmap/ic_filter" />
+                android:src="@drawable/ic_filter_2_no_padding" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,15 +36,37 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.AppCompatButton
+    <RelativeLayout
         android:id="@+id/rl_message"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/bg_btn_solid_light"
-        android:text="留言"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:background="@color/red">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:src="@mipmap/ic_message" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="留言"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
 
 </LinearLayout>
