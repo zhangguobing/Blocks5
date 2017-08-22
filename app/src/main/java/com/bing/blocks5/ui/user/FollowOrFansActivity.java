@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 
+import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
 import com.bing.blocks5.base.BaseListActivity;
 import com.bing.blocks5.base.BaseController;
@@ -12,6 +15,8 @@ import com.bing.blocks5.controller.ActivityUserController;
 import com.bing.blocks5.model.User;
 import com.bing.blocks5.ui.search.adapter.UserListAdapter;
 import com.bing.blocks5.ui.search.adapter.holder.UserViewHolder;
+import com.bing.blocks5.util.ToastUtil;
+import com.flyco.dialog.widget.NormalDialog;
 
 import java.util.List;
 
@@ -22,7 +27,7 @@ import java.util.List;
  */
 
 public class FollowOrFansActivity extends BaseListActivity<User,UserViewHolder,ActivityUserController.ActivityUserUiCallbacks>
-     implements ActivityUserController.followOrFanUi{
+     implements ActivityUserController.followOrFanUi, UserViewHolder.IUserOperateListener{
 
     private static String EXTRA_FOLLOW_TYPE = "follow_type";
     private static String EXTRA_USER_ID = "user_id";
@@ -34,6 +39,8 @@ public class FollowOrFansActivity extends BaseListActivity<User,UserViewHolder,A
 
     private int follow_type;
     private int user_id;
+
+    private int mOperatePosition = -1;
 
     @Override
     protected String getEmptyTitle() {
@@ -83,11 +90,61 @@ public class FollowOrFansActivity extends BaseListActivity<User,UserViewHolder,A
 
     @Override
     protected BaseAdapter<User, UserViewHolder> getAdapter() {
-        return new UserListAdapter();
+        return new UserListAdapter(this);
     }
 
     @Override
     public void onFollowerList(List<User> users) {
         onFinishRequest(users);
+    }
+
+    @Override
+    public void followSuccess() {
+        cancelLoading();
+        ToastUtil.showText("关注成功");
+        if(mOperatePosition != -1){
+            User user = mAdapter.getItems().get(mOperatePosition);
+            user.setIs_follow(1);
+            mAdapter.setItem(mOperatePosition,user);
+        }
+    }
+
+    @Override
+    public void cancelFollowSuccess() {
+        cancelLoading();
+        ToastUtil.showText("已取消关注");
+        if(mOperatePosition != -1){
+            User user = mAdapter.getItems().get(mOperatePosition);
+            user.setIs_follow(0);
+            mAdapter.setItem(mOperatePosition,user);
+        }
+    }
+
+    @Override
+    public void onFollowClick(User user) {
+        mOperatePosition = mAdapter.getItems().indexOf(user);
+        if (user.getIs_follow() == 0) {
+            showLoading(R.string.label_being_something);
+            getCallbacks().follow(user.getId() + "");
+        } else {
+            final NormalDialog dialog = new NormalDialog(this);
+            int color = ContextCompat.getColor(this, R.color.primary_text);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.isTitleShow(false)
+                    .cornerRadius(5)
+                    .content("是不是要取消关注Ta?")
+                    .contentGravity(Gravity.CENTER)
+                    .contentTextColor(color)
+                    .dividerColor(R.color.divider)
+                    .btnTextSize(15.5f, 15.5f)
+                    .btnTextColor(color, color)
+                    .widthScale(0.75f)
+                    .show();
+            dialog.setOnBtnClickL(dialog::dismiss, () -> {
+                dialog.dismiss();
+                showLoading(R.string.label_being_something);
+                getCallbacks().cancelFollow(user.getId() + "");
+            });
+        }
     }
 }

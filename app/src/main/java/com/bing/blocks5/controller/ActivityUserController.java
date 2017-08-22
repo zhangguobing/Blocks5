@@ -42,6 +42,16 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
             public void getFollowers(int follow_type, int page_index, int page_size, int user_id) {
                 doGetFollowers(getId(ui), follow_type, page_index, page_size, user_id);
             }
+
+            @Override
+            public void follow(String follow_id) {
+                doFollow(getId(ui), follow_id);
+            }
+
+            @Override
+            public void cancelFollow(String follow_id) {
+                doCancelFollow(getId(ui), follow_id);
+            }
         };
     }
 
@@ -134,11 +144,56 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
                 });
     }
 
+    private void doFollow(final int callingId,String follow_id){
+        mApiClient.userService()
+                .follow(mToken, follow_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse>() {
+                    @Override
+                    public void onResponse(ApiResponse response) {
+                        ActivityUserUi ui = findUi(callingId);
+                        if(ui instanceof ActivityUserController.followOrFanUi){
+                            ((ActivityUserController.followOrFanUi)ui).cancelFollowSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
+    //取消关注
+    private void doCancelFollow(final int callingId,String follow_id){
+        mApiClient.userService()
+                .cancelFollow(mToken, follow_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse>() {
+                    @Override
+                    public void onResponse(ApiResponse response) {
+                        ActivityUserUi ui = findUi(callingId);
+                        if(ui instanceof ActivityUserController.followOrFanUi){
+                            ((ActivityUserController.followOrFanUi)ui).cancelFollowSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
     public interface ActivityUserUiCallbacks{
         void sign(int activity_id);
         void getUsersByActivityId(int is_sign,int activity_id,String sex, int state, int page_index, String page_size);
         void getHistoryOrCollectActivity(boolean is_collect, int page_index, int page_size);
         void getFollowers(int follow_type, int page_index, int page_size, int user_id);
+        void follow(String follow_id);
+        void cancelFollow(String follow_id);
     }
 
     public interface ActivityUserUi extends BaseController.Ui<ActivityUserController.ActivityUserUiCallbacks>{
@@ -160,5 +215,7 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
 
     public interface followOrFanUi extends ActivityUserUi{
         void onFollowerList(List<User> users);
+        void followSuccess();
+        void cancelFollowSuccess();
     }
 }

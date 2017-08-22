@@ -29,7 +29,7 @@ public interface ActivityService {
     Observable<ApiResponse> createActivity(@Query("token") String token, @Body CreateActivityParams params);
 
     @GET("activities")
-    Observable<ApiResponse<List<Activity>>> getActivityListByActivityId(@Query("token") String token, @Query("id") int activity_id);
+    Observable<ApiResponse<List<Activity>>> getActivityListByActivityId(@Query("token") String token, @Query("id") int activity_id, @Query("page_size") String page_size);
 
     @GET("activities")
     Observable<ApiResponse<List<Activity>>> getActivityList(@Query("token") String token, @Query("id") int activity_type_id,@Query("page_index") int page_index);
@@ -39,17 +39,19 @@ public interface ActivityService {
 
     @GET("activities")
     Observable<ApiResponse<List<Activity>>> getActivityList(@Query("token") String token, @Query("user_id") int user_id,
-                                                             @Query("state") int state, @Query("page_index") int page_index);
+                                                             @Query("state") String state, @Query("page_index") int page_index,
+                                                            @Query("page_size") String page_size);
 
     @GET("activities")
     Observable<ApiResponse<List<Activity>>> getActivityListByJoinIdAndState(@Query("token") String token, @Query("join_user_id") int join_user_id,
-                                                                            @Query("state") int state, @Query("page_index") int page_index);
+                                                                            @Query("state") int state, @Query("page_index") int page_index,
+                                                                            @Query("page_size") String page_size);
 
     @GET("activities")
-    Observable<ApiResponse<List<Activity>>> getActivityListByUserId(@Query("token") String token, @Query("user_id") int user_id, @Query("page_index") int page_index);
+    Observable<ApiResponse<List<Activity>>> getActivityListByUserId(@Query("token") String token, @Query("user_id") int user_id, @Query("page_index") int page_index,@Query("page_size") String page_size);
 
     @GET("activities")
-    Observable<ApiResponse<List<Activity>>> getActivityListByJoinId(@Query("token") String token, @Query("join_user_id") int join_user_id, @Query("page_index") int page_index);
+    Observable<ApiResponse<List<Activity>>> getActivityListByJoinId(@Query("token") String token, @Query("join_user_id") int join_user_id, @Query("page_index") int page_index, @Query("page_size") String page_size);
 
     //收藏某个活动
     @FormUrlEncoded

@@ -7,6 +7,7 @@ import com.bing.blocks5.model.User;
 
 import java.util.List;
 
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -32,6 +33,10 @@ public interface ActivityUserService {
     //报名参加某个活动
     @POST("activities/{activityId}/users")
     Observable<ApiResponse> joinActivity(@Path("activityId") int activity_id, @Query("token") String token);
+
+    //取消报名某个活动
+    @DELETE("activities/{activityId}/users")
+    Observable<ApiResponse> cancelJoinActivity(@Path("activityId") int activity_id, @Query("token") String token);
 
     /**
      * 获取当前用户的浏览历史（收藏记录）

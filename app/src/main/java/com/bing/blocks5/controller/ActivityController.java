@@ -39,7 +39,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
             }
 
             @Override
-            public void getActivityList(int user_id, int activity_state, int page_index) {
+            public void getActivityList(int user_id, String activity_state, int page_index) {
                 doGetActivityList(getId(ui), user_id,activity_state, page_index);
             }
 
@@ -76,6 +76,11 @@ public class ActivityController extends BaseController<ActivityController.Activi
             @Override
             public void join(int activity_id) {
                 doJoin(getId(ui), activity_id);
+            }
+
+            @Override
+            public void cancelJoin(int activity_id) {
+                doCancelJoin(getId(ui), activity_id);
             }
 
             @Override
@@ -210,9 +215,9 @@ public class ActivityController extends BaseController<ActivityController.Activi
                 });
     }
 
-    private void doGetActivityList(final int callingId, int user_id, int state, int page_index){
+    private void doGetActivityList(final int callingId, int user_id, String state, int page_index){
         mApiClient.activityService()
-                .getActivityList(mToken,user_id,state,page_index)
+                .getActivityList(mToken,user_id,state,page_index, "15")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<List<Activity>>>() {
@@ -232,7 +237,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
 
     private void doGetActivityListByUserId(final int callingId, int user_id, int page_index){
         mApiClient.activityService()
-                .getActivityListByUserId(mToken,user_id,page_index)
+                .getActivityListByUserId(mToken,user_id,page_index, "15")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<List<Activity>>>() {
@@ -252,7 +257,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
 
     private void doGetActivityListByJoinId(final int callingId, int join_user_id, int page_index){
         mApiClient.activityService()
-                .getActivityListByJoinId(mToken,join_user_id,page_index)
+                .getActivityListByJoinId(mToken,join_user_id,page_index, "15")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<List<Activity>>>() {
@@ -272,7 +277,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
 
     private void doGetActivityListByJoinIdAndState(final int callingId, int join_user_id, int state, int page_index){
         mApiClient.activityService()
-                .getActivityListByJoinIdAndState(mToken,join_user_id,state,page_index)
+                .getActivityListByJoinIdAndState(mToken,join_user_id,state,page_index, "15")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<List<Activity>>>() {
@@ -442,9 +447,31 @@ public class ActivityController extends BaseController<ActivityController.Activi
     }
 
     //报名
-    private void doJoin(final int callingId, int activity_id){
+    private void doJoin(final int callingId, int activity_id) {
         mApiClient.activityUserService()
-                .joinActivity(activity_id,mToken)
+                .joinActivity(activity_id, mToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse>() {
+                    @Override
+                    public void onResponse(ApiResponse response) {
+                        ActivityController.ActivityUi ui = findUi(callingId);
+                        if (ui instanceof ActivityController.ActivityDetailUi) {
+                            ((ActivityController.ActivityDetailUi) ui).joinSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
+    //取消报名
+    private void doCancelJoin(final int callingId, int activity_id){
+        mApiClient.activityUserService()
+                .cancelJoinActivity(activity_id,mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse>() {
@@ -452,7 +479,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
                     public void onResponse(ApiResponse response) {
                         ActivityController.ActivityUi ui = findUi(callingId);
                         if(ui instanceof ActivityController.ActivityDetailUi){
-                            ((ActivityController.ActivityDetailUi)ui).joinSuccess();
+                            ((ActivityController.ActivityDetailUi)ui).cancelJoinSuccess();
                         }
                     }
                     @Override
@@ -465,7 +492,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
     public interface ActivityUiCallbacks{
         void createActivity(CreateActivityParams params);
         void getActivityList(MainActivityListParams params, int page_index);
-        void getActivityList(int user_id, int activity_state, int page_index);
+        void getActivityList(int user_id, String activity_state, int page_index);
         void getActivityListByUserId(int user_id, int page_index);
         void getActivityListByJoinId(int join_user_id, int page_index);
         void getActivityListByJoinIdAndState(int join_user_id, int activity_state, int page_index);
@@ -473,6 +500,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void collectActivity(int activity_id);
         void cancelCollectActivity(int activity_id);
         void join(int activity_id);
+        void cancelJoin(int activity_id);
         void report(int activity_id,String content);
         void start(int activity_id);
         void getComments(String activity_id,Map<String,String> paramsMap);
@@ -502,6 +530,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void onCollectSuccess(String msg);
         void cancelCollectSuccess(String msg);
         void joinSuccess();
+        void cancelJoinSuccess();
         void reportSuccess();
         void cancelActivitySuccess(Activity activity);
     }

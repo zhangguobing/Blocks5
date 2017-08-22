@@ -70,7 +70,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     }
 
     private void loadData(){
-        getCallbacks().getUsersByActivityId(is_sign, activity_id,"", 0, mPage = 1, "10");
+        getCallbacks().getUsersByActivityId(is_sign, activity_id,"", 0, mPage = 1, "15");
     }
 
 
@@ -110,7 +110,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     public void onFilterChange(ActivityUserFilterEvent event){
         if(isVisible() && getUserVisibleHint()){
             showLoading(R.string.label_being_loading);
-            getCallbacks().getUsersByActivityId(is_sign, activity_id,event.sex, 0 , mPage = 1, "10");
+            getCallbacks().getUsersByActivityId(is_sign, activity_id,event.sex, 0 , mPage = 1, "15");
         }
     }
 }

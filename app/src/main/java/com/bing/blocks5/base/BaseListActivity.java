@@ -27,7 +27,7 @@ import butterknife.Bind;
 @ContentView(R.layout.activity_base_list)
 public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> extends BasePresenterActivity<UC> {
 
-    public static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int DEFAULT_PAGE_SIZE = 15;
     public static final int DEFAULT_PAGE = 1;
 
     @Bind(R.id.multi_state_view)

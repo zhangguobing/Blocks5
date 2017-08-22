@@ -54,7 +54,7 @@ public class ActivityViewHolder extends BaseViewHolder<Activity> {
         ImageLoadUtil.loadImage(mActivityImage,activity.getCover_url(),getContext());
         ImageLoadUtil.loadAvatar(mCreatorAvatarImg,activity.getCreator().getAvatar(),getContext());
         mActivityTypeTv.setText(ActivityDataConvert.getActivityTypeNameById(activity.getActivity_type_id()));
-        mActivityTimeTv.setText(activity.getCreated_at() + "-" + activity.getEnd_at());
+        mActivityTimeTv.setText(activity.getBegin_at() + "-" + activity.getEnd_at());
         mCreatorNameAndSex.setText(activity.getCreator().getNick_name());
         int sexDrawableId = "男".equals(activity.getCreator().getSex()) ? R.mipmap.ic_male : R.mipmap.ic_female;
         Drawable sexDrawable = getDrawable(sexDrawableId);

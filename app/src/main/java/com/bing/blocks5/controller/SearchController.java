@@ -39,7 +39,7 @@ public class SearchController extends BaseController<SearchController.SearchUi,S
 
     private void doGetActivityListById(final int callingId, int activity_id){
         mApiClient.activityService()
-                .getActivityListByActivityId(mToken,activity_id)
+                .getActivityListByActivityId(mToken,activity_id, "15")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<List<Activity>>>() {

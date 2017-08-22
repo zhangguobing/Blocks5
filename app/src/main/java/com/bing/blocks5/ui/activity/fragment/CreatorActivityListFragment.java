@@ -27,7 +27,7 @@ public class CreatorActivityListFragment extends BaseListFragment<Activity,Activ
     //活动创建者ID
     private static final String EXTRA_USER_ID = "extra_user_id";
 
-    private int mState;
+    private String mState;
     private int mUserId;
 
     @Override
@@ -35,7 +35,7 @@ public class CreatorActivityListFragment extends BaseListFragment<Activity,Activ
         super.initView(savedInstanceState);
         mRecyclerView.addItemDecoration(new BottomSpaceItemDecoration(DensityUtil.dp2px(getContext(),20)));
         Bundle bundle = getArguments();
-        mState = bundle.getInt(EXTRA_ACTIVITY_STATE);
+        mState = bundle.getString(EXTRA_ACTIVITY_STATE);
         mUserId = bundle.getInt(EXTRA_USER_ID);
         getCallbacks().getActivityList(mUserId, mState, mPage);
     }
@@ -49,9 +49,9 @@ public class CreatorActivityListFragment extends BaseListFragment<Activity,Activ
      * @param activity_state 活动状态
      * @param user_id 活动创建者ID
      */
-    public static CreatorActivityListFragment newInstance(int activity_state, int user_id) {
+    public static CreatorActivityListFragment newInstance(String activity_state, int user_id) {
         Bundle args = new Bundle();
-        args.putInt(EXTRA_ACTIVITY_STATE, activity_state);
+        args.putString(EXTRA_ACTIVITY_STATE, activity_state);
         args.putInt(EXTRA_USER_ID,user_id);
         CreatorActivityListFragment fragment = new CreatorActivityListFragment();
         fragment.setArguments(args);

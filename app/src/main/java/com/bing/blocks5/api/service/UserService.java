@@ -60,7 +60,7 @@ public interface UserService {
                                                        @Field("img_url_3") String image_url_3);
 
     @GET("feedbacks")
-    Observable<ApiResponse<List<FeedBack>>> getFeedBack(@Query("token") String token, @Query("page_index") int page_index);
+    Observable<ApiResponse<List<FeedBack>>> getFeedBack(@Query("token") String token, @Query("page_index") int page_index,@Query("page_size") String page_size);
 
     @FormUrlEncoded
     @POST("feedbacks")

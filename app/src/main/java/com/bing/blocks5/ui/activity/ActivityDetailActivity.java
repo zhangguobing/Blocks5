@@ -255,7 +255,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         menuItems.add(new MenuItem(R.mipmap.ic_baoming_list_6dp, "报名列表"));
         menuItems.add(new MenuItem(R.mipmap.ic_scan_6dp, "扫一扫"));
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
-        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, "加入活动"));
+        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, mActivity.getIs_join() == 0 ? "加入活动" : "取消活动"));
         menuItems.add(new MenuItem(R.mipmap.ic_report_6dp, "举报活动"));
         topRightMenu
                 .setHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
@@ -282,7 +282,12 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                         showShareDialog();
                     }else if(position == 4){
                         showLoading(R.string.label_being_something);
-                        getCallbacks().join(Integer.valueOf(mActivityId));
+                        if(mActivity.getIs_join() == 0){
+                            getCallbacks().join(Integer.valueOf(mActivityId));
+                        }else{
+                            getCallbacks().cancelJoin(Integer.valueOf(mActivityId));
+                        }
+
                     }else if(position == 5){
                         showSelectReportContentDialog();
                     }
@@ -437,8 +442,16 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     public void joinSuccess() {
         cancelLoading();
         ToastUtil.showText("报名成功");
-        mJoinBtn.setEnabled(false);
+        mJoinBtn.setText("退出活动");
         mActivity.setIs_join(1);
+    }
+
+    @Override
+    public void cancelJoinSuccess() {
+        cancelLoading();
+        ToastUtil.showText("取消成功");
+        mJoinBtn.setText("加入活动");
+        mActivity.setIs_join(0);
     }
 
     @Override
@@ -462,7 +475,11 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 break;
             case R.id.btn_join:
                 showLoading(R.string.label_being_something);
-                getCallbacks().join(Integer.valueOf(mActivityId));
+                if(mActivity.getIs_join() == 0){
+                    getCallbacks().join(Integer.valueOf(mActivityId));
+                }else{
+                    getCallbacks().cancelJoin(Integer.valueOf(mActivityId));
+                }
                 break;
             case R.id.iv_barcode:
                 HowSignInActivity.create(this,mActivityId);
