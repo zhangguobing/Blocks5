@@ -1,24 +1,16 @@
 package com.bing.blocks5.util;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.json.JSONObject;
-
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.bing.blocks5.AppCookie;
-import com.bing.blocks5.R;
-import com.bing.blocks5.model.UploadToken;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
 
@@ -30,21 +22,16 @@ public class QiniuUploadUtils {
     /** 你所创建的空间的名称*/
 	private static final String bucketName = "om6ypv6j0.bkt";
 
-	private static final String fileName = "temp.jpg";
-
-	private static final String tempJpeg = Environment
-			.getExternalStorageDirectory().getPath() + "/" + fileName;
-	
 	private int maxWidth = 720;
 	private int maxHeight = 1080;
 
 	private final ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
 
 	public interface QiniuUploadUtilsListener {
-		public void onStart();
-		public void onSuccess(String originUrl,String destUrl);
-		public void onError(int errorCode, String msg);
-		public void onProgress(int progress);
+		void onStart();
+		void onSuccess(String originUrl,String destUrl);
+		void onError(int errorCode, String msg);
+		void onProgress(int progress);
 	}
 	
 	private QiniuUploadUtils() {
@@ -66,59 +53,8 @@ public class QiniuUploadUtils {
 		return qiniuUploadUtils;
 	}
 
-	public boolean saveBitmapToJpegFile(Bitmap bitmap, String filePath) {
-		return saveBitmapToJpegFile(bitmap, filePath, 75);
-	}
-
-	public boolean saveBitmapToJpegFile(Bitmap bitmap, String filePath,
-			int quality) {
-		try {
-			FileOutputStream fileOutStr = new FileOutputStream(filePath);
-			BufferedOutputStream bufOutStr = new BufferedOutputStream(
-					fileOutStr);
-			resizeBitmap(bitmap).compress(CompressFormat.JPEG, quality, bufOutStr);
-			bufOutStr.flush();
-			bufOutStr.close();
-		} catch (Exception exception) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 缩小图片
-	 * @param bitmap
-	 * @return
-	 */
-	public Bitmap resizeBitmap(Bitmap bitmap) {
-		if(bitmap != null){
-			int width = bitmap.getWidth();
-			int height = bitmap.getHeight();
-			if(width>maxWidth){
-				int pWidth = maxWidth;
-				int pHeight = maxWidth*height/width;
-				Bitmap result = Bitmap.createScaledBitmap(bitmap, pWidth, pHeight, false);
-				bitmap.recycle();
-				return result;
-			}
-			if(height>maxHeight){
-				int pHeight = maxHeight;
-				int pWidth = maxHeight*width/height;
-				Bitmap result = Bitmap.createScaledBitmap(bitmap, pWidth, pHeight, false);
-				bitmap.recycle();
-				return result;
-			}
-		}
-		return bitmap;
-	}
-
-	public void uploadImage(Bitmap bitmap,QiniuUploadUtilsListener listener) {
-		saveBitmapToJpegFile(bitmap, tempJpeg);
-		uploadImage(tempJpeg,listener);
-	}
-
 	public void uploadImage(String filePath,final QiniuUploadUtilsListener listener) {
-		final String fileUrlUUID = getFileUrlUUID();
+	    if(TextUtils.isEmpty(filePath)) return;
 		String token = getToken();
 		if (token == null) {
 			if(listener != null){
@@ -126,8 +62,13 @@ public class QiniuUploadUtils {
 			}
 			return;
 		}
+
+		final String fileUrlUUID = getFileUrlUUID();
+
+		Bitmap bitmap = BitMapUtil.getScaledBitmapFromFile(new File(filePath), maxWidth, maxHeight);
+
 		if(listener != null) listener.onStart();
-		uploadManager.put(filePath, fileUrlUUID, token,
+		uploadManager.put(BitMapUtil.Bitmap2Bytes(bitmap), fileUrlUUID, token,
 				(key, info, response) -> {
 					Log.i("qiniu", "Upload Success");
                     if (info != null && info.isOK()) {// 上传成功
