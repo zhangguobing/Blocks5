@@ -65,7 +65,7 @@ public class QiniuUploadUtils {
 
 		final String fileUrlUUID = getFileUrlUUID();
 
-		Bitmap bitmap = BitMapUtil.getScaledBitmapFromFile(new File(filePath), maxWidth, maxHeight);
+		Bitmap bitmap = BitMapUtil.getCompressedBitmapFromFile(new File(filePath), maxWidth, maxHeight);
 
 		if(listener != null) listener.onStart();
 		uploadManager.put(BitMapUtil.Bitmap2Bytes(bitmap), fileUrlUUID, token,

@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.model.User;
 import com.bing.blocks5.model.event.MainActivityListFilterEvent;
+import com.bing.blocks5.model.event.UserInfoRefreshEvent;
 import com.bing.blocks5.ui.main.fragments.MainActivityListFragment;
 import com.bing.blocks5.model.request.MainActivityListParams;
 import com.bing.blocks5.util.AMapLocationUtil;
@@ -118,6 +120,9 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
             mBanner.setScrollable(false);
         });
         mSlidingMenu.setOnOpenListener(() -> {
+            if(isRecievedConfig) {
+                getCallbacks().getUserById(AppCookie.getUserInfo().getId());
+            }
             mViewPager.setScrollable(true);
             mBanner.setScrollable(true);
         });
@@ -298,6 +303,11 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         ActivityAreasList = config.getActivity_areas();
         isRecievedConfig = true;
         changeActivityAreaByCity(mCurrentCity);
+    }
+
+    @Override
+    public void receiveUser(User user) {
+        EventUtil.sendEvent(new UserInfoRefreshEvent(user));
     }
 
     private void changeActivityAreaByCity(String city) {

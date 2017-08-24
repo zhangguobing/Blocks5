@@ -79,7 +79,7 @@ public class CommentAdapter extends BaseAdapter<Comment,RecyclerView.ViewHolder>
             Comment prevComment = getItem(pos-1);
             if(prevComment != null && prevComment.getCreated_at() != null &&
                     TimeUtil.getTimeStamp(comment.getCreated_at())
-                            -  TimeUtil.getTimeStamp(prevComment.getCreated_at()) < 5 * 60 * 1000){
+                            -  TimeUtil.getTimeStamp(prevComment.getCreated_at()) < 60 * 1000){
                 text_time.setVisibility(View.GONE);
             }else{
                 text_time.setVisibility(View.VISIBLE);

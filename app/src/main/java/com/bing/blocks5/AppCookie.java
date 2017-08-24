@@ -2,7 +2,7 @@ package com.bing.blocks5;
 
 import android.text.TextUtils;
 
-import com.bing.blocks5.model.LoginBean;
+import com.bing.blocks5.model.User;
 import com.bing.blocks5.util.PreferenceUtil;
 
 /**
@@ -17,7 +17,7 @@ public class AppCookie {
     /**
      * 保存用户信息
      */
-    public static void saveUserInfo(LoginBean.User user) {
+    public static void saveUserInfo(User user) {
         PreferenceUtil.set(Constants.Persistence.USER_INFO, user);
     }
 
@@ -25,8 +25,8 @@ public class AppCookie {
      * 获取用户信息
      * @return
      */
-    public static LoginBean.User getUserInfo() {
-        return PreferenceUtil.getObject(Constants.Persistence.USER_INFO, LoginBean.User.class);
+    public static User getUserInfo() {
+        return PreferenceUtil.getObject(Constants.Persistence.USER_INFO, User.class);
     }
 
     /**

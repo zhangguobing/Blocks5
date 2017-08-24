@@ -77,7 +77,7 @@ public class FeedBackAdapter extends BaseAdapter<FeedBack,RecyclerView.ViewHolde
         }else{
             FeedBack prevFeedBack = getItem(pos-1);
             if(prevFeedBack != null && prevFeedBack.getCreated_at() != null && TimeUtil.getTimeStamp(feedBack.getCreated_at())
-                    -  TimeUtil.getTimeStamp(prevFeedBack.getCreated_at()) < 5 * 60 * 1000){
+                    -  TimeUtil.getTimeStamp(prevFeedBack.getCreated_at()) < 60 * 1000){
                 text_time.setVisibility(View.GONE);
             }else{
                 text_time.setVisibility(View.VISIBLE);

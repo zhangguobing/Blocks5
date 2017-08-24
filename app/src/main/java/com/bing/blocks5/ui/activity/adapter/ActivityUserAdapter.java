@@ -16,6 +16,12 @@ import com.bing.blocks5.util.Objects;
 
 public class ActivityUserAdapter extends BaseAdapter<ActivityUser,ActivityUserViewHolder> {
 
+    private ActivityUserViewHolder.UserOperateListener mListener;
+
+    public ActivityUserAdapter(ActivityUserViewHolder.UserOperateListener listener) {
+        this.mListener = listener;
+    }
+
     @Override
     public int getViewLayoutId(int viewType) {
         return R.layout.item_activity_user;
@@ -23,7 +29,7 @@ public class ActivityUserAdapter extends BaseAdapter<ActivityUser,ActivityUserVi
 
     @Override
     public RecyclerView.ViewHolder createViewHolder(View view, int viewType) {
-        return new ActivityUserViewHolder(view);
+        return new ActivityUserViewHolder(view, mListener);
     }
 
     @Override

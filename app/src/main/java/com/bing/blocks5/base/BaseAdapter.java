@@ -101,7 +101,7 @@ public abstract class BaseAdapter<T,VH extends RecyclerView.ViewHolder> extends 
     @Override
     public void delItem(T item) {
         mItems.remove(item);
-        notifyDataSetChanged();
+        notifyItemRemoved(mItems.indexOf(item));
     }
 
     @Override

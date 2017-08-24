@@ -8,6 +8,8 @@ import com.bing.blocks5.model.User;
 import java.util.List;
 
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -29,7 +31,7 @@ public interface ActivityUserService {
     @GET("activities/{activityId}/users")
     Observable<ApiResponse<List<ActivityUser>>> getUsersByActivityId(@Path("activityId") int activityId, @Query("token") String token,
                                                                      @Query("state") int state, @Query("page_index") int page_index,
-                                                                     @Query("is_sign") int is_sign, @Query("sex") String sex, @Query("page_size") String page_size);
+                                                                     @Query("is_sign") String is_sign, @Query("sex") String sex, @Query("page_size") String page_size);
     //报名参加某个活动
     @POST("activities/{activityId}/users")
     Observable<ApiResponse> joinActivity(@Path("activityId") int activity_id, @Query("token") String token);
@@ -62,4 +64,9 @@ public interface ActivityUserService {
     Observable<ApiResponse<List<User>>> getFollowers(@Query("token") String token, @Query("follow_type") int follow_type,
                                              @Query("page_index") int page_index,@Query("page_size") int page_size,
                                              @Query("user_id") int user_id);
+
+    @FormUrlEncoded
+    @POST("activities/{activity_id}/users/{id}")
+    Observable<ApiResponse> setActivityUserState(@Path("activity_id") int activity_id, @Path("id") int user_id,
+                                                 @Query("token") String token, @Field("state") int state);
 }

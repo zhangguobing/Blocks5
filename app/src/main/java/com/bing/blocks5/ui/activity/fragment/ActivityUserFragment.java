@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.bing.blocks5.ui.activity.SignUpListActivity;
+import com.bing.blocks5.util.ToastUtil;
 import com.squareup.otto.Subscribe;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
@@ -25,20 +26,22 @@ import java.util.List;
  */
 
 public class ActivityUserFragment extends BaseListFragment<ActivityUser,ActivityUserViewHolder,ActivityUserController.ActivityUserUiCallbacks>
-        implements ActivityUserController.SignUpList {
+        implements ActivityUserController.SignUpList, ActivityUserViewHolder.UserOperateListener {
 
     private static final String EXTRA_ACTIVITY_ID = "extra_activity_id";
-    private static final String EXTRA_IS_SIGN = "extra_is_sign";
+    private static final String EXTRA_IS_Join = "extra_is_join";
 
     private int activity_id;
-    private int is_sign;
+    private int is_join;
 
     private boolean isFirstLoad = true;
+
+    private ActivityUser mOpUser;
 
     public static ActivityUserFragment newInstance(int is_sign,int activity_id) {
         Bundle args = new Bundle();
         args.putInt(EXTRA_ACTIVITY_ID,activity_id);
-        args.putInt(EXTRA_IS_SIGN, is_sign);
+        args.putInt(EXTRA_IS_Join, is_sign);
         ActivityUserFragment fragment = new ActivityUserFragment();
         fragment.setArguments(args);
         return fragment;
@@ -48,7 +51,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         activity_id = getArguments().getInt(EXTRA_ACTIVITY_ID);
-        is_sign = getArguments().getInt(EXTRA_IS_SIGN);
+        is_join = getArguments().getInt(EXTRA_IS_Join);
         loadData();
     }
 
@@ -70,7 +73,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     }
 
     private void loadData(){
-        getCallbacks().getUsersByActivityId(is_sign, activity_id,"", 0, mPage = 1, "15");
+        getCallbacks().getUsersByActivityId("", activity_id, "", is_join, mPage = 1, "15");
     }
 
 
@@ -91,7 +94,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
 
     @Override
     protected BaseAdapter<ActivityUser, ActivityUserViewHolder> getAdapter() {
-        return new ActivityUserAdapter();
+        return new ActivityUserAdapter(this);
     }
 
     @Override
@@ -100,17 +103,31 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
         onFinishRequest(users);
         if(isFirstLoad){
             if(getActivity() instanceof SignUpListActivity){
-                ((SignUpListActivity)getActivity()).onUserLoaded(users,is_sign);
+                ((SignUpListActivity)getActivity()).onUserLoaded(users, is_join);
             }
             isFirstLoad = false;
         }
+    }
+
+    @Override
+    public void onStatusChange() {
+        cancelLoading();
+        mAdapter.delItem(mOpUser);
+        ToastUtil.showText("操作成功");
     }
 
     @Subscribe
     public void onFilterChange(ActivityUserFilterEvent event){
         if(isVisible() && getUserVisibleHint()){
             showLoading(R.string.label_being_loading);
-            getCallbacks().getUsersByActivityId(is_sign, activity_id,event.sex, 0 , mPage = 1, "15");
+            getCallbacks().getUsersByActivityId("", activity_id,event.sex, 0 , mPage = 1, "15");
         }
+    }
+
+    @Override
+    public void onJoinClick(ActivityUser user) {
+        mOpUser = user;
+        showLoading(R.string.label_being_something);
+        getCallbacks().setUserState(activity_id, user.getUser_id(), "0".equals(user.getState()) ? 1 : 0);
     }
 }

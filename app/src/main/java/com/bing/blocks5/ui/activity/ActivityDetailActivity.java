@@ -365,7 +365,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         mTotalPriceTv.setText(activity.getPrice_total()+ "");
         mPriceContentTv.setText(activity.getPrice_content());
         mActivityContentTv.setText(activity.getContent());
-        mNeedIdentitySwitch.setChecked("0".equals(activity.getNeed_identity()));
+        mNeedIdentitySwitch.setChecked("1".equals(activity.getNeed_identity()));
         mUserId = activity.getUser_id();
         initBanner(activity);
         initDanmakuView(activity.getComments());

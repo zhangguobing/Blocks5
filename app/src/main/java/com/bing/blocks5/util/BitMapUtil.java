@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 
 /**
  * Created by tian on 2017/8/23.
@@ -21,17 +22,21 @@ public class BitMapUtil {
         return baos.toByteArray();
     }
 
-    public static Bitmap getScaledBitmapFromFile(File dst, int width, int height) {
+    /**
+     * 从文件中取得压缩的BitMap对象
+     * @return
+     */
+    public static Bitmap getCompressedBitmapFromFile(File dst, int maxWidth, int maxHeight) {
         if (null != dst && dst.exists()) {
             BitmapFactory.Options opts = null;
-            if (width > 0 && height > 0) {
+            if (maxWidth > 0 && maxHeight > 0) {
                 opts = new BitmapFactory.Options();          //设置inJustDecodeBounds为true后，decodeFile并不分配空间，此时计算原始图片的长度和宽度
                         opts.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(dst.getPath(), opts);
                 // 计算图片缩放比例
-                final int minSideLength = Math.min(width, height);
+                final int minSideLength = Math.min(maxWidth, maxHeight);
                 opts.inSampleSize = computeSampleSize(opts, minSideLength,
-                        width * height);          //这里一定要将其设置回false，因为之前我们将其设置成了true
+                        maxWidth * maxHeight);          //这里一定要将其设置回false，因为之前我们将其设置成了true
                         opts.inJustDecodeBounds = false;
                 opts.inInputShareable = true;
                 opts.inPurgeable = true;
@@ -87,5 +92,23 @@ public class BitMapUtil {
         } else {
             return upperBound;
         }
+    }
+
+
+    public Bitmap getBitMapFromFile(File dst){
+        BitmapFactory.Options bfOptions = new BitmapFactory.Options();
+        bfOptions.inDither=false;
+        bfOptions.inPurgeable=true;
+        bfOptions.inTempStorage=new byte[12 * 1024];
+        bfOptions.inJustDecodeBounds = true;
+        FileInputStream fs;
+        Bitmap bitmap = null;
+        try {
+            fs = new FileInputStream(dst);
+            bitmap = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, bfOptions);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }

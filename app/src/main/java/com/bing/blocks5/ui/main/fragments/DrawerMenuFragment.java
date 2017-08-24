@@ -3,7 +3,6 @@ package com.bing.blocks5.ui.main.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,9 +18,9 @@ import android.widget.TextView;
 
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
-import com.bing.blocks5.model.LoginBean;
 import com.bing.blocks5.model.User;
 import com.bing.blocks5.model.event.UserInfoChangeEvent;
+import com.bing.blocks5.model.event.UserInfoRefreshEvent;
 import com.bing.blocks5.ui.activity.CreatedActivity;
 import com.bing.blocks5.ui.activity.JoinActivity;
 import com.bing.blocks5.ui.common.GalleryActivity;
@@ -34,7 +33,6 @@ import com.bing.blocks5.ui.user.ProfileActivity;
 import com.bing.blocks5.util.AndroidBug54971Workaround;
 import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.ImageLoadUtil;
-import com.bing.blocks5.util.ViewUtil;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -76,19 +74,7 @@ public class DrawerMenuFragment extends Fragment {
     }
 
     private void initView(){
-        LoginBean.User user = AppCookie.getUserInfo();
-        ImageLoadUtil.loadAvatar(mAvatarImg,user.getAvatar(),getContext());
-        mUserNameSexTv.setText(user.getNickName());
-        int sexDrawableId = "男".equals(user.getSex()) ? R.mipmap.ic_male : R.mipmap.ic_female;
-        Drawable sexDrawable = ContextCompat.getDrawable(getContext(),sexDrawableId);
-        sexDrawable.setBounds(0,0,sexDrawable.getIntrinsicWidth(),sexDrawable.getIntrinsicHeight());
-        mUserNameSexTv.setCompoundDrawables(null,null,sexDrawable,null);
-        mUserIdTv.setText("用户ID：" + user.getId());
-        mFocusNumTv.setText(user.getFollowNum()+"");
-        mFollowNumTv.setText(user.getFollowedNum()+"");
-        mCreditTv.setText(user.getCredit()+"");
-
-        mAvatarUrl = user.getAvatar();
+        setUser(AppCookie.getUserInfo());
     }
 
     @Override
@@ -198,13 +184,29 @@ public class DrawerMenuFragment extends Fragment {
 
     @Subscribe
     public void onUserInfoChange(UserInfoChangeEvent event){
-        if(event.user != null){
-            User user = event.user;
-            mAvatarUrl = user.getAvatar();
-            ImageLoadUtil.loadAvatar(mAvatarImg,user.getAvatar(),getContext());
-            LoginBean.User loginUser = AppCookie.getUserInfo();
-            loginUser.setAvatar(user.getAvatar());
-            AppCookie.saveUserInfo(loginUser);
-        }
+        setUser(event.user);
+        AppCookie.saveUserInfo(event.user);
+    }
+
+    @Subscribe
+    public void onUserRefreshChange(UserInfoRefreshEvent event){
+        setUser(event.user);
+        AppCookie.saveUserInfo(event.user);
+    }
+
+    public void setUser(User user){
+        if(user == null) return;
+        ImageLoadUtil.loadAvatar(mAvatarImg,user.getAvatar(),getContext());
+        mUserNameSexTv.setText(user.getNick_name());
+        int sexDrawableId = "男".equals(user.getSex()) ? R.mipmap.ic_male : R.mipmap.ic_female;
+        Drawable sexDrawable = ContextCompat.getDrawable(getContext(),sexDrawableId);
+        sexDrawable.setBounds(0,0,sexDrawable.getIntrinsicWidth(),sexDrawable.getIntrinsicHeight());
+        mUserNameSexTv.setCompoundDrawables(null,null,sexDrawable,null);
+        mUserIdTv.setText("用户ID：" + user.getId());
+        mFocusNumTv.setText(user.getFollow_num()+"");
+        mFollowNumTv.setText(user.getFollowed_num()+"");
+        mCreditTv.setText(user.getCredit()+"");
+
+        mAvatarUrl = user.getAvatar();
     }
 }

@@ -315,7 +315,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         Comment.CreatorBean creatorBean = new Comment.CreatorBean();
         creatorBean.setAvatar(AppCookie.getUserInfo().getAvatar());
         creatorBean.setId(AppCookie.getUserInfo().getId());
-        creatorBean.setNick_name(AppCookie.getUserInfo().getNickName());
+        creatorBean.setNick_name(AppCookie.getUserInfo().getNick_name());
 
         mCurSendingComment.setCreator(creatorBean);
 

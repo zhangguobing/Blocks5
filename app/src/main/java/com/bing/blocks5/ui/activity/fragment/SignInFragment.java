@@ -89,7 +89,7 @@ public class SignInFragment extends BasePresenterFragment<ActivityUserController
         mAdapter = new SignInUserAdapter(getContext());
         mListView.setAdapter(mAdapter);
 
-        getCallbacks().getUsersByActivityId(type, activity_id, "", 1, 1, "99999");
+        getCallbacks().getUsersByActivityId(type + "", activity_id, "", 1, 1, "99999");
     }
 
     @Override
@@ -103,9 +103,14 @@ public class SignInFragment extends BasePresenterFragment<ActivityUserController
     }
 
     @Override
+    public void onStatusChange() {
+
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if(isVisibleToUser){
-            PollingManager.getInstance().addTask("task" + type, 0, 3, () -> getCallbacks().getUsersByActivityId(type, activity_id, "", 1, 1, "99999"));
+            PollingManager.getInstance().addTask("task" + type, 0, 3, () -> getCallbacks().getUsersByActivityId(type + "", activity_id, "", 1, 1, "99999"));
         }else{
             PollingManager.getInstance().removeTask("task" + type);
         }

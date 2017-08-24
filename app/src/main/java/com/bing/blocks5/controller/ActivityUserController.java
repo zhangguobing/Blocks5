@@ -29,7 +29,7 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
             }
 
             @Override
-            public void getUsersByActivityId(int is_sign, int activity_id, String sex, int state, int page_index, String page_size) {
+            public void getUsersByActivityId(String is_sign, int activity_id, String sex, int state, int page_index, String page_size) {
                 doGetUsersByActivityId(getId(ui),is_sign, activity_id, sex, state, page_index, page_size);
             }
 
@@ -52,10 +52,15 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
             public void cancelFollow(String follow_id) {
                 doCancelFollow(getId(ui), follow_id);
             }
+
+            @Override
+            public void setUserState(int activity_id, int user_id, int state) {
+                doUserState(getId(ui), activity_id, user_id, state);
+            }
         };
     }
 
-    private void doGetUsersByActivityId(final int callingId, int is_sign, int activity_id, String sex,
+    private void doGetUsersByActivityId(final int callingId, String is_sign, int activity_id, String sex,
                                    int state, int page_index, String page_size){
         mApiClient.activityUserService()
                 .getUsersByActivityId(activity_id, mToken, state, page_index, is_sign, sex, page_size)
@@ -187,13 +192,35 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
                 });
     }
 
+    private void doUserState(final int callingId,int activity_id, int user_id, int state){
+        mApiClient.activityUserService()
+                .setActivityUserState(activity_id, user_id, mToken, state)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse>() {
+                    @Override
+                    public void onResponse(ApiResponse response) {
+                        ActivityUserUi ui = findUi(callingId);
+                        if(ui instanceof ActivityUserController.followOrFanUi){
+                            ((ActivityUserController.followOrFanUi)ui).cancelFollowSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
     public interface ActivityUserUiCallbacks{
         void sign(int activity_id);
-        void getUsersByActivityId(int is_sign,int activity_id,String sex, int state, int page_index, String page_size);
+        void getUsersByActivityId(String is_sign,int activity_id,String sex, int state, int page_index, String page_size);
         void getHistoryOrCollectActivity(boolean is_collect, int page_index, int page_size);
         void getFollowers(int follow_type, int page_index, int page_size, int user_id);
         void follow(String follow_id);
         void cancelFollow(String follow_id);
+        void setUserState(int activity_id, int user_id, int state);
     }
 
     public interface ActivityUserUi extends BaseController.Ui<ActivityUserController.ActivityUserUiCallbacks>{
@@ -202,6 +229,7 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
 
     public interface SignUpList extends ActivityUserUi{
         void onSignUpList(List<ActivityUser> users);
+        void onStatusChange();
     }
 
     public interface ScanBarcodeUi extends ActivityUserUi{

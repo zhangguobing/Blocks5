@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.model.UploadToken;
+import com.bing.blocks5.model.User;
 import com.squareup.otto.Subscribe;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.api.ApiResponse;
@@ -56,6 +57,11 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
             @Override
             public void getUploadToken() {
                 doGetUploadToken(getId(ui));
+            }
+
+            @Override
+            public void getUserById(int user_id) {
+                doGetUserById(getId(ui), user_id);
             }
         };
     }
@@ -189,6 +195,26 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
                 });
     }
 
+    private void doGetUserById(final int callingId, int user_id){
+        mApiClient.userService()
+                .getUserById(user_id,mToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<User>>() {
+                    @Override
+                    public void onResponse(ApiResponse<User> response) {
+                        LoginAuthUi ui = findUi(callingId);
+                        if(ui instanceof HomeUi) {
+                            ((HomeUi)(ui)).receiveUser(response.data);
+                        }
+                    }
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
     public interface LoginAuthUiCallbacks {
         void login(String phone,String captcha);
         void captcha(String phone,String type);
@@ -196,6 +222,7 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
         void resetPassword(String phone,String captcha,String password);
         void fetchConfig();
         void getUploadToken();
+        void getUserById(int user_id);
     }
 
     public interface LoginAuthUi extends BaseController.Ui<LoginAuthUiCallbacks>{
@@ -213,6 +240,7 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
 
     public interface HomeUi extends LoginAuthUi {
         void receiveConfig(Config config);
+        void receiveUser(User user);
     }
 
     @Override
