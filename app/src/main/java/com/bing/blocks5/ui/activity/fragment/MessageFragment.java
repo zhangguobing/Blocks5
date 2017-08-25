@@ -38,6 +38,7 @@ import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.widget.MessageHeadView;
 import com.bing.blocks5.widget.MultiStateView;
 import com.bing.blocks5.widget.topsheet.TopSheetBehavior;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.flyco.dialog.widget.NormalDialog;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -57,7 +58,7 @@ import butterknife.Bind;
  */
 @ContentView(R.layout.fragment_message)
 public class MessageFragment extends BasePresenterFragment<ActivityController.ActivityUiCallbacks>
-    implements View.OnClickListener,ActivityController.CommentUi{
+    implements View.OnClickListener,ActivityController.CommentUi,View.OnLongClickListener{
 
     private static final String EXTRA_IS_TEAM = "is_team";
     private static final String EXTRA_ACTIVITY_ID = "activity_id";
@@ -141,7 +142,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
             }
         });
 
-        mAdapter = new CommentAdapter(this);
+        mAdapter = new CommentAdapter(this,this);
         //去掉动画，解决局部刷新时闪烁问题
         ((SimpleItemAnimator)mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -381,6 +382,12 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     }
 
     @Override
+    public void reportSuccess() {
+        cancelLoading();
+        ToastUtil.showText("已成功举报");
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventUtil.register(this);
@@ -400,5 +407,30 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
             isFilter = true;
             load();
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        switch (view.getId()){
+            case R.id.text_content:
+                final Object posOb = view.getTag(R.id.tag_click_content);
+                if (posOb != null) {
+                    int pos = (int) posOb;
+                    Comment comment = mAdapter.getItem(pos);
+                    if(AppCookie.getUserInfo().getId() != comment.getCreator().getId()){
+                        final String[] contentOptions = {"泄露隐私", "人身攻击", "淫秽色情", "垃圾广告", "敏感信息"};
+                        final ActionSheetDialog dialog = new ActionSheetDialog(getContext(), contentOptions, null);
+                        dialog.isTitleShow(false).show();
+                        dialog.setOnOperItemClickL((parent, v, position, id) -> {
+                            dialog.dismiss();
+                            String content = contentOptions[position];
+                            showLoading(R.string.label_being_something);
+                            getCallbacks().report(1, comment.getId(), content);
+                        });
+                    }
+                }
+                break;
+        }
+        return true;
     }
 }

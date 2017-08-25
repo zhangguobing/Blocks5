@@ -28,9 +28,11 @@ public class CommentAdapter extends BaseAdapter<Comment,RecyclerView.ViewHolder>
 
     /**传到外层的点击监听器，用来处理头像点击等需要外层处理的事件*/
     private View.OnClickListener outsideClickListener = null;
+    private View.OnLongClickListener outsideLongClickListener = null;
 
-    public CommentAdapter(View.OnClickListener outsideClickListener) {
+    public CommentAdapter(View.OnClickListener outsideClickListener, View.OnLongClickListener outsideLongClickListener) {
         this.outsideClickListener = outsideClickListener;
+        this.outsideLongClickListener = outsideLongClickListener;
     }
 
     @Override
@@ -59,6 +61,8 @@ public class CommentAdapter extends BaseAdapter<Comment,RecyclerView.ViewHolder>
             TextHolder textHolder = (TextHolder) holder;
             String text = comment.getContent();
             textHolder.text_content.setText(text);
+            textHolder.text_content.setOnLongClickListener(outsideLongClickListener);
+            textHolder.text_content.setTag(R.id.tag_click_content,position);
         }
     }
 

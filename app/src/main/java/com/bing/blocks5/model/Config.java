@@ -24,6 +24,7 @@ public class Config {
     private List<ReportRptTypesBean> report_rpt_types;
     private List<ReportStatesBean> report_states;
     private List<FeedbackIsRepliesBean> feedback_is_replies;
+    private AndroidUpdateBean android_update;
 
     public List<BannersBean> getBanners() {
         return banners;
@@ -127,6 +128,14 @@ public class Config {
 
     public void setFeedback_is_replies(List<FeedbackIsRepliesBean> feedback_is_replies) {
         this.feedback_is_replies = feedback_is_replies;
+    }
+
+    public AndroidUpdateBean getAndroid_update() {
+        return android_update;
+    }
+
+    public void setAndroid_update(AndroidUpdateBean android_update) {
+        this.android_update = android_update;
     }
 
     public static class BannersBean {
@@ -489,6 +498,36 @@ public class Config {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+
+    public static class AndroidUpdateBean {
+        private String version;
+        private String content;
+        private int is_force;
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public int getIs_force() {
+            return is_force;
+        }
+
+        public void setIs_force(int is_force) {
+            this.is_force = is_force;
         }
     }
 }

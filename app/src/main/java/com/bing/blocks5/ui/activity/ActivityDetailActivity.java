@@ -333,7 +333,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
             dialog.dismiss();
             String content = contentOptions[position];
             showLoading(R.string.label_being_something);
-            getCallbacks().report(Integer.valueOf(mActivityId),content);
+            getCallbacks().report(0,Integer.valueOf(mActivityId),content);
         });
     }
 

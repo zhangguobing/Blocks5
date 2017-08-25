@@ -231,9 +231,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
             ImageLoadUtil.loadImage(imageView,imageUrl,this);
         }
         imageView.setTag(imageUrl);
-        if(mAblumContainer.getChildCount() == ALBUM_MAX_COUNT){
-            mAlbumImg.setVisibility(View.GONE);
-        }
+        mAlbumImg.setVisibility(mAblumContainer.getChildCount() == ALBUM_MAX_COUNT ? View.GONE : View.VISIBLE);
     }
 
     /**

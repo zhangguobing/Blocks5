@@ -62,7 +62,7 @@ public interface ActivityService {
     @DELETE("histories/activities")
     Observable<ApiResponse> cancelCollectActivity(@Query("token") String token, @Query("activity_id") int activity_id);
 
-    //举报活动 rpt_type = 0, rpt_id 活动id
+    //举报活动 rpt_type 举报类型 0 => 活动 1 => 评论 , rpt_id 活动id或者评论id
     @FormUrlEncoded
     @POST("reports")
     Observable<ApiResponse> reportActivity(@Query("token") String token,@Field("rpt_type") int rpt_type,

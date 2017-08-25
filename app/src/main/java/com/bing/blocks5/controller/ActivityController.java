@@ -84,8 +84,8 @@ public class ActivityController extends BaseController<ActivityController.Activi
             }
 
             @Override
-            public void report(int activity_id, String content) {
-                doReportActivity(getId(ui), activity_id, content);
+            public void report(int rpt_type, int numeric,  String content) {
+                doReportActivity(getId(ui), rpt_type, numeric, content);
             }
 
             @Override
@@ -384,9 +384,9 @@ public class ActivityController extends BaseController<ActivityController.Activi
     }
 
 
-    private void doReportActivity(final int callingId, int activity_id, String content){
+    private void doReportActivity(final int callingId, int rpt_type, int numeric, String content){
         mApiClient.activityService()
-                .reportActivity(mToken,0,activity_id,content)
+                .reportActivity(mToken,rpt_type,numeric,content)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse>() {
@@ -395,6 +395,8 @@ public class ActivityController extends BaseController<ActivityController.Activi
                         ActivityUi ui = findUi(callingId);
                         if(ui instanceof ActivityDetailUi){
                             ((ActivityDetailUi)ui).reportSuccess();
+                        }else if(ui instanceof CommentUi){
+                            ((CommentUi)ui).reportSuccess();
                         }
                     }
 
@@ -501,7 +503,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void cancelCollectActivity(int activity_id);
         void join(int activity_id);
         void cancelJoin(int activity_id);
-        void report(int activity_id,String content);
+        void report(int rpt_type,int numeric,String content);
         void start(int activity_id);
         void getComments(String activity_id,Map<String,String> paramsMap);
         void addComment(String activity_id,String content, int is_team);
@@ -539,6 +541,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void getCommentSuccess(List<Comment> comments);
         void addCommentSuccess(Comment comment);
         void addCommentFail(String msg);
+        void reportSuccess();
     }
 
     public interface NoticeUi extends ActivityUi{

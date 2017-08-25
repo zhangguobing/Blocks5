@@ -3,12 +3,14 @@ package com.bing.blocks5.ui.main;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
+import com.bing.blocks5.AppConfig;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.model.User;
 import com.bing.blocks5.model.event.MainActivityListFilterEvent;
@@ -27,6 +30,7 @@ import com.bing.blocks5.ui.main.fragments.MainActivityListFragment;
 import com.bing.blocks5.model.request.MainActivityListParams;
 import com.bing.blocks5.util.AMapLocationUtil;
 import com.bing.blocks5.util.AndroidBug54971Workaround;
+import com.bing.blocks5.util.AppUtil;
 import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.TimeUtil;
 import com.bing.blocks5.util.ToastUtil;
@@ -34,6 +38,7 @@ import com.bing.blocks5.widget.DropDownView;
 import com.bing.blocks5.widget.FlowRadioButton;
 import com.bing.blocks5.widget.FlowRadioGroup;
 import com.bumptech.glide.Glide;
+import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.orhanobut.logger.Logger;
@@ -303,6 +308,42 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
         ActivityAreasList = config.getActivity_areas();
         isRecievedConfig = true;
         changeActivityAreaByCity(mCurrentCity);
+        checkVersion(config.getAndroid_update());
+    }
+
+    private void checkVersion(Config.AndroidUpdateBean android_update) {
+        if(android_update != null && !TextUtils.isEmpty(android_update.getVersion())){
+            int serverVersion = 0;
+            if(android_update.getVersion().contains(".")){
+                String[] arrays = android_update.getVersion().split("\\.");
+                if(arrays.length == 2){
+                    serverVersion = Integer.parseInt(arrays[0]) * 100 + Integer.parseInt(arrays[1]) * 10;
+                }else if(arrays.length == 3){
+                    serverVersion = Integer.parseInt(arrays[0]) * 100 + Integer.parseInt(arrays[1]) * 10 + Integer.parseInt(arrays[2]);
+                }
+            }
+            int clientVersion = AppUtil.getVersionCode(this);
+            if(serverVersion > clientVersion){
+                NormalDialog updateDialog = new NormalDialog(this);
+                int color = ContextCompat.getColor(this,R.color.primary_text);
+                updateDialog.setCanceledOnTouchOutside(false);
+                updateDialog.title("发现新版本")
+                        .cornerRadius(5)
+                        .content(android_update.getContent())
+                        .contentGravity(Gravity.CENTER)
+                        .contentTextColor(color)
+                        .dividerColor(R.color.divider)
+                        .btnTextSize(15.5f, 15.5f)
+                        .btnTextColor(color,color)
+                        .widthScale(0.75f)
+                        .btnText("取消","去升级")
+                        .show();
+                updateDialog.setOnBtnClickL(updateDialog::dismiss, () -> {
+                    AppUtil.openAppInMarket(MainActivity.this);
+                    updateDialog.dismiss();
+                });
+            }
+        }
     }
 
     @Override

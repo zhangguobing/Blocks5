@@ -52,8 +52,8 @@ public class JoinActivity extends BaseActivity{
 
     private void initTabs(){
         List<String> titles = new ArrayList<>();
-        titles.add("活动创建中");
-        titles.add("活动进行中");
+        titles.add("已报名");
+        titles.add("活动进行时");
         titles.add("活动结束");
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(JoinerActivityListFragment.newInstance(1,user_id));
