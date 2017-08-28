@@ -239,4 +239,40 @@ public class TimeUtil {
         return block;
     }
 
+    /**
+     *
+     * @param time yyyy-MM-dd HH:mm:ss 格式的时间字符串
+     * @return yyyy-MM-dd HH:mm 的时间字符串
+     */
+    public static String getTimeWithoutSec(String time){
+        try {
+            Date date = string2Date(time);
+            return date2String(date,"yyyy-MM-dd HH:mm");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static Date string2Date(String time){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
+            return sdf.parse(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String date2String(Date date, String format){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format,Locale.getDefault());
+            return sdf.format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

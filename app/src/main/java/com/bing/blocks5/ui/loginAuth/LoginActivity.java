@@ -3,8 +3,11 @@ package com.bing.blocks5.ui.loginAuth;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +22,11 @@ import com.bing.blocks5.controller.LoginAuthController;
 import com.bing.blocks5.model.LoginBean;
 import com.bing.blocks5.ui.main.MainActivity;
 import com.bing.blocks5.util.ActivityStack;
+import com.bing.blocks5.util.AppUtil;
 import com.bing.blocks5.util.CountDownTimerUtils;
 import com.bing.blocks5.util.ToastUtil;
 import com.bing.blocks5.util.ValidatorUtil;
+import com.flyco.dialog.widget.NormalDialog;
 
 import java.util.ArrayList;
 
@@ -211,8 +216,26 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
     @Override
     public void loginFinish(LoginBean loginBean) {
        cancelLoading();
-       if(loginBean.getUser() == null){
-           RegisterNextActivity.create(this);
+       if(TextUtils.isEmpty(loginBean.getUser().getNick_name())){
+           NormalDialog dialog = new NormalDialog(this);
+           int color = ContextCompat.getColor(this,R.color.primary_text);
+           int redColor = ContextCompat.getColor(this,R.color.red);
+           dialog.setCanceledOnTouchOutside(false);
+           dialog.isTitleShow(false)
+                   .cornerRadius(5)
+                   .content("你还没有注册，是否去注册！")
+                   .contentGravity(Gravity.CENTER)
+                   .contentTextColor(color)
+                   .dividerColor(R.color.divider)
+                   .btnTextSize(15.5f, 15.5f)
+                   .btnTextColor(color,redColor)
+                   .widthScale(0.75f)
+                   .btnText("取消","确定")
+                   .show();
+           dialog.setOnBtnClickL(dialog::dismiss, () -> {
+               RegisterNextActivity.create(this);
+               dialog.dismiss();
+           });
        }else{
            MainActivity.create(this);
            ActivityStack.create().appLogin();

@@ -298,6 +298,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                                 AsyncRun.runInMain(() -> {
                                     mUploadProgressDialog.dismiss();
                                     addChildViewToAlbum(originUrl,destUrl,false);
+                                    mAlbumUrls.add(destUrl);
                                 });
                             }
 
@@ -324,6 +325,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                     for (String imageUrl : mAlbumUrls){
                         addChildViewToAlbum(null,imageUrl,true);
                     }
+                    if(mAlbumUrls.size() == 0) mAlbumImg.setVisibility(View.VISIBLE);
                     break;
             }
         }

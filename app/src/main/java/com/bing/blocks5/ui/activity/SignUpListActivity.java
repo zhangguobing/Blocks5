@@ -11,6 +11,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.ActivityUser;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.flyco.dialog.widget.NormalDialog;
@@ -43,37 +45,57 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
     TabLayout mTabLayout;
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
+    @Bind(R.id.tv_confirm)
+    TextView mConfirmTv;
 
-    private int activity_id;
+    private Activity mActivity;
 
-    private static final String EXTRA_ACTIVITY_ID = "extra_activity_id";
+    private static final String EXTRA_ACTIVITY = "extra_activity";
 
     private String[] mSignUpOptions = new String[]{"全部","男生","女生"};
     private String[] mJoinOptions = new String[]{"全部","男生","女生"};
 
-    public static void create(Context context,int activity_id){
+    public static void create(Context context,Activity activity){
         Intent intent = new Intent(context, SignUpListActivity.class);
-        intent.putExtra(EXTRA_ACTIVITY_ID, activity_id);
+        intent.putExtra(EXTRA_ACTIVITY, activity);
         context.startActivity(intent);
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        activity_id = getIntent().getIntExtra(EXTRA_ACTIVITY_ID, 0);
+        mActivity = getIntent().getParcelableExtra(EXTRA_ACTIVITY);
 
         List<String> titles = new ArrayList<>();
         titles.add("报名");
         titles.add("已加入");
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(ActivityUserFragment.newInstance(0,activity_id));
-        fragments.add(ActivityUserFragment.newInstance(1,activity_id));
+        fragments.add(ActivityUserFragment.newInstance(0,mActivity));
+        fragments.add(ActivityUserFragment.newInstance(1,mActivity));
         mViewPager.setOffscreenPageLimit(0);
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mConfirmTv.setVisibility(position == 1 && mActivity.getState() == 1
+                        && AppCookie.getUserInfo().getId() == mActivity.getCreator().getId() ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
-    @OnClick({R.id.iv_back,R.id.iv_filter})
+    @OnClick({R.id.iv_back,R.id.iv_filter,R.id.tv_confirm})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_back:
@@ -81,6 +103,9 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
                 break;
             case R.id.iv_filter:
                 showFilterDialog();
+                break;
+            case R.id.tv_confirm:
+                showConfirmDialog();
                 break;
         }
     }
@@ -102,26 +127,26 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
     }
 
 
-//    private void showConfirmDialog(){
-//        final NormalDialog dialog = new NormalDialog(this);
-//        int color = ContextCompat.getColor(this,R.color.primary_text);
-//        dialog.setCanceledOnTouchOutside(false);
-//        dialog.isTitleShow(false)
-//                .cornerRadius(5)
-//                .content("活动开始之后无法再更改成员，你确定要开始吗?")
-//                .contentGravity(Gravity.CENTER)
-//                .contentTextColor(color)
-//                .dividerColor(R.color.divider)
-//                .btnTextSize(15.5f, 15.5f)
-//                .btnTextColor(color,color)
-//                .widthScale(0.75f)
-//                .show();
-//        dialog.setOnBtnClickL(() -> dialog.dismiss(), () -> {
-//            dialog.dismiss();
-//            showLoading(R.string.label_being_something);
-//            getCallbacks().start(activity_id);
-//        });
-//    }
+    private void showConfirmDialog(){
+        final NormalDialog dialog = new NormalDialog(this);
+        int color = ContextCompat.getColor(this,R.color.primary_text);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.isTitleShow(false)
+                .cornerRadius(5)
+                .content("活动开始之后无法再更改成员，你确定要开始吗?")
+                .contentGravity(Gravity.CENTER)
+                .contentTextColor(color)
+                .dividerColor(R.color.divider)
+                .btnTextSize(15.5f, 15.5f)
+                .btnTextColor(color,color)
+                .widthScale(0.75f)
+                .show();
+        dialog.setOnBtnClickL(() -> dialog.dismiss(), () -> {
+            dialog.dismiss();
+            showLoading(R.string.label_being_something);
+            getCallbacks().start(mActivity.getId());
+        });
+    }
 
     @Override
     protected BaseController getPresenter() {

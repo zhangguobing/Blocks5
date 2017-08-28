@@ -5,8 +5,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseViewHolder;
+import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.ActivityUser;
 import com.bing.blocks5.util.ClickUtils;
 import com.bing.blocks5.util.ImageLoadUtil;
@@ -26,13 +28,17 @@ public class ActivityUserViewHolder extends BaseViewHolder<ActivityUser> {
     ImageView mAvatarImage;
     @Bind(R.id.ib_join)
     ImageView mJoinImg;
+    @Bind(R.id.tv_credit)
+    TextView mCreditTv;
 
     private UserOperateListener mListener;
+    private Activity activity;
 
 
-    public ActivityUserViewHolder(View view, UserOperateListener listener) {
+    public ActivityUserViewHolder(View view, UserOperateListener listener,Activity activity) {
         super(view);
         this.mListener = listener;
+        this.activity = activity;
     }
 
     public void bind(ActivityUser activityUser){
@@ -42,15 +48,10 @@ public class ActivityUserViewHolder extends BaseViewHolder<ActivityUser> {
         Drawable sexDrawable = getDrawable(sexDrawableId);
         sexDrawable.setBounds(0,0,sexDrawable.getIntrinsicWidth(),sexDrawable.getIntrinsicHeight());
         mUserNameSexTv.setCompoundDrawables(null,null,sexDrawable,null);
-//        mJoinImg.setImageResource("0".endsWith(activityUser.getState()) ? R.mipmap.ic_focus : R.mipmap.ic_has_followed);
-//        mJoinImg.setOnClickListener(view -> {
-//            if(ClickUtils.isFastDoubleClick()) return;
-//            if(mListener != null){
-//                mListener.onJoinClick(activityUser);
-//            }
-//        });
-        if("0".equals(activityUser.getState())){
+        mCreditTv.setText("信用 " + activityUser.getCreator().getCredit());
+        if(activity.getState() == 1 && AppCookie.getUserInfo().getId() == activity.getCreator().getId()){
             mJoinImg.setVisibility(View.VISIBLE);
+            mJoinImg.setImageResource(activityUser.getState() == 0 ? R.mipmap.ic_focus : R.mipmap.ic_has_followed);
             mJoinImg.setOnClickListener(view -> {
                 if(ClickUtils.isFastDoubleClick()) return;
                 if(mListener != null){

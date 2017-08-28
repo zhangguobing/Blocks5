@@ -51,7 +51,7 @@ public class NoticeFragment extends BasePresenterFragment<ActivityController.Act
         type = getArguments().getInt(KEY_TYPE);
         mActivityId = getArguments().getString(KEY_ACTIVITY_Id);
         if(type == TYPE_GUEST){
-            mContentEt.setHint("请输入公告（仅限游客可见）");
+            mContentEt.setHint("请输入公告（所有人可见）");
         }else{
             mContentEt.setHint("请输入公告（仅限团队成员可见）");
         }

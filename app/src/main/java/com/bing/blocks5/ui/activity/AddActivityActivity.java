@@ -94,10 +94,10 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     @NotEmpty(message = "请输入总费用")
     @Bind(R.id.et_total_price)
     EditText mTotalPriceEt;
-    @NotEmpty(message = "请输入费用说明")
+//    @NotEmpty(message = "请输入费用说明")
     @Bind(R.id.et_price_content)
     EditText mPriceContentEt;
-    @NotEmpty(message = "请输入留言")
+//    @NotEmpty(message = "请输入留言")
     @Bind(R.id.et_activity_content)
     EditText mActivityContentEt;
     @Bind(R.id.sb_need_identity)
@@ -479,6 +479,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                     for (String imageUrl : mPictureUrls){
                         addChildViewToPicture(null,imageUrl);
                     }
+                    if(mPictureUrls.size() == 0)  mUploadPicturesImg.setVisibility(View.VISIBLE);
                     break;
             }
         }

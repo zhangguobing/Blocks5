@@ -20,6 +20,9 @@ import com.bing.blocks5.R;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+
 /**
  * 一个提供多种状态切换显示的 layout 组件
  * author：cheikh.wang on 16/7/12 11:34
@@ -54,6 +57,8 @@ public class MultiStateView extends FrameLayout {
 
     @State
     private int mState;
+
+    private boolean mNeedRefreshWhenEmpty;
 
 
     public MultiStateView(Context context) {
@@ -91,6 +96,9 @@ public class MultiStateView extends FrameLayout {
             mEmptyView = mInflater.inflate(emptyViewResId, this, false);
             addView(mEmptyView);
         }
+
+        mNeedRefreshWhenEmpty = a.getBoolean(R.styleable.MultiStateView_msv_need_refresh_when_empty,true);
+
         // 默认状态.由于mViewState变量使用了注解限制,所以不能直接赋值
         int viewState = a.getInt(R.styleable.MultiStateView_msv_viewState, DEFAULT_STATE);
         switch (viewState) {
@@ -129,7 +137,15 @@ public class MultiStateView extends FrameLayout {
             addView(mErrorView);
         }
         if (mEmptyView == null) {
-            mEmptyView = mInflater.inflate(R.layout.layout_msv_empty_hint, this, false);
+            if(mNeedRefreshWhenEmpty){
+                mEmptyView = mInflater.inflate(R.layout.layout_msv_empty_hint_refresh, this, false);
+                PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) mEmptyView.findViewById(R.id.ptr_frame_layout);
+                final PtrHeader header = new PtrHeader(getContext());
+                ptrFrameLayout.setHeaderView(header);
+                ptrFrameLayout.addPtrUIHandler(header);
+            }else{
+                mEmptyView = mInflater.inflate(R.layout.layout_msv_empty_hint, this, false);
+            }
             addView(mEmptyView);
         }
     }
@@ -444,5 +460,24 @@ public class MultiStateView extends FrameLayout {
         }
 
         return this;
+    }
+
+    public MultiStateView setPtrHandler(PtrHandler ptrHandler){
+        View view = getView(mState);
+        if(view != null){
+            PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.ptr_frame_layout);
+            ptrFrameLayout.setPtrHandler(ptrHandler);
+        }
+        return this;
+    }
+
+    public void setPtrRefreshComplete(){
+        View view = getView(mState);
+        if(view != null){
+            PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.ptr_frame_layout);
+            if(ptrFrameLayout != null){
+                ptrFrameLayout.refreshComplete();
+            }
+        }
     }
 }

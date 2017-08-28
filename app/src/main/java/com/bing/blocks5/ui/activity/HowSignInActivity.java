@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bing.blocks5.ui.main.ScanBarCodeActivity;
+import com.bing.blocks5.widget.TitleBar;
 import com.google.zxing.client.android.encode.QREncode;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseActivity;
@@ -37,6 +40,23 @@ public class HowSignInActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        getTitleBar().addAction(new TitleBar.Action() {
+            @Override
+            public String getText() {
+                return "扫一扫";
+            }
+
+            @Override
+            public int getDrawable() {
+                return 0;
+            }
+
+            @Override
+            public void performAction(View view) {
+                ScanBarCodeActivity.create(HowSignInActivity.this);
+            }
+        });
+
         String activityId = getIntent().getStringExtra(EXTRA_ACTIVITY_ID);
         final Bitmap bitmap = QREncode.encodeQRWithoutWhite(new QREncode.Builder(this)
                 .setColor(getResources().getColor(R.color.black))

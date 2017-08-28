@@ -64,9 +64,11 @@ public abstract class BaseActivity extends SwipeBackActivity {
 
     protected void initTitleBar(){
         if(mTitleBar != null){
+            int whiteColor = ContextCompat.getColor(this,R.color.white);
             mTitleBar.setLeftImageResource(R.mipmap.ic_navigate_back);
             mTitleBar.setTitle(getTitle());
-            mTitleBar.setTitleColor(ContextCompat.getColor(this,R.color.white));
+            mTitleBar.setTitleColor(whiteColor);
+            mTitleBar.setActionTextColor(whiteColor);
             mTitleBar.setLeftClickListener(this::onTitleLeftClick);
         }
     }

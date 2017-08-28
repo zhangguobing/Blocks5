@@ -50,6 +50,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * author：zhangguobing on 2017/7/20 15:48
@@ -153,7 +155,9 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
 
         mNoticeBoardTitleTv.setText("0".equals(is_team) ? "游客公告栏" : "团队公告栏");
         mNoticeContentTv.setText(notice_content);
-        mNoticeTimeTv.setText(notice_time);
+        if(!TextUtils.isEmpty(notice_content)){
+            mNoticeTimeTv.setText(notice_time);
+        }
 
         mBehavior = TopSheetBehavior.from(mNoticeBoardLayout);
         mBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
@@ -241,16 +245,17 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
 
     @Override
     public void onResponseError(ResponseError error) {
-        super.onResponseError(error);
+        mMultiStateView.setPtrRefreshComplete();
         if(mAdapter.getItemCount() == 0){
-            mMultiStateView.setState(MultiStateView.STATE_ERROR)
-                    .setButton(v -> onRetryClick());
+            mMultiStateView.setState(MultiStateView.STATE_EMPTY)
+                    .setTitle(error.getMessage())
+                    .setPtrHandler(new PtrDefaultHandler() {
+                        @Override
+                        public void onRefreshBegin(PtrFrameLayout frame) {
+                            load();
+                        }
+                    });
         }
-    }
-
-    protected void onRetryClick() {
-        mMultiStateView.setState(MultiStateView.STATE_LOADING);
-        load();
     }
 
     @Override
@@ -331,6 +336,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     @Override
     public void getCommentSuccess(List<Comment> comments) {
         if(isDetached()) return;
+        mMultiStateView.setPtrRefreshComplete();
         if (comments != null && !comments.isEmpty()) {
             Collections.reverse(comments);
             if(isEnablePullRefresh && !isFilter){
@@ -344,7 +350,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                 isEnablePullRefresh = true;
                 isPageLoadFinish = true;
             }
-            if(comments.size() < 10){
+            if(comments.size() < 15){
                 mRefreshLayout.setEnableRefresh(false);
             }
         }else{
@@ -352,7 +358,13 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                 isPageLoadFinish = true;
                 mRefreshLayout.setEnableRefresh(false);
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
-                        .setTitle("暂无留言");
+                        .setTitle("暂无留言")
+                        .setPtrHandler(new PtrDefaultHandler() {
+                            @Override
+                            public void onRefreshBegin(PtrFrameLayout frame) {
+                                load();
+                            }
+                        });
             }else{
                 ToastUtil.showText("没有更多了");
             }

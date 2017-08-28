@@ -326,6 +326,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
             if(serverVersion > clientVersion){
                 NormalDialog updateDialog = new NormalDialog(this);
                 int color = ContextCompat.getColor(this,R.color.primary_text);
+                int redColor = ContextCompat.getColor(this,R.color.red);
                 updateDialog.setCanceledOnTouchOutside(false);
                 updateDialog.title("发现新版本")
                         .cornerRadius(5)
@@ -334,7 +335,7 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
                         .contentTextColor(color)
                         .dividerColor(R.color.divider)
                         .btnTextSize(15.5f, 15.5f)
-                        .btnTextColor(color,color)
+                        .btnTextColor(color,redColor)
                         .widthScale(0.75f)
                         .btnText("取消","去升级")
                         .show();

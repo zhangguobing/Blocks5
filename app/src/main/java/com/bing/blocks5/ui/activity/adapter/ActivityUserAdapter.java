@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
+import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.ActivityUser;
 import com.bing.blocks5.ui.activity.adapter.holder.ActivityUserViewHolder;
 import com.bing.blocks5.util.Objects;
@@ -17,9 +18,11 @@ import com.bing.blocks5.util.Objects;
 public class ActivityUserAdapter extends BaseAdapter<ActivityUser,ActivityUserViewHolder> {
 
     private ActivityUserViewHolder.UserOperateListener mListener;
+    private Activity activity;
 
-    public ActivityUserAdapter(ActivityUserViewHolder.UserOperateListener listener) {
+    public ActivityUserAdapter(ActivityUserViewHolder.UserOperateListener listener, Activity activity) {
         this.mListener = listener;
+        this.activity = activity;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class ActivityUserAdapter extends BaseAdapter<ActivityUser,ActivityUserVi
 
     @Override
     public RecyclerView.ViewHolder createViewHolder(View view, int viewType) {
-        return new ActivityUserViewHolder(view, mListener);
+        return new ActivityUserViewHolder(view, mListener, activity);
     }
 
     @Override

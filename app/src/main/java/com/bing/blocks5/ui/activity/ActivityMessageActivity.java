@@ -56,7 +56,7 @@ public class ActivityMessageActivity extends BaseActivity {
         Activity activity = getIntent().getParcelableExtra(EXTRA_ACTIVITY);
         List<String> titles = new ArrayList<>();
         titles.add("游客留言");
-        titles.add("队友留言");
+        titles.add("团队留言");
         List<Fragment> fragments = new ArrayList<>();
         if(activity != null){
             mActivityId = activity.getId();

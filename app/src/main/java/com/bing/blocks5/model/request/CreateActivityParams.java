@@ -16,11 +16,11 @@ public class CreateActivityParams {
     public String end_at;
     public int price_total;
     public int price_type;
-    public String price_content;
-    public String need_identity;
+    public String price_content = "";
+    public String need_identity = "";
     public String cover_url;
     public String img_url_1 = "";
     public String img_url_2 = "";
     public String img_url_3 = "";
-    public String content;
+    public String content= "";
 }

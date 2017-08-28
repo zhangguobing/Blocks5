@@ -12,6 +12,7 @@ import com.bing.blocks5.model.Config;
 import com.bing.blocks5.repository.ConfigManager;
 import com.bing.blocks5.util.ActivityDataConvert;
 import com.bing.blocks5.util.ImageLoadUtil;
+import com.bing.blocks5.util.TimeUtil;
 
 import java.util.List;
 
@@ -41,20 +42,15 @@ public class ActivityViewHolder extends BaseViewHolder<Activity> {
     @Bind(R.id.creator_avatar_img)
     ImageView mCreatorAvatarImg;
 
-    private List<Config.ActivityTypesBean> mActivityTypes;
-    private List<Config.ActivityStatesBean> mActivityStates;
-
     public ActivityViewHolder(View view) {
         super(view);
-        mActivityTypes = ConfigManager.getInstance().getConfig().getActivity_types();
-        mActivityStates = ConfigManager.getInstance().getConfig().getActivity_states();
     }
 
     public void bind(Activity activity){
         ImageLoadUtil.loadImage(mActivityImage,activity.getCover_url(),getContext());
         ImageLoadUtil.loadAvatar(mCreatorAvatarImg,activity.getCreator().getAvatar(),getContext());
         mActivityTypeTv.setText(ActivityDataConvert.getActivityTypeNameById(activity.getActivity_type_id()));
-        mActivityTimeTv.setText(activity.getBegin_at() + "-" + activity.getEnd_at());
+        mActivityTimeTv.setText(TimeUtil.getTimeWithoutSec(activity.getBegin_at()) + "-" + TimeUtil.getTimeWithoutSec(activity.getEnd_at()));
         mCreatorNameAndSex.setText(activity.getCreator().getNick_name());
         int sexDrawableId = "男".equals(activity.getCreator().getSex()) ? R.mipmap.ic_male : R.mipmap.ic_female;
         Drawable sexDrawable = getDrawable(sexDrawableId);
@@ -62,37 +58,12 @@ public class ActivityViewHolder extends BaseViewHolder<Activity> {
         mCreatorNameAndSex.setCompoundDrawables(null,null,sexDrawable,null);
         mCeatorCredit.setText("信用：" + activity.getCreator().getCredit());
         mStateAndAreaTv.setText(ActivityDataConvert.getActivityStateById(activity.getState()+"") + "|" + activity.getArea());
-        mPeopleNumAndLeftTv.setText(activity.getMan_num() + "男" + activity.getWoman_num() + "女"+"(余" +
-        activity.getMan_left() + "男" + activity.getWoman_left() + "女)");
-    }
-
-    private String getActivityTypeNameById(int activity_type_id) {
-        String activityTypeName = "";
-        if (mActivityTypes != null && mActivityTypes.size() > 0) {
-            for (int i = 0; i < mActivityTypes.size(); i++) {
-                Config.ActivityTypesBean activityType = mActivityTypes.get(i);
-                if (activity_type_id == activityType.getId()) {
-                    activityTypeName = activityType.getName();
-                    break;
-                }
-            }
-            return activityTypeName;
+        String peopleNumAndLeftStr = activity.getMan_num() + "男" + activity.getWoman_num() + "女";
+        if(activity.getMan_left() == 0 && activity.getWoman_left() == 0){
+            peopleNumAndLeftStr += "(已报满)";
+        }else{
+            peopleNumAndLeftStr += "(余" + activity.getMan_left() + "男" + activity.getWoman_left() + "女)";
         }
-        return activityTypeName;
-    }
-
-    private String getActivityStateById(String activity_state_id){
-        String activityStateName = "";
-        if (mActivityStates != null && mActivityStates.size() > 0) {
-            for (int i = 0; i < mActivityStates.size(); i++) {
-                Config.ActivityStatesBean activityState = mActivityStates.get(i);
-                if (activity_state_id.equals(activityState.getId())) {
-                    activityStateName = activityState.getName();
-                    break;
-                }
-            }
-            return activityStateName;
-        }
-        return activityStateName;
+        mPeopleNumAndLeftTv.setText(peopleNumAndLeftStr);
     }
 }

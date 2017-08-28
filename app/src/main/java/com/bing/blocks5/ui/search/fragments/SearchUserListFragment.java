@@ -52,7 +52,7 @@ implements UserViewHolder.IUserOperateListener,UserController.UserListUi {
     }
 
     @Override
-    protected boolean isShowReloadWhenEmpty() {
+    protected boolean isShowRefreshWhenEmpty() {
         return false;
     }
 

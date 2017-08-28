@@ -156,4 +156,5 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-3.0.0.jar')
     //高德定位SDK
     compile 'com.amap.api:location:latest.integration'
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
 }

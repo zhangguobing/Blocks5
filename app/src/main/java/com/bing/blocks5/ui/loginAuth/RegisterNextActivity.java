@@ -70,7 +70,7 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
     private void setTitleBar() {
         TitleBar titleBar = getTitleBar();
         if(titleBar != null){
-            titleBar.setActionTextColor(ContextCompat.getColor(this,R.color.white));
+//            titleBar.setActionTextColor(ContextCompat.getColor(this,R.color.white));
             titleBar.addAction(new TitleBar.Action() {
                 @Override
                 public String getText() {

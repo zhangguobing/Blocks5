@@ -27,6 +27,7 @@ import com.bing.blocks5.model.ShareInfo;
 import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.util.ClickUtils;
 import com.bing.blocks5.util.ShareUtil;
+import com.bing.blocks5.util.TimeUtil;
 import com.bing.blocks5.widget.opendanmaku.DanmakuItem;
 import com.bing.blocks5.widget.opendanmaku.DanmakuView;
 import com.bing.blocks5.widget.opendanmaku.IDanmakuItem;
@@ -223,7 +224,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 .setOnMenuItemClickListener(position -> {
                     if(position == 0){
                           //筛选
-                        SignUpListActivity.create(this,Integer.valueOf(mActivityId));
+                        SignUpListActivity.create(this,mActivity);
                     }else if(position == 1){
                          //留言
                         ActivityMessageActivity.create(this,mActivity);
@@ -275,7 +276,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                             getCallbacks().cancelCollectActivity(Integer.valueOf(mActivityId));
                         }
                     }else if(position == 1){
-                        SignUpListActivity.create(this,Integer.valueOf(mActivityId));
+                        SignUpListActivity.create(this,mActivity);
                     }else if(position == 2){
                         ScanBarCodeActivity.create(this);
                     }else if(position == 3){
@@ -358,12 +359,12 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         mActivityTypeTv.setText(ActivityDataConvert.getActivityTypeNameById(activity.getActivity_type_id()));
         mActivityNameTv.setText(activity.getTitle());
         mActivityAreaTv.setText(activity.getArea());
-        mStartTimeTv.setText(activity.getBegin_at());
-        mEndTimeTv.setText(activity.getEnd_at());
+        mStartTimeTv.setText(TimeUtil.getTimeWithoutSec(activity.getBegin_at()));
+        mEndTimeTv.setText(TimeUtil.getTimeWithoutSec(activity.getEnd_at()));
         initPriceTypeRadioButton(activity.getPrice_type());
         mActivityPeopleNumTv.setText(getString(R.string.format_male_female_people_num,activity.getMan_num()+"",activity.getWoman_num()+""));
         mTotalPriceTv.setText(activity.getPrice_total()+ "");
-        mPriceContentTv.setText(activity.getPrice_content());
+        mPriceContentTv.setText(TextUtils.isEmpty(activity.getPrice_content()) ? "无" : activity.getPrice_content());
         mActivityContentTv.setText(activity.getContent());
         mNeedIdentitySwitch.setChecked("1".equals(activity.getNeed_identity()));
         mUserId = activity.getUser_id();
@@ -379,7 +380,8 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
             footView.findViewById(R.id.rl_message).setOnClickListener(this);
             mJoinBtn = (Button) footView.findViewById(R.id.btn_join);
             mJoinBtn.setOnClickListener(this);
-            mJoinBtn.setEnabled(activity.getState() == 1 && activity.getIs_join() == 0);
+            mJoinBtn.setEnabled(activity.getState() == 1);
+            mJoinBtn.setText(activity.getIs_join() == 0 ? "加入活动" : "退出活动");
         }
         mContainer.addView(footView);
     }
@@ -499,7 +501,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 isRadarOpened = !isRadarOpened;
                 break;
             case R.id.rl_filter:
-                SignUpListActivity.create(this,Integer.valueOf(mActivityId));
+                SignUpListActivity.create(this,mActivity);
                 break;
         }
     }

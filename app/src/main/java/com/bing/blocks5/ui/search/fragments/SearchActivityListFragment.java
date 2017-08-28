@@ -35,7 +35,7 @@ implements UserController.UserUi{
     }
 
     @Override
-    protected boolean isShowReloadWhenEmpty() {
+    protected boolean isShowRefreshWhenEmpty() {
         return false;
     }
 

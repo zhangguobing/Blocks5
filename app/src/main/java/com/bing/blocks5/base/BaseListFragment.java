@@ -5,7 +5,6 @@ import android.support.annotation.DrawableRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.view.View;
 
 import com.bing.blocks5.api.ResponseError;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -19,6 +18,8 @@ import com.bing.blocks5.widget.RefreshHeadView;
 import java.util.List;
 
 import butterknife.Bind;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * author：ZhangGuoBing on 2017/6/5 16:22
@@ -81,7 +82,7 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
         mMultiStateView.setState(getDefaultState());
     }
 
-    protected boolean isShowReloadWhenEmpty(){
+    protected boolean isShowRefreshWhenEmpty(){
         return true;
     }
 
@@ -141,6 +142,7 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
         if(isDetached()) return;
         mRefreshLayout.finishRefreshing();
         mRefreshLayout.finishLoadmore();
+        mMultiStateView.setPtrRefreshComplete();
     }
 
     public void onFinishRequest(List<T> items) {
@@ -160,10 +162,12 @@ public abstract class BaseListFragment<T,VH extends RecyclerView.ViewHolder,UC> 
             if (mPage == 1) {
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
                         .setTitle(getEmptyTitle());
-                if(isShowReloadWhenEmpty()){
-                    mMultiStateView.setButton(view -> {
-                        mMultiStateView.setState(MultiStateView.STATE_LOADING);
-                        refreshPage();
+                if(isShowRefreshWhenEmpty()){
+                    mMultiStateView.setPtrHandler(new PtrDefaultHandler() {
+                        @Override
+                        public void onRefreshBegin(PtrFrameLayout frame) {
+                            refreshPage();
+                        }
                     });
                 }
             } else {

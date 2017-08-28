@@ -29,7 +29,7 @@
                 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="250dp">
+                    android:layout_height="320dp">
 
                     <com.youth.banner.Banner
                         android:id="@+id/banner"
@@ -436,7 +436,6 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="start"
-                        android:text="0"
                         android:padding="15dp"
                         android:textSize="15sp" />
 

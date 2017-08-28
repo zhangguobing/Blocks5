@@ -10,7 +10,7 @@ public class ActivityUser {
     private int id;
     private int activity_id;
     private int user_id;
-    private String state;
+    private int state;
     private String is_sign;
     private String signed_at;
     private String created_at;
@@ -40,11 +40,11 @@ public class ActivityUser {
         this.user_id = user_id;
     }
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
     }
 
@@ -148,7 +148,7 @@ public class ActivityUser {
         if (id != that.id) return false;
         if (activity_id != that.activity_id) return false;
         if (user_id != that.user_id) return false;
-        if (state != null ? !state.equals(that.state) : that.state != null) return false;
+        if (state != that.state) return false;
         if (is_sign != null ? !is_sign.equals(that.is_sign) : that.is_sign != null) return false;
         if (signed_at != null ? !signed_at.equals(that.signed_at) : that.signed_at != null)
             return false;
@@ -163,7 +163,7 @@ public class ActivityUser {
         int result = id;
         result = 31 * result + activity_id;
         result = 31 * result + user_id;
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + state;
         result = 31 * result + (is_sign != null ? is_sign.hashCode() : 0);
         result = 31 * result + (signed_at != null ? signed_at.hashCode() : 0);
         result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
