@@ -75,7 +75,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     }
 
     private void loadData(){
-        getCallbacks().getUsersByActivityId("", activity.getId(), "", is_join, mPage = 1, "15");
+        getCallbacks().getUsersByActivityId(is_join+"", activity.getId(), "", is_join, mPage = 1, "15");
     }
 
 
@@ -115,14 +115,13 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     public void onStatusChange() {
         cancelLoading();
         mAdapter.delItem(mOpUser);
-        ToastUtil.showText("操作成功");
     }
 
     @Subscribe
     public void onFilterChange(ActivityUserFilterEvent event){
         if(isVisible() && getUserVisibleHint()){
             showLoading(R.string.label_being_loading);
-            getCallbacks().getUsersByActivityId("", activity.getId(),event.sex, 0 , mPage = 1, "15");
+            getCallbacks().getUsersByActivityId(is_join+"", activity.getId(),event.sex, 0 , mPage = 1, "15");
         }
     }
 

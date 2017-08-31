@@ -11,6 +11,8 @@ import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterFragment;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.ActivityController;
+import com.bing.blocks5.model.event.ActivityNoticeUpdateEvent;
+import com.bing.blocks5.util.EventUtil;
 import com.bing.blocks5.util.ToastUtil;
 
 import butterknife.Bind;
@@ -25,6 +27,7 @@ public class NoticeFragment extends BasePresenterFragment<ActivityController.Act
 
     public static final String KEY_TYPE = "key_type";
     public static final String KEY_ACTIVITY_Id = "key_activity_id";
+    public static final String KEY_NOTICE_CONTENT = "key_notice_content";
 
     public static final int TYPE_GUEST = 0;
     public static final int TYPE_TEAM = 1;
@@ -37,10 +40,11 @@ public class NoticeFragment extends BasePresenterFragment<ActivityController.Act
     private String mActivityId;
     private int type;
 
-    public static NoticeFragment newInstance(int type,String activity_id) {
+    public static NoticeFragment newInstance(int type,String activity_id,String noticeContent) {
         Bundle args = new Bundle();
         args.putInt(KEY_TYPE, type);
         args.putString(KEY_ACTIVITY_Id, activity_id);
+        args.putString(KEY_NOTICE_CONTENT, noticeContent);
         NoticeFragment fragment = new NoticeFragment();
         fragment.setArguments(args);
         return fragment;
@@ -50,10 +54,15 @@ public class NoticeFragment extends BasePresenterFragment<ActivityController.Act
     protected void initView(Bundle savedInstanceState) {
         type = getArguments().getInt(KEY_TYPE);
         mActivityId = getArguments().getString(KEY_ACTIVITY_Id);
+        String noticeContent = getArguments().getString(KEY_NOTICE_CONTENT);
         if(type == TYPE_GUEST){
             mContentEt.setHint("请输入公告（所有人可见）");
         }else{
             mContentEt.setHint("请输入公告（仅限团队成员可见）");
+        }
+        if(!TextUtils.isEmpty(noticeContent)){
+            mContentEt.setText(noticeContent);
+            mContentEt.setSelection(noticeContent.length());
         }
     }
 
@@ -83,5 +92,6 @@ public class NoticeFragment extends BasePresenterFragment<ActivityController.Act
     public void updateNoticeSuccess() {
         ToastUtil.showText("发布成功");
         getActivity().finish();
+        EventUtil.sendEvent(new ActivityNoticeUpdateEvent(type+"",mContentEt.getText().toString().trim()));
     }
 }

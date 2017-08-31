@@ -27,8 +27,10 @@ import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterFragment;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.ActivityController;
+import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.model.event.ActivityMessageFilterEvent;
+import com.bing.blocks5.model.event.ActivityNoticeUpdateEvent;
 import com.bing.blocks5.ui.activity.adapter.CommentAdapter;
 import com.bing.blocks5.ui.user.UserDetailActivity;
 import com.bing.blocks5.util.EventUtil;
@@ -50,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -63,9 +66,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     implements View.OnClickListener,ActivityController.CommentUi,View.OnLongClickListener{
 
     private static final String EXTRA_IS_TEAM = "is_team";
-    private static final String EXTRA_ACTIVITY_ID = "activity_id";
-    private static final String EXTRA_NOTICE_CONTENT = "notice_content";
-    private static final String EXTRA_NOTICE_TIME = "notice_time";
+    private static final String EXTRA_ACTIVITY = "activity";
 
     @Bind(R.id.multi_state_view)
     public MultiStateView mMultiStateView;
@@ -87,6 +88,8 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     TextView mNoticeContentTv;
     @Bind(R.id.tv_notice_time)
     TextView mNoticeTimeTv;
+    @Bind(R.id.tv_report)
+    TextView mReportTv;
 
     private CommentAdapter mAdapter;
 
@@ -98,7 +101,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     //是否页面已经加载完毕
     private boolean isPageLoadFinish = false;
 
-    private String activity_id;
+    private Activity activity;
     private String is_team;
 
     //公告栏是否是展开状态
@@ -112,13 +115,13 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
 
     private TopSheetBehavior mBehavior;
 
-    public static MessageFragment newInstance(String is_team,String activity_id,String notice_content,String notice_time) {
+    private int mPage = 1;
+
+    public static MessageFragment newInstance(String is_team, Activity activity) {
         Bundle args = new Bundle();
         MessageFragment fragment = new MessageFragment();
         args.putString(EXTRA_IS_TEAM,is_team);
-        args.putString(EXTRA_ACTIVITY_ID, activity_id);
-        args.putString(EXTRA_NOTICE_CONTENT,notice_content);
-        args.putString(EXTRA_NOTICE_TIME,notice_time);
+        args.putParcelable(EXTRA_ACTIVITY, activity);
         fragment.setArguments(args);
         return fragment;
     }
@@ -126,9 +129,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
     @Override
     protected void initView(Bundle savedInstanceState) {
         is_team = getArguments().getString(EXTRA_IS_TEAM);
-        activity_id = getArguments().getString(EXTRA_ACTIVITY_ID);
-        String notice_content = getArguments().getString(EXTRA_NOTICE_CONTENT);
-        String notice_time = getArguments().getString(EXTRA_NOTICE_TIME);
+        activity = getArguments().getParcelable(EXTRA_ACTIVITY);
 
         MessageHeadView headerView = new MessageHeadView(getContext());
         mRefreshLayout.setHeaderView(headerView);
@@ -153,11 +154,21 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         mSendBtn.setOnClickListener(this);
         mDownImg.setOnClickListener(this);
 
-        mNoticeBoardTitleTv.setText("0".equals(is_team) ? "游客公告栏" : "团队公告栏");
-        mNoticeContentTv.setText(notice_content);
-        if(!TextUtils.isEmpty(notice_content)){
-            mNoticeTimeTv.setText(notice_time);
+        if("0".equals(is_team)){
+            mNoticeBoardTitleTv.setText("游客公告栏");
+            mNoticeContentTv.setText(activity.getGuest_notice());
+            if(!TextUtils.isEmpty(activity.getGuest_notice())){
+                mNoticeTimeTv.setText(activity.getGuest_notice_time());
+            }
+        }else{
+            mNoticeBoardTitleTv.setText("团队公告栏");
+            mNoticeContentTv.setText(activity.getTeam_notice());
+            if(!TextUtils.isEmpty(activity.getTeam_notice())){
+                mNoticeTimeTv.setText(activity.getTeam_notice_time());
+            }
         }
+
+        mReportTv.setVisibility(AppCookie.getUserInfo().getId() == activity.getCreator().getId() ? View.GONE : View.VISIBLE);
 
         mBehavior = TopSheetBehavior.from(mNoticeBoardLayout);
         mBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
@@ -230,12 +241,9 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         params.put("token", AppCookie.getToken());
         params.put("is_team",is_team);
         params.put("is_activity_creator",is_activity_creator);
-        if(isEnablePullRefresh && mAdapter.getItemCount() > 0 && !isFilter){
-            params.put("last_at",mAdapter.getItem(mAdapter.getItemCount()-1).getCreated_at());
-        }else{
-            params.put("page_index","1");
-        }
-        getCallbacks().getComments(activity_id,params);
+        params.put("page_index", mPage + "");
+        params.put("page_size","15");
+        getCallbacks().getComments(String.valueOf(activity.getId()),params);
     }
 
     @Override
@@ -258,6 +266,7 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
         }
     }
 
+    @OnClick({R.id.tv_report})
     @Override
     public void onClick(View v) {
        switch (v.getId()){
@@ -297,10 +306,26 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                    mCurSendingComment.setSend_state(Constants.SendState.SENDING);
                    mAdapter.setItem(position,mCurSendingComment);
                    recycleViewScrollToBottom();
-                   getCallbacks().addComment(activity_id,mCurSendingComment.getContent(),Integer.parseInt(is_team));
+                   getCallbacks().addComment(String.valueOf(activity.getId()),mCurSendingComment.getContent(),Integer.parseInt(is_team));
                });
                break;
+           case R.id.tv_report:
+               toggleNoticeBoard();
+               showSelectReportContentDialog();
+               break;
        }
+    }
+
+    private void showSelectReportContentDialog() {
+        final String[] contentOptions = {"泄露隐私", "人身攻击", "淫秽色情", "垃圾广告", "敏感信息"};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getContext(), contentOptions, null);
+        dialog.isTitleShow(false).show();
+        dialog.setOnOperItemClickL((parent, view, position, id) -> {
+            dialog.dismiss();
+            String content = contentOptions[position];
+            showLoading(R.string.label_being_something);
+            getCallbacks().report(0,activity.getId(),content);
+        });
     }
 
     private void sendTextMessage(){
@@ -330,18 +355,18 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
 
         mReadySendPosition = mAdapter.getItemCount() > 0 ? mAdapter.getItemCount()-1 : 0;
 
-        getCallbacks().addComment(activity_id,text,Integer.parseInt(is_team));
+        getCallbacks().addComment(String.valueOf(activity.getId()),text,Integer.parseInt(is_team));
     }
 
     @Override
     public void getCommentSuccess(List<Comment> comments) {
         if(isDetached()) return;
         mMultiStateView.setPtrRefreshComplete();
+        mRefreshLayout.finishRefreshing();
         if (comments != null && !comments.isEmpty()) {
             Collections.reverse(comments);
             if(isEnablePullRefresh && !isFilter){
                 mAdapter.addItems(0,comments);
-                mRefreshLayout.finishRefreshing();
                 mRecyclerView.scrollToPosition(comments.size() - 1);
             }else{
                 mMultiStateView.setState(MultiStateView.STATE_CONTENT);
@@ -353,10 +378,11 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
             if(comments.size() < 15){
                 mRefreshLayout.setEnableRefresh(false);
             }
+            mPage++;
         }else{
+            mRefreshLayout.setEnableRefresh(false);
             if(isFilter || mAdapter.getItemCount() == 0){
                 isPageLoadFinish = true;
-                mRefreshLayout.setEnableRefresh(false);
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
                         .setTitle("暂无留言")
                         .setPtrHandler(new PtrDefaultHandler() {
@@ -444,5 +470,12 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                 break;
         }
         return true;
+    }
+
+    @Subscribe
+    public void onNoticeContentUpdate(ActivityNoticeUpdateEvent event){
+        if(is_team.equals(event.notice_type)){
+            mNoticeContentTv.setText(event.notice_content);
+        }
     }
 }

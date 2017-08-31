@@ -26,8 +26,8 @@ public class SearchController extends BaseController<SearchController.SearchUi,S
     protected SearchUiCallbacks createUiCallbacks(SearchUi ui) {
         return new SearchUiCallbacks() {
             @Override
-            public void getActivityListById(int activity_id) {
-                doGetActivityListById(getId(ui), activity_id);
+            public void getActivityListByIdAndState(int activity_id, String state) {
+                doGetActivityListByIdAndState(getId(ui), activity_id, state);
             }
 
             @Override
@@ -37,9 +37,9 @@ public class SearchController extends BaseController<SearchController.SearchUi,S
         };
     }
 
-    private void doGetActivityListById(final int callingId, int activity_id){
+    private void doGetActivityListByIdAndState(final int callingId, int activity_id, String state){
         mApiClient.activityService()
-                .getActivityListByActivityId(mToken,activity_id, "15")
+                .getActivityListByIdAndState(mToken,activity_id, "15", state)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<List<Activity>>>() {
@@ -76,7 +76,7 @@ public class SearchController extends BaseController<SearchController.SearchUi,S
     }
 
     public interface SearchUiCallbacks{
-        void getActivityListById(int activity_id);
+        void getActivityListByIdAndState(int activity_id, String state);
         void getUserById(int user_id);
     }
 

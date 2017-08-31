@@ -60,7 +60,7 @@ public class SearchActivity extends BasePresenterActivity<SearchController.Searc
         if(TextUtils.isEmpty(id)) return;
         showLoading(R.string.label_being_something);
         if(mViewPager.getCurrentItem() == 0){
-            getCallbacks().getActivityListById(Integer.parseInt(id));
+            getCallbacks().getActivityListByIdAndState(Integer.parseInt(id), "1,2,3,4");
         }else{
             getCallbacks().getUserById(Integer.parseInt(id));
         }

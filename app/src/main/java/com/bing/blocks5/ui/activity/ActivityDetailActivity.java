@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.model.ShareInfo;
 import com.bing.blocks5.ui.common.GalleryActivity;
+import com.bing.blocks5.ui.setting.IdentityActivity;
+import com.bing.blocks5.ui.setting.SettingActivity;
 import com.bing.blocks5.util.ClickUtils;
 import com.bing.blocks5.util.ShareUtil;
 import com.bing.blocks5.util.TimeUtil;
@@ -33,6 +36,7 @@ import com.bing.blocks5.widget.opendanmaku.DanmakuView;
 import com.bing.blocks5.widget.opendanmaku.IDanmakuItem;
 import com.bumptech.glide.Glide;
 import com.flyco.dialog.widget.ActionSheetDialog;
+import com.flyco.dialog.widget.NormalDialog;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseController;
@@ -282,6 +286,11 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                     }else if(position == 3){
                         showShareDialog();
                     }else if(position == 4){
+                        if("1".equals(mActivity.getNeed_identity())
+                                && AppCookie.getUserInfo().getIdentity_state() == 0){
+                            showNeedIdentityDialog();
+                            return;
+                        }
                         showLoading(R.string.label_being_something);
                         if(mActivity.getIs_join() == 0){
                             getCallbacks().join(Integer.valueOf(mActivityId));
@@ -296,6 +305,27 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 .showAsDropDown(view, -205, 0);
     }
 
+    private void showNeedIdentityDialog(){
+        NormalDialog dialog = new NormalDialog(this);
+        int color = ContextCompat.getColor(this,R.color.primary_text);
+        int redColor = ContextCompat.getColor(this,R.color.red);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.isTitleShow(true)
+                .cornerRadius(5)
+                .content("本活动需要实名用户才能参加")
+                .contentGravity(Gravity.CENTER)
+                .contentTextColor(color)
+                .dividerColor(R.color.divider)
+                .btnTextSize(15.5f, 15.5f)
+                .btnTextColor(color,redColor)
+                .widthScale(0.75f)
+                .btnText("取消","去认证")
+                .show();
+        dialog.setOnBtnClickL(dialog::dismiss, () -> {
+            IdentityActivity.create(this,null);
+            dialog.dismiss();
+        });
+    }
 
     private void showShareDialog(){
         new BottomShareDialog(this)

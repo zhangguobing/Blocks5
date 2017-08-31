@@ -159,7 +159,7 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
                     public void onResponse(ApiResponse response) {
                         ActivityUserUi ui = findUi(callingId);
                         if(ui instanceof ActivityUserController.followOrFanUi){
-                            ((ActivityUserController.followOrFanUi)ui).cancelFollowSuccess();
+                            ((ActivityUserController.followOrFanUi)ui).followSuccess();
                         }
                     }
 
@@ -203,6 +203,8 @@ public class ActivityUserController extends BaseController<ActivityUserControlle
                         ActivityUserUi ui = findUi(callingId);
                         if(ui instanceof ActivityUserController.followOrFanUi){
                             ((ActivityUserController.followOrFanUi)ui).cancelFollowSuccess();
+                        }else if(ui instanceof ActivityUserController.SignUpList){
+                            ((ActivityUserController.SignUpList)ui).onStatusChange();
                         }
                     }
 

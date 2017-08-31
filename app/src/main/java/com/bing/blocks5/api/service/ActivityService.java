@@ -29,7 +29,8 @@ public interface ActivityService {
     Observable<ApiResponse> createActivity(@Query("token") String token, @Body CreateActivityParams params);
 
     @GET("activities")
-    Observable<ApiResponse<List<Activity>>> getActivityListByActivityId(@Query("token") String token, @Query("id") int activity_id, @Query("page_size") String page_size);
+    Observable<ApiResponse<List<Activity>>> getActivityListByIdAndState(@Query("token") String token, @Query("id") int activity_id,
+                                                                        @Query("page_size") String page_size, @Query("state") String state);
 
     @GET("activities")
     Observable<ApiResponse<List<Activity>>> getActivityList(@Query("token") String token, @Query("id") int activity_type_id,@Query("page_index") int page_index);

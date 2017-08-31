@@ -3,6 +3,7 @@ package com.bing.blocks5.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -16,10 +17,12 @@ import com.bing.blocks5.base.BaseActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.event.ActivityMessageFilterEvent;
+import com.bing.blocks5.model.event.ActivityNoticeUpdateEvent;
 import com.bing.blocks5.ui.activity.fragment.MessageFragment;
 import com.bing.blocks5.ui.main.adapter.FragmentAdapter;
 import com.bing.blocks5.util.EventUtil;
 import com.flyco.dialog.widget.ActionSheetDialog;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +46,7 @@ public class ActivityMessageActivity extends BaseActivity {
     @Bind(R.id.tv_notice)
     TextView mNoticeTv;
 
-    private int mActivityId;
+    private Activity mActivity;
 
     public static void create(Context context, Activity activity){
         Intent intent = new Intent(context,ActivityMessageActivity.class);
@@ -53,17 +56,16 @@ public class ActivityMessageActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        Activity activity = getIntent().getParcelableExtra(EXTRA_ACTIVITY);
+        mActivity= getIntent().getParcelableExtra(EXTRA_ACTIVITY);
         List<String> titles = new ArrayList<>();
         titles.add("游客留言");
         titles.add("团队留言");
         List<Fragment> fragments = new ArrayList<>();
-        if(activity != null){
-            mActivityId = activity.getId();
-            fragments.add(MessageFragment.newInstance("0",activity.getId()+"",activity.getGuest_notice(),activity.getGuest_notice_time()));
-            fragments.add(MessageFragment.newInstance("1",activity.getId()+"",activity.getTeam_notice(),activity.getTeam_notice_time()));
+        if(mActivity != null){
+            fragments.add(MessageFragment.newInstance("0",mActivity));
+            fragments.add(MessageFragment.newInstance("1",mActivity));
 
-            if(activity.getCreator() != null && AppCookie.getUserInfo().getId() == activity.getCreator().getId()){
+            if(mActivity.getCreator() != null && AppCookie.getUserInfo().getId() == mActivity.getCreator().getId()){
                 mNoticeTv.setVisibility(View.VISIBLE);
             }
         }
@@ -79,13 +81,33 @@ public class ActivityMessageActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_notice:
-                PublishNoticeActivity.create(this,mActivityId);
+                PublishNoticeActivity.create(this,mActivity.getId(),mActivity.getGuest_notice(),mActivity.getTeam_notice());
                 break;
         }
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventUtil.register(this);
+    }
 
-//    private void showFilterDialog() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventUtil.unregister(this);
+    }
+
+    @Subscribe
+    public void onNoticeContentUpdate(ActivityNoticeUpdateEvent event){
+        if("0".equals(event.notice_type)){
+            mActivity.setGuest_notice(event.notice_content);
+        }else{
+            mActivity.setTeam_notice(event.notice_content);
+        }
+    }
+
+    //    private void showFilterDialog() {
 //        final String[] contentOptions = {"全部留言", "楼主留言"};
 //        final ActionSheetDialog dialog = new ActionSheetDialog(this, contentOptions, null);
 //        dialog.isTitleShow(false).show();

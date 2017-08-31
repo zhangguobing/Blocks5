@@ -233,8 +233,8 @@ implements View.OnClickListener,UserController.FeedBackUi{
     @Override
     public void loadFeedBackSuccess(List<FeedBack> feedBacks) {
         if (feedBacks != null && !feedBacks.isEmpty()) {
+            Collections.reverse(feedBacks);
             if(mPage == 1){
-                Collections.reverse(feedBacks);
                 mMultiStateView.setState(MultiStateView.STATE_CONTENT);
                 mAdapter.setItems(feedBacks);
                 recycleViewScrollToBottom();
