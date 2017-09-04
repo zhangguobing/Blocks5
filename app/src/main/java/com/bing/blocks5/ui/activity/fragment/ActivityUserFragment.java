@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.bing.blocks5.model.Activity;
+import com.bing.blocks5.model.event.ActivityUserRefreshEvent;
 import com.bing.blocks5.ui.activity.SignUpListActivity;
-import com.bing.blocks5.util.ToastUtil;
 import com.squareup.otto.Subscribe;
 import com.bing.blocks5.R;
 import com.bing.blocks5.base.BaseAdapter;
@@ -34,8 +34,6 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
 
     private Activity activity;
     private int is_join;
-
-    private boolean isFirstLoad = true;
 
     private ActivityUser mOpUser;
 
@@ -75,7 +73,7 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     }
 
     private void loadData(){
-        getCallbacks().getUsersByActivityId(is_join+"", activity.getId(), "", is_join, mPage = 1, "15");
+        getCallbacks().getUsersByActivityId("", activity.getId(), "", is_join, mPage = 1, "15");
     }
 
 
@@ -103,18 +101,17 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     public void onSignUpList(List<ActivityUser> users) {
         cancelLoading();
         onFinishRequest(users);
-        if(isFirstLoad){
+        if(mPage == 1){
             if(getActivity() instanceof SignUpListActivity){
                 ((SignUpListActivity)getActivity()).onUserLoaded(users, is_join);
             }
-            isFirstLoad = false;
         }
     }
 
     @Override
     public void onStatusChange() {
         cancelLoading();
-        mAdapter.delItem(mOpUser);
+        EventUtil.sendEvent(new ActivityUserRefreshEvent());
     }
 
     @Subscribe
@@ -130,5 +127,10 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
         mOpUser = user;
         showLoading(R.string.label_being_something);
         getCallbacks().setUserState(activity.getId(), user.getUser_id(), user.getState() == 0 ? 1 : 0);
+    }
+
+    @Subscribe
+    public void onUserRefresh(ActivityUserRefreshEvent event){
+        loadData();
     }
 }

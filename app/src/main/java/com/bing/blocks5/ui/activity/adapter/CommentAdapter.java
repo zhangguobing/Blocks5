@@ -3,6 +3,7 @@ package com.bing.blocks5.ui.activity.adapter;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.Objects;
 import com.bing.blocks5.util.TimeUtil;
+
+import org.w3c.dom.Text;
 
 /**
  * author：zhangguobing on 2017/7/20 17:00
@@ -94,7 +97,11 @@ public class CommentAdapter extends BaseAdapter<Comment,RecyclerView.ViewHolder>
 
     /**显示头像*/
     private void setPhoto(Comment comment, BaseMessageHolder holder, int pos) {
-        ImageLoadUtil.loadAvatar(holder.image_photo,comment.getCreator().getAvatar(),holder.itemView.getContext());
+        if(TextUtils.isEmpty(comment.getCreator().getAvatar())){
+            holder.image_photo.setImageResource(R.mipmap.ic_user_avatar_black);
+        }else {
+            ImageLoadUtil.loadAvatar(holder.image_photo,comment.getCreator().getAvatar(),holder.itemView.getContext());
+        }
         holder.image_photo.setOnClickListener(outsideClickListener);
         holder.image_photo.setTag(R.id.tag_click_content,pos);
     }

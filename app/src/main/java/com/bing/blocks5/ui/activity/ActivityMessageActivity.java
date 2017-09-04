@@ -21,6 +21,8 @@ import com.bing.blocks5.model.event.ActivityNoticeUpdateEvent;
 import com.bing.blocks5.ui.activity.fragment.MessageFragment;
 import com.bing.blocks5.ui.main.adapter.FragmentAdapter;
 import com.bing.blocks5.util.EventUtil;
+import com.bing.blocks5.util.ToastUtil;
+import com.bing.blocks5.widget.NoScrollViewPager;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.squareup.otto.Subscribe;
 
@@ -42,11 +44,14 @@ public class ActivityMessageActivity extends BaseActivity {
     @Bind(R.id.tab_layout)
     TabLayout mTabLayout;
     @Bind(R.id.view_pager)
-    ViewPager mViewPager;
+    NoScrollViewPager mViewPager;
     @Bind(R.id.tv_notice)
     TextView mNoticeTv;
 
     private Activity mActivity;
+
+    private boolean isInNotTeamException = false;
+    private String notTeamExceptionStr = "";
 
     public static void create(Context context, Activity activity){
         Intent intent = new Intent(context,ActivityMessageActivity.class);
@@ -72,6 +77,26 @@ public class ActivityMessageActivity extends BaseActivity {
         mViewPager.setOffscreenPageLimit(0);
         mViewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 1 && isInNotTeamException){
+                    mViewPager.setCurrentItem(0);
+                    ToastUtil.showText(notTeamExceptionStr);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @OnClick({R.id.iv_back,R.id.tv_notice})
@@ -105,6 +130,13 @@ public class ActivityMessageActivity extends BaseActivity {
         }else{
             mActivity.setTeam_notice(event.notice_content);
         }
+    }
+
+    public void handleNotTeamException(String notTeamExceptionStr){
+        mViewPager.setCurrentItem(0);
+        mViewPager.setNoScroll(true);
+        isInNotTeamException = true;
+        this.notTeamExceptionStr = notTeamExceptionStr;
     }
 
     //    private void showFilterDialog() {

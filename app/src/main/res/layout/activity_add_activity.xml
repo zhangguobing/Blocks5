@@ -479,17 +479,19 @@
 
                 <View style="@style/Divider_Horizontal_Gray" />
 
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_create_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="创建活动"
+                    style="@style/Widget.Blocks5.Button.Solid.Red" />
+
             </LinearLayout>
 
         </ScrollView>
 
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_create_activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="创建活动"
-        style="@style/Widget.Blocks5.Button.Solid.Red" />
 
 </LinearLayout>

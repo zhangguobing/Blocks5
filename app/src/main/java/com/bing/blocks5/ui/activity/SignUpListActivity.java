@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.ActivityUser;
+import com.bing.blocks5.model.event.ActivityUserRefreshEvent;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.flyco.dialog.widget.NormalDialog;
 import com.bing.blocks5.R;
@@ -157,6 +158,7 @@ public class SignUpListActivity extends BasePresenterActivity<ActivityController
     public void startActivitySuccess() {
         cancelLoading();
         ToastUtil.showText("活动开始成功");
+        EventUtil.sendEvent(new ActivityUserRefreshEvent());
     }
 
     public void onUserLoaded(List<ActivityUser> users, int is_sign){

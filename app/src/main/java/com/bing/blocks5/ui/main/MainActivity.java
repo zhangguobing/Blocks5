@@ -324,25 +324,47 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
             }
             int clientVersion = AppUtil.getVersionCode(this);
             if(serverVersion > clientVersion){
-                NormalDialog updateDialog = new NormalDialog(this);
-                int color = ContextCompat.getColor(this,R.color.primary_text);
-                int redColor = ContextCompat.getColor(this,R.color.red);
-                updateDialog.setCanceledOnTouchOutside(false);
-                updateDialog.title("发现新版本")
-                        .cornerRadius(5)
-                        .content(android_update.getContent())
-                        .contentGravity(Gravity.CENTER)
-                        .contentTextColor(color)
-                        .dividerColor(R.color.divider)
-                        .btnTextSize(15.5f, 15.5f)
-                        .btnTextColor(color,redColor)
-                        .widthScale(0.75f)
-                        .btnText("取消","去升级")
-                        .show();
-                updateDialog.setOnBtnClickL(updateDialog::dismiss, () -> {
-                    AppUtil.openAppInMarket(MainActivity.this);
-                    updateDialog.dismiss();
-                });
+                if(android_update.getIs_force() == 0){
+                    NormalDialog updateDialog = new NormalDialog(this);
+                    int color = ContextCompat.getColor(this,R.color.primary_text);
+                    int redColor = ContextCompat.getColor(this,R.color.red);
+                    updateDialog.setCanceledOnTouchOutside(false);
+                    updateDialog.title("发现新版本")
+                            .cornerRadius(5)
+                            .content(android_update.getContent())
+                            .contentGravity(Gravity.CENTER)
+                            .contentTextColor(color)
+                            .dividerColor(R.color.divider)
+                            .btnTextSize(15.5f, 15.5f)
+                            .btnTextColor(color,redColor)
+                            .widthScale(0.75f)
+                            .btnText("取消","去升级")
+                            .show();
+                    updateDialog.setOnBtnClickL(updateDialog::dismiss, () -> {
+                        AppUtil.openAppInMarket(MainActivity.this);
+                        updateDialog.dismiss();
+                    });
+                }else{
+                    NormalDialog updateDialog = new NormalDialog(this);
+                    int color = ContextCompat.getColor(this,R.color.primary_text);
+                    int redColor = ContextCompat.getColor(this,R.color.red);
+                    updateDialog.setCanceledOnTouchOutside(false);
+                    updateDialog.title("发现新版本")
+                            .cornerRadius(5)
+                            .content(android_update.getContent())
+                            .contentGravity(Gravity.CENTER)
+                            .contentTextColor(color)
+                            .dividerColor(R.color.divider)
+                            .btnTextSize(15.5f, 15.5f)
+                            .btnTextColor(color,redColor)
+                            .widthScale(0.75f)
+                            .btnText("去升级")
+                            .show();
+                    updateDialog.setOnBtnClickL(() -> {
+                        AppUtil.openAppInMarket(MainActivity.this);
+                        updateDialog.dismiss();
+                    });
+                }
             }
         }
     }

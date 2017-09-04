@@ -112,9 +112,9 @@ public class DanmakuItem implements IDanmakuItem {
         }
         canvas.save();
         canvas.translate(mCurrX,mCurrY);
-//        for (int i = 0; i < 4; i++) { //加深阴影,产生描边效果. stroke/outline effect
-//            staticLayout.draw(canvas);
-//        }
+        for (int i = 0; i < 4; i++) { //加深阴影,产生描边效果. stroke/outline effect
+            staticLayout.draw(canvas);
+        }
         borderStaticLayout.draw(canvas);
         staticLayout.draw(canvas);
         canvas.restore();

@@ -1,6 +1,7 @@
 package com.bing.blocks5.ui.activity.adapter.holder;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,7 +43,11 @@ public class ActivityUserViewHolder extends BaseViewHolder<ActivityUser> {
     }
 
     public void bind(ActivityUser activityUser){
-        ImageLoadUtil.loadAvatar(mAvatarImage,activityUser.getCreator().getAvatar(),getContext());
+        if(TextUtils.isEmpty(activityUser.getCreator().getAvatar())){
+            mAvatarImage.setImageResource(R.mipmap.ic_user_avatar_black);
+        }else {
+            ImageLoadUtil.loadAvatar(mAvatarImage,activityUser.getCreator().getAvatar(),getContext());
+        }
         mUserNameSexTv.setText(activityUser.getCreator().getNick_name());
         int sexDrawableId = "男".equals(activityUser.getCreator().getSex()) ? R.mipmap.ic_male : R.mipmap.ic_female;
         Drawable sexDrawable = getDrawable(sexDrawableId);

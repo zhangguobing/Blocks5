@@ -1,6 +1,7 @@
 package com.bing.blocks5.ui.activity.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +67,11 @@ public class SignInUserAdapter extends BaseAdapter{
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-
-        ImageLoadUtil.loadAvatar(holder.mAvatarImg,user.getCreator().getAvatar(),mContext);
+        if(TextUtils.isEmpty(user.getCreator().getAvatar())) {
+            holder.mAvatarImg.setImageResource(R.mipmap.ic_user_avatar_black);
+        }else{
+            ImageLoadUtil.loadAvatar(holder.mAvatarImg,user.getCreator().getAvatar(),mContext);
+        }
         holder.mNameTv.setText(user.getCreator().getNick_name());
         holder.mStatus.setText("0".equals(user.getIs_sign()) ? "未签到" : "已签到");
 

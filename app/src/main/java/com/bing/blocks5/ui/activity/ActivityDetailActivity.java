@@ -6,9 +6,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -388,11 +390,17 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         mActivityIdTv.setText(activity.getId()+"");
         mActivityTypeTv.setText(ActivityDataConvert.getActivityTypeNameById(activity.getActivity_type_id()));
         mActivityNameTv.setText(activity.getTitle());
-        mActivityAreaTv.setText(activity.getArea());
+        mActivityAreaTv.setText(activity.getCity() + "-" + activity.getArea());
         mStartTimeTv.setText(TimeUtil.getTimeWithoutSec(activity.getBegin_at()));
         mEndTimeTv.setText(TimeUtil.getTimeWithoutSec(activity.getEnd_at()));
         initPriceTypeRadioButton(activity.getPrice_type());
-        mActivityPeopleNumTv.setText(getString(R.string.format_male_female_people_num,activity.getMan_num()+"",activity.getWoman_num()+""));
+        String peopleNumStr = activity.getMan_num()+"男"+activity.getWoman_num()+"女";
+        if(activity.getMan_left() == 0 && activity.getWoman_left() == 0){
+            peopleNumStr += "(已报满)";
+        }else{
+            peopleNumStr += "<font color='#E24D3E'>(剩余男" + activity.getMan_left() + "人，女" + activity.getWoman_left() + "人)</font>";
+        }
+        mActivityPeopleNumTv.setText(Html.fromHtml(peopleNumStr));
         mTotalPriceTv.setText(activity.getPrice_total()+ "");
         mPriceContentTv.setText(TextUtils.isEmpty(activity.getPrice_content()) ? "无" : activity.getPrice_content());
         mActivityContentTv.setText(activity.getContent());
@@ -446,7 +454,13 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         mDanmakuView.addItem(list,true);
         mDanmakuView.show();
 
-        mDanmakuView.setDanmakuListener(() -> mDanmakuView.addItem(list,true));
+        mDanmakuView.setDanmakuListener(() ->{
+            List<IDanmakuItem> newList = new ArrayList<>();
+            for (int i = 0; i < comments.size(); i++) {
+                newList.add(new DanmakuItem(this,comments.get(i).getContent(),mDanmakuView.getWidth()));
+            }
+            mDanmakuView.addItem(newList,true);
+        });
     }
 
     private class GlideImageLoader extends ImageLoader {
@@ -514,7 +528,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 }
                 break;
             case R.id.iv_barcode:
-                HowSignInActivity.create(this,mActivityId);
+                HowSignInActivity.create(this,mActivity, HowSignInActivity.PAGE_FROM_ACTIVITY_DETAIL);
                 break;
             case R.id.iv_user_avatar:
                 UserDetailActivity.create(this,mUserId);

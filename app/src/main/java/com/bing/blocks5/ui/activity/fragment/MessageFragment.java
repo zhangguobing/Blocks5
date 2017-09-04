@@ -31,6 +31,7 @@ import com.bing.blocks5.model.Activity;
 import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.model.event.ActivityMessageFilterEvent;
 import com.bing.blocks5.model.event.ActivityNoticeUpdateEvent;
+import com.bing.blocks5.ui.activity.ActivityMessageActivity;
 import com.bing.blocks5.ui.activity.adapter.CommentAdapter;
 import com.bing.blocks5.ui.user.UserDetailActivity;
 import com.bing.blocks5.util.EventUtil;
@@ -263,6 +264,9 @@ public class MessageFragment extends BasePresenterFragment<ActivityController.Ac
                             load();
                         }
                     });
+        }
+        if(error.getCode() == 5){
+            ((ActivityMessageActivity)getActivity()).handleNotTeamException(error.getMessage());
         }
     }
 

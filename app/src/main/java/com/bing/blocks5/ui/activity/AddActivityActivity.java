@@ -1,6 +1,7 @@
 package com.bing.blocks5.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
@@ -10,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +25,7 @@ import com.bing.blocks5.AppCookie;
 import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.ui.common.GalleryActivity;
 import com.bing.blocks5.util.AsyncRun;
+import com.bing.blocks5.util.HideKeyBoardUtil;
 import com.bing.blocks5.util.ImageLoadUtil;
 import com.bing.blocks5.util.QiniuUploadUtils;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -183,6 +186,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
             R.id.tv_start_time, R.id.tv_end_time,R.id.tv_select_area,
             R.id.tv_type,R.id.tv_people_num,R.id.btn_create_activity})
     public void onClick(View view) {
+        hideKeyBoard(view);
         switch (view.getId()) {
             case R.id.iv_upload_pictures:
                 fromAlbum(PICTURE_MAX_COUNT - mPictureContainer.getChildCount(),ACTIVITY_REQUEST_SELECT_PICTURE);
@@ -216,6 +220,12 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                 }
                 break;
         }
+    }
+
+
+    private void hideKeyBoard(View v){
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        im.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     /**
