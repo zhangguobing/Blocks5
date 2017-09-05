@@ -13,7 +13,8 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.bing.blocks5.widget.FlingBehavior">
 
             <com.bing.blocks5.widget.HomeBanner
                 android:id="@+id/banner"

@@ -19,6 +19,8 @@ import com.bing.blocks5.widget.RefreshHeadView;
 import java.util.List;
 
 import butterknife.Bind;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * author：ZhangGuoBing on 2017/6/5 16:22
@@ -81,6 +83,10 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
         mMultiStateView.setState(getDefaultState());
     }
 
+    protected boolean isShowRefreshWhenEmpty(){
+        return true;
+    }
+
     protected void refreshPage() {}
 
     protected void nextPage() {}
@@ -137,6 +143,7 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
         if(isActivityDestroyed()) return;
         mRefreshLayout.finishRefreshing();
         mRefreshLayout.finishLoadmore();
+        mMultiStateView.setPtrRefreshComplete();
     }
 
     public boolean isActivityDestroyed(){
@@ -158,11 +165,15 @@ public abstract class BaseListActivity<T,VH extends RecyclerView.ViewHolder,UC> 
         } else {
             if (mPage == 1) {
                 mMultiStateView.setState(MultiStateView.STATE_EMPTY)
-                        .setButton(view -> {
-                            mMultiStateView.setState(MultiStateView.STATE_LOADING);
-                            refreshPage();
-                        })
                         .setTitle(getEmptyTitle());
+                if(isShowRefreshWhenEmpty()){
+                    mMultiStateView.setPtrHandler(new PtrDefaultHandler() {
+                        @Override
+                        public void onRefreshBegin(PtrFrameLayout frame) {
+                            refreshPage();
+                        }
+                    });
+                }
             } else {
                 ToastUtil.showText("没有更多了");
             }
