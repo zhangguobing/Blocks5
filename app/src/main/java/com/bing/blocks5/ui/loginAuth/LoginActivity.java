@@ -20,6 +20,7 @@ import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.LoginAuthController;
 import com.bing.blocks5.model.LoginBean;
+import com.bing.blocks5.ui.main.HomeActivity;
 import com.bing.blocks5.ui.main.MainActivity;
 import com.bing.blocks5.util.ActivityStack;
 import com.bing.blocks5.util.AppUtil;
@@ -237,7 +238,7 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
                dialog.dismiss();
            });
        }else{
-           MainActivity.create(this);
+           HomeActivity.create(this);
            ActivityStack.create().appLogin();
        }
     }

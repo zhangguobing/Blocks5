@@ -1,6 +1,7 @@
 package com.bing.blocks5.ui.user;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -142,6 +144,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
 
     @OnClick({R.id.iv_avatar,R.id.iv_album,R.id.tv_select_area,R.id.btn_save,R.id.tv_age})
     public void onClick(View view){
+        hideKeyBoard(view);
         switch (view.getId()){
             case R.id.iv_avatar:
                 fromAlbum(1, ACTIVITY_REQUEST_SELECT_AVATAR);
@@ -166,6 +169,11 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                 }
                 break;
         }
+    }
+
+    private void hideKeyBoard(View v){
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        im.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 

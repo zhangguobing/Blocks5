@@ -35,8 +35,6 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
     private Activity activity;
     private int is_join;
 
-    private ActivityUser mOpUser;
-
     public static ActivityUserFragment newInstance(int is_sign, Activity activity) {
         Bundle args = new Bundle();
         args.putParcelable(EXTRA_ACTIVITY,activity);
@@ -124,7 +122,6 @@ public class ActivityUserFragment extends BaseListFragment<ActivityUser,Activity
 
     @Override
     public void onJoinClick(ActivityUser user) {
-        mOpUser = user;
         showLoading(R.string.label_being_something);
         getCallbacks().setUserState(activity.getId(), user.getUser_id(), user.getState() == 0 ? 1 : 0);
     }

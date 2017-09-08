@@ -184,6 +184,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         map.put("token",mToken);
         map.put("activity_type_id",params.activity_type_id +"");
         map.put("page_index",page_index+"");
+        map.put("page_size","15");
         if(!TextUtils.isEmpty(params.city)){
             map.put("city",params.city);
         }
@@ -465,7 +466,10 @@ public class ActivityController extends BaseController<ActivityController.Activi
 
                     @Override
                     public void onFailure(ResponseError error) {
-                        findUi(callingId).onResponseError(error);
+                        ActivityController.ActivityUi ui = findUi(callingId);
+                        if (ui instanceof ActivityController.ActivityDetailUi) {
+                            ((ActivityController.ActivityDetailUi) ui).joinFail(error);
+                        }
                     }
                 });
     }
@@ -532,6 +536,7 @@ public class ActivityController extends BaseController<ActivityController.Activi
         void onCollectSuccess(String msg);
         void cancelCollectSuccess(String msg);
         void joinSuccess();
+        void joinFail(ResponseError error);
         void cancelJoinSuccess();
         void reportSuccess();
         void cancelActivitySuccess(Activity activity);

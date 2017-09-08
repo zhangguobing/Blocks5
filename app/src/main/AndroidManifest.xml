@@ -63,6 +63,13 @@
             android:launchMode="singleTask"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.bing.blocks5.ui.main.HomeActivity"
+            android:launchMode="singleTask"
+            android:label="BlocksFive"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.main.CategoryActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.bing.blocks5.album.AlbumActivity"

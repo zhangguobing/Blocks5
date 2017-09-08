@@ -19,6 +19,7 @@ import com.bing.blocks5.base.BaseController;
 import com.bing.blocks5.base.BasePresenterActivity;
 import com.bing.blocks5.base.ContentView;
 import com.bing.blocks5.controller.UserController;
+import com.bing.blocks5.ui.main.HomeActivity;
 import com.bing.blocks5.ui.main.MainActivity;
 import com.bing.blocks5.util.ActivityStack;
 import com.bing.blocks5.util.ImageLoadUtil;
@@ -107,7 +108,7 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
     public void registerSuccess(String message) {
         cancelLoading();
         ToastUtil.showText(message);
-        MainActivity.create(this);
+        HomeActivity.create(this);
         ActivityStack.create().appLogin();
     }
 

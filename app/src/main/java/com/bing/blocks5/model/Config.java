@@ -1,7 +1,11 @@
 package com.bing.blocks5.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.bigkoo.pickerview.model.IPickerViewData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,8 +17,8 @@ public class Config {
 
     private List<BannersBean> banners;
     private List<UserIdentityStatesBean> user_identity_states;
-    private List<ActivityTypesBean> activity_types;
-    private List<ActivityAreasBean> activity_areas;
+    private ArrayList<ActivityTypesBean> activity_types;
+    private ArrayList<ActivityAreasBean> activity_areas;
     private List<ActivityPriceTypesBean> activity_price_types;
     private List<ActivityStatesBean> activity_states;
     private List<ActivityNeedIdentitiesBean> activity_need_identities;
@@ -42,19 +46,19 @@ public class Config {
         this.user_identity_states = user_identity_states;
     }
 
-    public List<ActivityTypesBean> getActivity_types() {
+    public ArrayList<ActivityTypesBean> getActivity_types() {
         return activity_types;
     }
 
-    public void setActivity_types(List<ActivityTypesBean> activity_types) {
+    public void setActivity_types(ArrayList<ActivityTypesBean> activity_types) {
         this.activity_types = activity_types;
     }
 
-    public List<ActivityAreasBean> getActivity_areas() {
+    public ArrayList<ActivityAreasBean> getActivity_areas() {
         return activity_areas;
     }
 
-    public void setActivity_areas(List<ActivityAreasBean> activity_areas) {
+    public void setActivity_areas(ArrayList<ActivityAreasBean> activity_areas) {
         this.activity_areas = activity_areas;
     }
 
@@ -190,7 +194,7 @@ public class Config {
         }
     }
 
-    public static class ActivityTypesBean implements IPickerViewData{
+    public static class ActivityTypesBean implements IPickerViewData, Parcelable {
         /**
          * id : 1
          * name : 骑行
@@ -200,6 +204,9 @@ public class Config {
         private int id;
         private String name;
         private List<List<Integer>> peoples;
+        private int parent_id;
+        private String parent_name;
+        private String image_url;
 
         public int getId() {
             return id;
@@ -225,13 +232,90 @@ public class Config {
             this.peoples = peoples;
         }
 
+        public int getParent_id() {
+            return parent_id;
+        }
+
+        public void setParent_id(int parent_id) {
+            this.parent_id = parent_id;
+        }
+
+        public String getParent_name() {
+            return parent_name;
+        }
+
+        public void setParent_name(String parent_name) {
+            this.parent_name = parent_name;
+        }
+
+        public String getImage_url() {
+            return image_url;
+        }
+
+        public void setImage_url(String image_url) {
+            this.image_url = image_url;
+        }
+
         @Override
         public String getPickerViewText() {
             return name;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ActivityTypesBean that = (ActivityTypesBean) o;
+
+            return image_url.equals(that.image_url);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return image_url.hashCode();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.id);
+            dest.writeString(this.name);
+            dest.writeInt(this.parent_id);
+            dest.writeString(this.parent_name);
+            dest.writeString(this.image_url);
+        }
+
+        public ActivityTypesBean() {
+        }
+
+        protected ActivityTypesBean(Parcel in) {
+            this.id = in.readInt();
+            this.name = in.readString();
+            this.parent_id = in.readInt();
+            this.parent_name = in.readString();
+            this.image_url = in.readString();
+        }
+
+        public static final Parcelable.Creator<ActivityTypesBean> CREATOR = new Parcelable.Creator<ActivityTypesBean>() {
+            @Override
+            public ActivityTypesBean createFromParcel(Parcel source) {
+                return new ActivityTypesBean(source);
+            }
+
+            @Override
+            public ActivityTypesBean[] newArray(int size) {
+                return new ActivityTypesBean[size];
+            }
+        };
     }
 
-    public static class ActivityAreasBean {
+    public static class ActivityAreasBean implements Parcelable {
         /**
          * city : 深圳市
          * areas : ["南山区","宝安区","罗湖区","福田区","盐田区","龙岗区","坪山区","龙华区","光明新区","大鹏新区","深汕特别合作区","前海经济特区"]
@@ -265,6 +349,39 @@ public class Config {
         public void setAreas(List<String> areas) {
             this.areas = areas;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.city);
+            dest.writeInt(this.isHot);
+            dest.writeStringList(this.areas);
+        }
+
+        public ActivityAreasBean() {
+        }
+
+        protected ActivityAreasBean(Parcel in) {
+            this.city = in.readString();
+            this.isHot = in.readInt();
+            this.areas = in.createStringArrayList();
+        }
+
+        public static final Parcelable.Creator<ActivityAreasBean> CREATOR = new Parcelable.Creator<ActivityAreasBean>() {
+            @Override
+            public ActivityAreasBean createFromParcel(Parcel source) {
+                return new ActivityAreasBean(source);
+            }
+
+            @Override
+            public ActivityAreasBean[] newArray(int size) {
+                return new ActivityAreasBean[size];
+            }
+        };
     }
 
     public static class ActivityPriceTypesBean {

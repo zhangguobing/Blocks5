@@ -25,6 +25,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.bing.blocks5.AppCookie;
+import com.bing.blocks5.api.ResponseError;
 import com.bing.blocks5.model.Comment;
 import com.bing.blocks5.model.ShareInfo;
 import com.bing.blocks5.ui.common.GalleryActivity;
@@ -288,11 +289,11 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                     }else if(position == 3){
                         showShareDialog();
                     }else if(position == 4){
-                        if("1".equals(mActivity.getNeed_identity())
-                                && AppCookie.getUserInfo().getIdentity_state() == 0){
-                            showNeedIdentityDialog();
-                            return;
-                        }
+//                        if("1".equals(mActivity.getNeed_identity())
+//                                && AppCookie.getUserInfo().getIdentity_state() == 0){
+//                            showNeedIdentityDialog();
+//                            return;
+//                        }
                         showLoading(R.string.label_being_something);
                         if(mActivity.getIs_join() == 0){
                             getCallbacks().join(Integer.valueOf(mActivityId));
@@ -490,6 +491,16 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         ToastUtil.showText("报名成功");
         mJoinBtn.setText("退出活动");
         mActivity.setIs_join(1);
+    }
+
+    @Override
+    public void joinFail(ResponseError error) {
+        cancelLoading();
+        if(error.getCode() == 5){
+            showNeedIdentityDialog();
+        }else{
+            ToastUtil.showText(error.getMessage());
+        }
     }
 
     @Override

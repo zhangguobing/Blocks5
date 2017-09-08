@@ -113,7 +113,11 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     ImageView mUploadPicturesImg;
 
     //选中的类型位置
-    private int mSelectedTypePosition = -1;
+//    private int mSelectedTypePosition = -1;
+
+    //选中的活动类型
+    private Config.ActivityTypesBean mSelectedActivityType;
+
     //选中的人数，男多少人，女多少人
     private List<Integer> mSelectedPeopleNum;
     //选中的起始时间
@@ -323,20 +327,19 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     }
 
     private void showPeopleNumPickerView() {
-        if(mSelectedTypePosition == -1){
+        if(mSelectedActivityType == null){
             ToastUtil.showText("请先选择类型");
             return;
         }
-        Config.ActivityTypesBean activityType = ConfigManager.getInstance().getConfig().getActivity_types().get(mSelectedTypePosition);
         List<String> formatPeopleNum = new ArrayList<>();
-        for (List<Integer> peoples : activityType.getPeoples()){
+        for (List<Integer> peoples : mSelectedActivityType.getPeoples()){
             if(peoples != null && peoples.size() == 2){
                 formatPeopleNum.add(getString(R.string.format_male_female_people_num,peoples.get(0).toString(),peoples.get(1).toString()));
             }
         }
         OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
             mPeopleNumTv.setText(formatPeopleNum.get(options1));
-            mSelectedPeopleNum = activityType.getPeoples().get(options1);
+            mSelectedPeopleNum = mSelectedActivityType.getPeoples().get(options1);
         })
         .setTextColorCenter(ContextCompat.getColor(this,R.color.primary_text))
         .setContentTextSize(18)
@@ -348,14 +351,35 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     private void showTypePickerView() {
         List<Config.ActivityTypesBean> activityTypes = ConfigManager.getInstance().getConfig().getActivity_types();
         if(activityTypes != null && activityTypes.size() > 0){
+            ArrayList<Config.ActivityTypesBean> categoryOptions = new ArrayList<>();
+            ArrayList<ArrayList<String>> typesOptions = new ArrayList<>();
+            ArrayList<ArrayList<Config.ActivityTypesBean>> typeList = new ArrayList<>();
+            for (Config.ActivityTypesBean activityType : activityTypes){
+                if(activityType.getParent_id() == 0) {
+                    categoryOptions.add(activityType);
+                }
+            }
+            for (Config.ActivityTypesBean bean : categoryOptions){
+                ArrayList<String> list = new ArrayList<>();
+                ArrayList<Config.ActivityTypesBean> list2 = new ArrayList<>();
+                for (Config.ActivityTypesBean bean2 : activityTypes){
+                    if(bean2.getParent_id() == bean.getId()){
+                        list.add(bean2.getName());
+                        list2.add(bean2);
+                    }
+                }
+                typesOptions.add(list);
+                typeList.add(list2);
+            }
+
             OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
-                mTypeTv.setText(activityTypes.get(options1).getName());
-                mSelectedTypePosition = options1;
+                mTypeTv.setText(categoryOptions.get(options1).getPickerViewText() + "-" + typesOptions.get(options1).get(options2));
+                mSelectedActivityType = typeList.get(options1).get(options2);
             })
             .setTextColorCenter(ContextCompat.getColor(this,R.color.primary_text))
             .setContentTextSize(18)
             .build();
-            pvOptions.setPicker(activityTypes);
+            pvOptions.setPicker(categoryOptions,typesOptions);
             pvOptions.show();
         }
     }
@@ -377,7 +401,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     public void onValidationSucceeded() {
         showLoading(R.string.label_being_something);
         CreateActivityParams params = new CreateActivityParams();
-        params.activity_type_id = ConfigManager.getInstance().getConfig().getActivity_types().get(mSelectedTypePosition).getId();
+        params.activity_type_id = mSelectedActivityType.getId();
         params.title = mActivityNameEt.getText().toString().trim();
         params.city =  AppCookie.getCity();
         params.area = mSelectedArea;

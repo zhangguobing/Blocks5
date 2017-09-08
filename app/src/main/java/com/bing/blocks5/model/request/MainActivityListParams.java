@@ -27,6 +27,7 @@ public class MainActivityListParams implements Parcelable {
         params.city = AppCookie.getCity();
         params.begin_at = TimeUtil.getStartTime(0);
         params.end_at = TimeUtil.getEndTime(7);
+        params.sort_type = "time";
         return params;
     }
 

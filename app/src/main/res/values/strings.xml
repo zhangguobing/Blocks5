@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Blocks5</string>
+    <string name="app_name">玩转麻辣</string>
 
     <!-- 吐司提示的文本 -->
     <string name="toast_error_network_unavailable">当前网络不可用，请检查网络连接状态</string>
