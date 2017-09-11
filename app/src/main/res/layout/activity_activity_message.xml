@@ -53,7 +53,7 @@
     </LinearLayout>
 
 
-    <com.bing.blocks5.widget.NoScrollViewPager
+    <com.playmala.playmala.widget.NoScrollViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

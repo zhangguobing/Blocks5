@@ -89,7 +89,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
-                <com.bing.blocks5.widget.FlowRadioGroup
+                <com.playmala.playmala.widget.FlowRadioGroup
                     android:id="@+id/rg_sort"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,18 +97,18 @@
                     android:orientation="horizontal"
                     app:radio_columu_num="3">
 
-                    <com.bing.blocks5.widget.FlowRadioButton
+                    <com.playmala.playmala.widget.FlowRadioButton
                         android:id="@+id/rb_newest_time"
                         style="@style/radio_item"
                         android:checked="true"
                         android:text="按最新时间" />
 
-                    <com.bing.blocks5.widget.FlowRadioButton
+                    <com.playmala.playmala.widget.FlowRadioButton
                         android:id="@+id/rb_credit_level"
                         style="@style/radio_item"
                         android:text="按信用程度" />
 
-                </com.bing.blocks5.widget.FlowRadioGroup>
+                </com.playmala.playmala.widget.FlowRadioGroup>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
-                <com.bing.blocks5.widget.FlowRadioGroup
+                <com.playmala.playmala.widget.FlowRadioGroup
                     android:id="@+id/rg_property"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -126,18 +126,18 @@
                     android:orientation="horizontal"
                     app:radio_columu_num="3">
 
-                    <com.bing.blocks5.widget.FlowRadioButton
+                    <com.playmala.playmala.widget.FlowRadioButton
                         android:id="@+id/rb_concentration"
                         style="@style/radio_item"
                         android:checked="true"
                         android:text="召集中" />
 
-                    <com.bing.blocks5.widget.FlowRadioButton
+                    <com.playmala.playmala.widget.FlowRadioButton
                         android:id="@+id/rb_full_sign_up"
                         style="@style/radio_item"
                         android:text="已报满" />
 
-                </com.bing.blocks5.widget.FlowRadioGroup>
+                </com.playmala.playmala.widget.FlowRadioGroup>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
-                <com.bing.blocks5.widget.FlowRadioGroup
+                <com.playmala.playmala.widget.FlowRadioGroup
                     android:id="@+id/rg_activity_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -155,13 +155,13 @@
                     android:orientation="horizontal"
                     app:radio_columu_num="3">
 
-                    <com.bing.blocks5.widget.FlowRadioButton
+                    <com.playmala.playmala.widget.FlowRadioButton
                         android:id="@+id/tb_all_area"
                         style="@style/radio_item"
                         android:checked="true"
                         android:text="所有地区" />
 
-                </com.bing.blocks5.widget.FlowRadioGroup>
+                </com.playmala.playmala.widget.FlowRadioGroup>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -171,7 +171,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
-                <com.bing.blocks5.widget.FlowRadioGroup
+                <com.playmala.playmala.widget.FlowRadioGroup
                     android:id="@+id/rg_activity_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -179,13 +179,13 @@
                     android:orientation="horizontal"
                     app:radio_columu_num="3">
 
-                    <com.bing.blocks5.widget.FlowRadioButton
+                    <com.playmala.playmala.widget.FlowRadioButton
                         android:id="@+id/rb_in_one_week"
                         style="@style/radio_item"
                         android:checked="true"
                         android:text="一周内" />
 
-                </com.bing.blocks5.widget.FlowRadioGroup>
+                </com.playmala.playmala.widget.FlowRadioGroup>
 
             </LinearLayout>
 

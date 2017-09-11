@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_navigate_back"/>
 
-        <com.bing.blocks5.widget.BlocksEditText
+        <com.playmala.playmala.widget.BlocksEditText
             android:id="@+id/edit_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

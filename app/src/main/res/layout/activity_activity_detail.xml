@@ -39,7 +39,7 @@
                         app:image_scale_type="center_crop"
                         app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected"/>
 
-                    <com.bing.blocks5.widget.opendanmaku.DanmakuView
+                    <com.playmala.playmala.widget.opendanmaku.DanmakuView
                         android:id="@+id/danmakuView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -487,7 +487,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
-                    <com.bing.blocks5.widget.SwitchButton
+                    <com.playmala.playmala.widget.SwitchButton
                         android:id="@+id/sb_need_identity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

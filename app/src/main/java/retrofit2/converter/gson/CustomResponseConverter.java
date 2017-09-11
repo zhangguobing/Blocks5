@@ -2,8 +2,8 @@ package retrofit2.converter.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import com.bing.blocks5.api.HttpStatus;
-import com.bing.blocks5.api.ResponseError;
+import com.playmala.playmala.api.HttpStatus;
+import com.playmala.playmala.api.ResponseError;
 
 import java.io.IOException;
 

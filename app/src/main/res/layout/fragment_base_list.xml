@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.bing.blocks5.widget.MultiStateView
+    <com.playmala.playmala.widget.MultiStateView
         android:id="@+id/multi_state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,6 +24,6 @@
 
         </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
-    </com.bing.blocks5.widget.MultiStateView>
+    </com.playmala.playmala.widget.MultiStateView>
 
 </LinearLayout>

@@ -58,6 +58,6 @@
     <string name="qq">QQ</string>
     <string name="qzone">QQ空间</string>
 
-    <string name="top_sheet_behavior" translatable="false">com.bing.blocks5.widget.topsheet.TopSheetBehavior</string>
+    <string name="top_sheet_behavior" translatable="false">com.playmala.playmala.widget.topsheet.TopSheetBehavior</string>
 
 </resources>

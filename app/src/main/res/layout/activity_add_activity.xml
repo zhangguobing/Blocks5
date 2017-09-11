@@ -71,7 +71,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
-                    <com.bing.blocks5.widget.LastInputEditText
+                    <com.playmala.playmala.widget.LastInputEditText
                         android:id="@+id/et_activity_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -253,7 +253,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
-                    <com.bing.blocks5.widget.LastInputEditText
+                    <com.playmala.playmala.widget.LastInputEditText
                         android:id="@+id/et_total_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -341,7 +341,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
-                    <com.bing.blocks5.widget.LastInputEditText
+                    <com.playmala.playmala.widget.LastInputEditText
                         android:id="@+id/et_price_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -436,7 +436,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
-                    <com.bing.blocks5.widget.LastInputEditText
+                    <com.playmala.playmala.widget.LastInputEditText
                         android:id="@+id/et_activity_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -467,7 +467,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
-                    <com.bing.blocks5.widget.SwitchButton
+                    <com.playmala.playmala.widget.SwitchButton
                         android:id="@+id/sb_need_identity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -26,7 +26,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.bing.blocks5.widget.HomeBanner
+                    <com.playmala.playmala.widget.HomeBanner
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
