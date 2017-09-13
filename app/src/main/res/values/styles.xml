@@ -31,7 +31,7 @@
 
     <style name="Theme.AppStartLoadTranslucent" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@mipmap/image_launcher</item>
+        <item name="android:windowBackground">@mipmap/image_splash</item>
     </style>
 
     <style name="Widget.Blocks5.EditText" parent="Widget.AppCompat.EditText">

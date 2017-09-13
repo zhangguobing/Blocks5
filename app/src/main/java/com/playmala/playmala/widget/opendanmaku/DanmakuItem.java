@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.text.Layout;
 import android.text.SpannableString;
 import android.text.StaticLayout;
@@ -39,13 +40,9 @@ public class DanmakuItem implements IDanmakuItem {
 
     static {
         strokePaint.setARGB(255, 0, 0, 0);
-//        strokePaint.setTextAlign(Paint.Align.CENTER);
-//        strokePaint.setTextSize(16);
-//        strokePaint.setTypeface(Typeface.DEFAULT_BOLD);
-        strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setStrokeWidth(4);
+        strokePaint.setTextSize(15);
+        strokePaint.setStyle(Paint.Style.FILL);
         strokePaint.setAntiAlias(true);
-
     }
     /**
      * construct a DanmakuItem

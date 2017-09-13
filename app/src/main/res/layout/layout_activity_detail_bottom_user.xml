@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <RelativeLayout
-        android:id="@+id/rl_filter"
+        android:id="@+id/rl_left"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -19,15 +19,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:src="@drawable/ic_filter_2_no_padding" />
+                android:id="@+id/icon_left"
+                android:layout_width="18dp"
+                android:layout_height="18dp" />
 
             <TextView
+                android:id="@+id/tv_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="筛选"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 
@@ -37,7 +37,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_message"
+        android:id="@+id/rl_right"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -51,15 +51,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:src="@mipmap/ic_message" />
+                android:id="@+id/icon_right"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
 
             <TextView
+                android:id="@+id/tv_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="留言"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 

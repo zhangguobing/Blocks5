@@ -2,6 +2,7 @@ package com.playmala.playmala.ui.setting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.playmala.playmala.model.User;
 import com.playmala.playmala.controller.UserController;
 import com.playmala.playmala.util.ActivityDataConvert;
 import com.playmala.playmala.util.ActivityStack;
+import com.playmala.playmala.util.AppUtil;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -33,6 +35,8 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
 
     @Bind(R.id.tv_certification)
     TextView mCertTv;
+    @Bind(R.id.tv_version)
+    TextView mVersionTv;
 
     private User mUser;
 
@@ -42,13 +46,18 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
     }
 
     @Override
+    protected void initView(Bundle savedInstanceState) {
+        mVersionTv.setText("当前版本(v" + AppUtil.getVersionName(this) + ")");
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         showLoading(R.string.label_being_loading);
         getCallbacks().getUserById(AppCookie.getUserInfo().getId());
     }
 
-    @OnClick({R.id.ll_certification,R.id.ll_feedback,R.id.ll_vote,R.id.ll_about_us,R.id.btn_exit})
+    @OnClick({R.id.ll_certification,R.id.ll_feedback,R.id.ll_about_us,R.id.btn_exit})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ll_certification:

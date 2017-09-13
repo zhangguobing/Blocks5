@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ import com.playmala.playmala.model.Comment;
 import com.playmala.playmala.model.ShareInfo;
 import com.playmala.playmala.ui.common.GalleryActivity;
 import com.playmala.playmala.ui.setting.IdentityActivity;
+import com.playmala.playmala.util.AsyncRun;
 import com.playmala.playmala.util.ClickUtils;
 import com.playmala.playmala.util.ShareUtil;
 import com.playmala.playmala.util.TimeUtil;
@@ -213,11 +215,13 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
     private void showUserSelfMenu(View view){
         TopRightMenu topRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(R.drawable.ic_filter_2, "筛选"));
+        if(mActivity.getState() == 1){
+            menuItems.add(new MenuItem(R.drawable.ic_filter_2, "筛选"));
+        }
         menuItems.add(new MenuItem(R.mipmap.ic_message_6dp, "留言"));
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
         menuItems.add(new MenuItem(R.mipmap.ic_sign_list, "签到列表"));
-        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, "取消活动"));
+        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, "退出活动"));
         topRightMenu
                 .setHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
                 .setWidth(320)
@@ -227,22 +231,24 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 .setAnimationStyle(R.style.TRM_ANIM_STYLE)
                 .addMenuList(menuItems)
                 .setOnMenuItemClickListener(position -> {
-                    if(position == 0){
-                          //筛选
-                        SignUpListActivity.create(this,mActivity);
-                    }else if(position == 1){
-                         //留言
-                        ActivityMessageActivity.create(this,mActivity);
-                    }else if(position == 2){
-                        //分享
-                        showShareDialog();
-                    }else if(position == 3){
-                        //签到列表
-                        SignInActivity.create(this,mActivity);
-                    }else if(position == 4){
-                        //取消活动
-                        showLoading(R.string.label_being_something);
-                        getCallbacks().cancelActivity(mActivityId);
+                    MenuItem menuItem = menuItems.get(position);
+                    switch (menuItem.getText()){
+                        case "筛选":
+                            SignUpListActivity.create(this,mActivity);
+                            break;
+                        case "留言":
+                            ActivityMessageActivity.create(this,mActivity);
+                            break;
+                        case "分享":
+                            showShareDialog();
+                            break;
+                        case "签到列表":
+                            SignInActivity.create(this,mActivity);
+                            break;
+                        case "退出活动":
+                            showLoading(R.string.label_being_something);
+                            getCallbacks().cancelActivity(mActivityId);
+                            break;
                     }
                 })
                 .showAsDropDown(view, -205, 0);
@@ -261,7 +267,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         menuItems.add(new MenuItem(R.mipmap.ic_baoming_list_6dp, "报名列表"));
         menuItems.add(new MenuItem(R.mipmap.ic_scan_6dp, "扫一扫"));
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
-        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, mActivity.getIs_join() == 0 ? "加入活动" : "取消活动"));
+        menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, mActivity.getIs_join() == 0 ? "加入活动" : "退出活动"));
         menuItems.add(new MenuItem(R.mipmap.ic_report_6dp, "举报活动"));
         topRightMenu
                 .setHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
@@ -410,8 +416,23 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         View footView;
         if(AppCookie.getUserInfo().getId() == activity.getCreator().getId()){
             footView = LayoutInflater.from(this).inflate(R.layout.layout_activity_detail_bottom_user,mContainer,false);
-            footView.findViewById(R.id.rl_filter).setOnClickListener(this);
-            footView.findViewById(R.id.rl_message).setOnClickListener(this);
+            ImageView leftImg = (ImageView) footView.findViewById(R.id.icon_left);
+            ImageView rightImg = (ImageView) footView.findViewById(R.id.icon_right);
+            TextView leftTv = (TextView) footView.findViewById(R.id.tv_left);
+            TextView rightTv = (TextView) footView.findViewById(R.id.tv_right);
+            if(activity.getState() == 1){
+                leftImg.setImageResource(R.drawable.ic_filter_2_no_padding);
+                leftTv.setText("筛选");
+                rightImg.setImageResource(R.mipmap.ic_message);
+                rightTv.setText("留言");
+            }else{
+                leftImg.setImageResource(R.drawable.ic_sign_list_nopadding);
+                leftTv.setText("签名列表");
+                rightImg.setImageResource(R.mipmap.ic_scan_nopadding);
+                rightTv.setText("扫一扫");
+            }
+            footView.findViewById(R.id.rl_left).setOnClickListener(this);
+            footView.findViewById(R.id.rl_right).setOnClickListener(this);
         }else{
             footView = View.inflate(this, R.layout.layout_activity_detail_bottom_others, null);
             footView.findViewById(R.id.rl_message).setOnClickListener(this);
@@ -454,11 +475,14 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         mDanmakuView.show();
 
         mDanmakuView.setDanmakuListener(() ->{
-            List<IDanmakuItem> newList = new ArrayList<>();
-            for (int i = 0; i < comments.size(); i++) {
-                newList.add(new DanmakuItem(this,comments.get(i).getContent(),mDanmakuView.getWidth()));
-            }
-            mDanmakuView.addItem(newList,true);
+            new Handler().postDelayed(() -> {
+                if(ActivityDetailActivity.this.isFinishing()) return;
+                List<IDanmakuItem> newList = new ArrayList<>();
+                for (int i = 0; i < comments.size(); i++) {
+                    newList.add(new DanmakuItem(ActivityDetailActivity.this,comments.get(i).getContent(),mDanmakuView.getWidth()));
+                }
+                mDanmakuView.addItem(newList,true);
+            },2500);
         });
     }
 
@@ -553,8 +577,19 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 }
                 isRadarOpened = !isRadarOpened;
                 break;
-            case R.id.rl_filter:
-                SignUpListActivity.create(this,mActivity);
+            case R.id.rl_left:
+                if(mActivity.getState() == 1){
+                    SignUpListActivity.create(this,mActivity);
+                }else{
+                    SignInActivity.create(this,mActivity);
+                }
+                break;
+            case R.id.rl_right:
+                if(mActivity.getState() == 1){
+                    ActivityMessageActivity.create(this,mActivity);
+                }else{
+                    ScanBarCodeActivity.create(this);
+                }
                 break;
         }
     }

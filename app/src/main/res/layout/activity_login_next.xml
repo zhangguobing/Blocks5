@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:background="@mipmap/login_bg_image">
+        android:background="@mipmap/image_login_register">
 
         <ImageView
             android:id="@+id/iv_avatar"

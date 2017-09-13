@@ -148,6 +148,22 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
                 SearchActivity.create(HomeActivity.this);
             }
         });
+        mTitleBar.addAction(new TitleBar.Action() {
+            @Override
+            public String getText() {
+                return "筛选";
+            }
+
+            @Override
+            public int getDrawable() {
+                return 0;
+            }
+
+            @Override
+            public void performAction(View view) {
+
+            }
+        });
 
         mCategoryAdapter.setViewEventListener((item, position, view) -> {
             CategoryActivity.create(this,item.getName(),item.getImage_url(),ActivityAreasList,findActivityTypesByParentId(item.getId()));
