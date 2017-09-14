@@ -118,7 +118,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
     private Config.ActivityTypesBean mSelectedActivityType;
 
     //选中的人数，男多少人，女多少人
-    private List<Integer> mSelectedPeopleNum;
+    private List<Integer> mSelectedPeopleNum = new ArrayList<>();
     //选中的起始时间
     private Date mSelectedStartDate;
     //选中的区域
@@ -321,7 +321,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                     break;
                 }
             }
-            if(!isFind) ToastUtil.showText("暂不支持当前城市");
+            if(!isFind) ToastUtil.showText("暂不支持当前城市，请返回筛选页面重新选择城市");
         }
     }
 
@@ -338,7 +338,8 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
         }
         OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
             mPeopleNumTv.setText(formatPeopleNum.get(options1));
-            mSelectedPeopleNum = mSelectedActivityType.getPeoples().get(options1);
+            mSelectedPeopleNum.clear();
+            mSelectedPeopleNum.addAll(mSelectedActivityType.getPeoples().get(options1));
         })
         .setTextColorCenter(ContextCompat.getColor(this,R.color.primary_text))
         .setContentTextSize(18)
@@ -374,6 +375,8 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
             OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
                 mTypeTv.setText(categoryOptions.get(options1).getPickerViewText() + "-" + typesOptions.get(options1).get(options2));
                 mSelectedActivityType = typeList.get(options1).get(options2);
+                mPeopleNumTv.setText("");
+                mSelectedPeopleNum.clear();
             })
             .setTextColorCenter(ContextCompat.getColor(this,R.color.primary_text))
             .setContentTextSize(18)

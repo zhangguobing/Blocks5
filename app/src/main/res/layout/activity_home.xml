@@ -86,4 +86,10 @@
 
     </LinearLayout>
 
+    <com.playmala.playmala.widget.DropDownView
+        android:id="@+id/drop_down_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:containerBackgroundColor="?android:windowBackground" />
+
 </RelativeLayout>

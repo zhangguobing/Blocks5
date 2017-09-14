@@ -271,7 +271,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         menuItems.add(new MenuItem(R.mipmap.ic_report_6dp, "举报活动"));
         topRightMenu
                 .setHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
-                .setWidth(320)
+                .setWidth(DensityUtil.dp2px(this,110))
                 .showIcon(true)
                 .dimBackground(true)
                 .needAnimationStyle(true)
@@ -289,7 +289,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                     }else if(position == 1){
                         SignUpListActivity.create(this,mActivity);
                     }else if(position == 2){
-                        ScanBarCodeActivity.create(this);
+                        ScanBarCodeActivity.create(this, AppCookie.getUserInfo().getId() != mActivity.getCreator().getId());
                     }else if(position == 3){
                         showShareDialog();
                     }else if(position == 4){
@@ -557,7 +557,27 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 if(mActivity.getIs_join() == 0){
                     getCallbacks().join(Integer.valueOf(mActivityId));
                 }else{
-                    getCallbacks().cancelJoin(Integer.valueOf(mActivityId));
+                    if(TimeUtil.isIn24Hour(mActivity.getBegin_at())){
+                        final NormalDialog dialog = new NormalDialog(this);
+                        int color = ContextCompat.getColor(this,R.color.primary_text);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.isTitleShow(false)
+                                .cornerRadius(5)
+                                .content("活动进行中，24小时内退出活动，需要扣一定信用，您确定要退出吗？?")
+                                .contentGravity(Gravity.CENTER)
+                                .contentTextColor(color)
+                                .dividerColor(R.color.divider)
+                                .btnTextSize(15.5f, 15.5f)
+                                .btnTextColor(color,color)
+                                .widthScale(0.75f)
+                                .show();
+                        dialog.setOnBtnClickL(dialog::dismiss, () -> {
+                            dialog.dismiss();
+                            getCallbacks().cancelJoin(Integer.valueOf(mActivityId));
+                        });
+                    }else{
+                        getCallbacks().cancelJoin(Integer.valueOf(mActivityId));
+                    }
                 }
                 break;
             case R.id.iv_barcode:
@@ -588,7 +608,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 if(mActivity.getState() == 1){
                     ActivityMessageActivity.create(this,mActivity);
                 }else{
-                    ScanBarCodeActivity.create(this);
+                    ScanBarCodeActivity.create(this,AppCookie.getUserInfo().getId() != mActivity.getCreator().getId());
                 }
                 break;
         }

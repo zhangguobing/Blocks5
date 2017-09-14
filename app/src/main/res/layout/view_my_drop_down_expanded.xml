@@ -82,6 +82,16 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_city_no_support_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="暂不支持当前定位的城市，请选择其他地区"
+                    android:textSize="13sp"
+                    android:textColor="@color/red"
+                    android:visibility="gone"/>
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"

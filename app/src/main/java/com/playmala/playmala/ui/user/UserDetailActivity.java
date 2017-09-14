@@ -75,6 +75,7 @@ implements UserController.UserDetailUi{
     public static final String EXTRA_USER_ID = "extra_user_id";
 
     private ArrayList<String> gallery_urls;
+    private String mAvatarUrl;
 
     private int user_id;
     private boolean is_follow = false;
@@ -107,8 +108,13 @@ implements UserController.UserDetailUi{
     private void setUser(User user){
         user_id = user.getId();
         mUserIdTv.setText("用户ID:" + user.getId());
-        mJobAndAreaTv.setText(user.getJob() + "\n" + user.getAddr());
+        String jobAndAddrStr = user.getJob() + "\n" + user.getAddr();
+        if(!TextUtils.isEmpty(user.getJob())){
+            jobAndAddrStr = "职业：" + jobAndAddrStr;
+        }
+        mJobAndAreaTv.setText(jobAndAddrStr);
         ImageLoadUtil.loadAvatar(userAvatarImg,user.getAvatar(),this);
+        mAvatarUrl = user.getAvatar();
         mFocusNumTv.setText(user.getFollow_num()+"");
         mFollowerNumTv.setText(user.getFollowed_num()+"");
         mCreditScoreTv.setText(user.getCredit()+"");
@@ -120,7 +126,7 @@ implements UserController.UserDetailUi{
         mNickNameSexTv.setCompoundDrawables(null,null,sexDrawable,null);
         is_follow = user.getIs_follow() == 1;
         mIsFollowImg.setImageResource(is_follow ? R.mipmap.ic_has_followed: R.mipmap.ic_focus);
-        mContentTv.setText(TextUtils.isEmpty(user.getContent()) ? "未填写个性签名": user.getContent());
+        mContentTv.setText(TextUtils.isEmpty(user.getContent()) ? "未填写个性签名": "签名：" + user.getContent());
         if(!TextUtils.isEmpty(user.getImg_url_1())){
             image_1.setVisibility(View.VISIBLE);
             ImageLoadUtil.loadImage(image_1,user.getImg_url_1(),this);
@@ -155,7 +161,7 @@ implements UserController.UserDetailUi{
     }
 
     @OnClick({R.id.iv_back,R.id.layout_his_create_activity,R.id.layout_his_join_activity,
-    R.id.image_1,R.id.image_2,R.id.image_3,R.id.ll_follow,R.id.ll_followed,R.id.iv_is_follow})
+    R.id.image_1,R.id.image_2,R.id.image_3,R.id.ll_follow,R.id.ll_followed,R.id.iv_is_follow,R.id.iv_user_avatar})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_back:
@@ -184,6 +190,9 @@ implements UserController.UserDetailUi{
                 break;
             case R.id.iv_is_follow:
                 handleFollowClick();
+                break;
+            case R.id.iv_user_avatar:
+                showAvatar(view);
                 break;
         }
     }
@@ -262,6 +271,37 @@ implements UserController.UserDetailUi{
         b.putStringArrayList(GalleryActivity.PHOTO_SOURCE_ID, gallery_urls);
         intent.putExtras(b);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_POSITION, position);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_X_TAG, location[0]);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_Y_TAG, location[1]);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_W_TAG, width);
+        intent.putExtra(GalleryActivity.PHOTO_SELECT_H_TAG, height);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
+
+
+    private void showAvatar(View v) {
+        if(TextUtils.isEmpty(mAvatarUrl)) return;
+        int[] location = new int[2];
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Rect frame = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            int statusBarHeight = frame.top;
+            v.getLocationOnScreen(location);
+            location[1] += statusBarHeight;
+        } else {
+            v.getLocationOnScreen(location);
+        }
+        v.invalidate();
+        int width = v.getWidth();
+        int height = v.getHeight();
+
+        Intent intent = new Intent(this, GalleryActivity.class);
+        Bundle b = new Bundle();
+        ArrayList<String> list = new ArrayList<>();
+        list.add(mAvatarUrl);
+        b.putStringArrayList(GalleryActivity.PHOTO_SOURCE_ID, list);
+        intent.putExtras(b);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_X_TAG, location[0]);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_Y_TAG, location[1]);
         intent.putExtra(GalleryActivity.PHOTO_SELECT_W_TAG, width);

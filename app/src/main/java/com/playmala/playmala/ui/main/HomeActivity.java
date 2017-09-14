@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import com.playmala.playmala.util.AppUtil;
 import com.playmala.playmala.util.EventUtil;
 import com.playmala.playmala.util.ToastUtil;
 import com.playmala.playmala.widget.BottomSpaceItemDecoration;
+import com.playmala.playmala.widget.DropDownView;
 import com.playmala.playmala.widget.HomeBanner;
 import com.playmala.playmala.widget.TitleBar;
 import com.playmala.playmala.widget.slidingmenu.SlidingMenu;
@@ -68,6 +70,8 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
     HomeBanner mBanner;
     @Bind(R.id.category_list)
     RecyclerView mCategoryList;
+    @Bind(R.id.drop_down_view)
+    DropDownView mDropDownView;
 
     private SlidingActivityHelper mHelper;
     private SlidingMenu mSlidingMenu;

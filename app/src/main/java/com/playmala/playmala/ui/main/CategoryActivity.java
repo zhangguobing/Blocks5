@@ -63,7 +63,6 @@ public class CategoryActivity extends BaseActivity
     @Bind(R.id.drop_down_view)
     DropDownView mDropDownView;
 
-
     private FlowRadioGroup mSortRadioGroup;
     private FlowRadioGroup mProprotyRadioGroup;
     private FlowRadioGroup mAreaRadioGroup;

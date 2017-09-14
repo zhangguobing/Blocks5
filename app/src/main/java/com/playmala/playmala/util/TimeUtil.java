@@ -274,4 +274,16 @@ public class TimeUtil {
         }
     }
 
+    /**
+     * 是否在24小时内
+     * @param time
+     * @return
+     */
+    public static boolean isIn24Hour(String time){
+        Date date = string2Date(time);
+        if(date == null) return false;
+        long diff = date.getTime() - new Date().getTime();
+        return  diff <= 1000 * 60 * 60 * 24 ;
+    }
+
 }

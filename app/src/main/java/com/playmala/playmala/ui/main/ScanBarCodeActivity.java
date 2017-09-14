@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
+import android.widget.TextView;
 
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.zxing.Result;
@@ -24,6 +25,8 @@ import com.playmala.playmala.base.ContentView;
 import com.playmala.playmala.controller.ActivityUserController;
 import com.playmala.playmala.util.ToastUtil;
 
+import butterknife.Bind;
+
 /**
  * author：zhangguobing on 2017/6/25 13:50
  * email：bing901222@qq.com
@@ -31,6 +34,9 @@ import com.playmala.playmala.util.ToastUtil;
 @ContentView(R.layout.activity_scan_barcode)
 public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserController.ActivityUserUiCallbacks>
         implements CaptureFragment.OnFragmentInteractionListener,ActivityUserController.ScanBarcodeUi {
+
+    @Bind(R.id.tv_tips)
+    TextView mTipsTv;
 
     private static final int REQUEST_CAMERA_PERMISSION = 10001;
 
@@ -41,9 +47,19 @@ public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserContr
         context.startActivity(intent);
     }
 
+    public static void create(Context context, boolean isEditTips){
+        Intent intent = new Intent(context,ScanBarCodeActivity.class);
+        intent.putExtra("isEditTips", isEditTips);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        boolean isEditTips = getIntent().getBooleanExtra("isEditTips", false);
+        if(isEditTips){
+            mTipsTv.setText("1、在活动开始时间前半个小时到活动结束时间内，扫描楼主二维码，活动状态变为已完成，奖励相应信用。");
+        }
         showCameraWithCheck();
     }
 
