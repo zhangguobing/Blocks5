@@ -38,5 +38,20 @@ public class AppConfig {
      */
     public static final String APP_NAME = Blocks5App.getContext().getString(R.string.app_name);
 
+    /**
+     * 默认城市
+     */
     public static final String DEFAULT_CITY = "北京市";
+
+    /**
+     * 活动分享地址
+     */
+    public static final String ACTIVITY_SHARE_URL = "http://app.playmala.com/mb/share/";
+
+    /**
+     * 用户协议地址
+     */
+    public static final String PROTOCOL_URL = "http://app.playmala.com/mb/protocol";
+
+    public static final String CREDIT_URL = "http://app.playmala.com/mb/credit?val=";
 }

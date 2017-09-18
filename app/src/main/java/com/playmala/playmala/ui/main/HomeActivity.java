@@ -174,7 +174,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
         });
         mCategoryList.setNestedScrollingEnabled(false);
         mCategoryList.setLayoutManager(new LinearLayoutManager(this));
-        mCategoryList.addItemDecoration(new BottomSpaceItemDecoration(DensityUtil.dp2px(this,20)));
+        mCategoryList.addItemDecoration(new BottomSpaceItemDecoration(DensityUtil.dp2px(this,10)));
         mCategoryList.setAdapter(mCategoryAdapter);
 
         HomeActivity.AMapLocationListener locationListener = new HomeActivity.AMapLocationListener(this);
@@ -265,10 +265,14 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
         for (Config.BannersBean bannersBean : bannersBeans){
             imageUrls.add(bannersBean.getImgUrl());
         }
-        mBanner.setImages(imageUrls).setOnBannerListener(position -> {
-            Config.BannersBean bannersBean = bannersBeans.get(position);
-            Router.open(HomeActivity.this,bannersBean.getLinkUrl());
-        }).setImageLoader(new HomeActivity.GlideImageLoader()).start();
+        if(imageUrls.size() == 0){
+            mBanner.setVisibility(View.GONE);
+        }else{
+            mBanner.setImages(imageUrls).setOnBannerListener(position -> {
+                Config.BannersBean bannersBean = bannersBeans.get(position);
+                Router.open(HomeActivity.this,bannersBean.getLinkUrl());
+            }).setImageLoader(new HomeActivity.GlideImageLoader()).start();
+        }
     }
 
 
@@ -381,7 +385,9 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
                             .btnTextSize(15.5f, 15.5f)
                             .btnTextColor(color,redColor)
                             .widthScale(0.75f)
+                            .btnNum(1)
                             .btnText("去升级")
+                            .btnTextColor(redColor)
                             .show();
                     updateDialog.setOnBtnClickL(() -> {
                         AppUtil.openAppInMarket(HomeActivity.this);

@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.playmala.playmala.AppConfig;
 import com.playmala.playmala.AppCookie;
 import com.playmala.playmala.R;
+import com.playmala.playmala.base.WebActivity;
 import com.playmala.playmala.model.User;
 import com.playmala.playmala.model.event.UserInfoChangeEvent;
 import com.playmala.playmala.model.event.UserInfoRefreshEvent;
@@ -86,7 +88,7 @@ public class DrawerMenuFragment extends Fragment {
     @OnClick({R.id.ll_profile,R.id.ll_setting,R.id.iv_avatar,
          R.id.ll_my_created_activity,R.id.ll_my_join_activity,
             R.id.ll_collect,R.id.ll_history,R.id.ll_follow,
-         R.id.ll_followed,R.id.user_info_layout})
+         R.id.ll_followed,R.id.user_info_layout,R.id.ll_credit})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_avatar:
@@ -126,6 +128,10 @@ public class DrawerMenuFragment extends Fragment {
                 break;
             case R.id.user_info_layout:
                 ProfileActivity.create(getActivity());
+                hideSlideMenu();
+                break;
+            case R.id.ll_credit:
+                WebActivity.create(getContext(), AppConfig.CREDIT_URL + AppCookie.getUserInfo().getCredit());
                 hideSlideMenu();
                 break;
         }

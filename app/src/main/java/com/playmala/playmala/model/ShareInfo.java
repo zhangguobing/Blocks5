@@ -1,5 +1,7 @@
 package com.playmala.playmala.model;
 
+import android.graphics.Bitmap;
+
 /**
  * author：zhangguobing on 2017/7/11 13:44
  * email：bing901222@qq.com
@@ -8,7 +10,7 @@ package com.playmala.playmala.model;
 public class ShareInfo {
     private String title;
     private String text;
-    private String image_url;
+    private Bitmap bitmap;
     private String url;
 
     public String getTitle() {
@@ -27,19 +29,19 @@ public class ShareInfo {
         this.text = text;
     }
 
-    public String getImage_url() {
-        return image_url;
-    }
-
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

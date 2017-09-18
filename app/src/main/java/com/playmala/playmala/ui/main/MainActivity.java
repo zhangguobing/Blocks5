@@ -358,7 +358,6 @@ public class MainActivity extends BasePresenterActivity<LoginAuthController.Logi
                             .show();
                     updateDialog.setOnBtnClickL(() -> {
                         AppUtil.openAppInMarket(MainActivity.this);
-                        updateDialog.dismiss();
                     });
                 }
             }

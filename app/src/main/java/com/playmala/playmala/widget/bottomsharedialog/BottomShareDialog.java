@@ -249,23 +249,18 @@ public class BottomShareDialog {
 
                     topHolder.item.setText(item.getTitle());
                     topHolder.item.setCompoundDrawablesWithIntrinsicBounds(null, topHolder.icon(item.getIcon()), null, null);
-                    topHolder.item.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dismiss();
-                            if (itemClickListener != null) itemClickListener.click(item);
-                        }
+                    topHolder.item.setOnClickListener(view -> {
+                        dismiss();
+                        if (itemClickListener != null) itemClickListener.click(item);
                     });
                 } else if (orientation == HORIZONTAL) {
                     topHolder = (TopHolder) holder;
 
                     topHolder.item.setText(item.getTitle());
                     topHolder.item.setCompoundDrawablesWithIntrinsicBounds(null, topHolder.icon(item.getIcon()), null, null);
-                    topHolder.item.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (itemClickListener != null) itemClickListener.click(item);
-                        }
+                    topHolder.item.setOnClickListener(view -> {
+                        dismiss();
+                        if (itemClickListener != null) itemClickListener.click(item);
                     });
                 } else {
                     leftHolder = (LeftHolder) holder;
@@ -296,7 +291,7 @@ public class BottomShareDialog {
                     super(view);
 
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.width = Utils.getScreenWidth(getContext()) / 4;
+                    params.width = Utils.getScreenWidth(getContext()) / 2;
 
                     item = new TextView(view.getContext());
                     item.setLayoutParams(params);

@@ -90,6 +90,30 @@
                 android:layout_height="1dp"
                 android:background="#716B69"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/rb_protocol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/bg_radio_button"
+                    android:drawablePadding="6dp"
+                    android:text="我已阅读并同意"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/tv_protocol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:text="《玩转麻辣用户协议》"/>
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/btn_next"
                 android:layout_width="match_parent"

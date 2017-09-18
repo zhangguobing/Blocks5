@@ -11,12 +11,12 @@
         android:icon="@mipmap/ic_share_moments"
         android:title="@string/moments"/>
 
-    <item
-        android:id="@+id/qq"
-        android:icon="@mipmap/ic_share_qq"
-        android:title="@string/qq"/>
-    <item
-        android:id="@+id/qzone"
-        android:icon="@mipmap/ic_share_qzone"
-        android:title="@string/qzone"/>
+    <!--<item-->
+        <!--android:id="@+id/qq"-->
+        <!--android:icon="@mipmap/ic_share_qq"-->
+        <!--android:title="@string/qq"/>-->
+    <!--<item-->
+        <!--android:id="@+id/qzone"-->
+        <!--android:icon="@mipmap/ic_share_qzone"-->
+        <!--android:title="@string/qzone"/>-->
 </menu>

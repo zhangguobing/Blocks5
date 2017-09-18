@@ -47,12 +47,14 @@ android {
 
     buildTypes {
         debug{
+            buildConfigField "String","BASE_URL", project.BASE_URL_DEBUG;
             minifyEnabled false
             zipAlignEnabled true
             shrinkResources false
             signingConfig signingConfigs.debug
         }
         release {
+            buildConfigField "String","BASE_URL", project.BASE_URL_RELEASE;
             minifyEnabled true
             zipAlignEnabled true
             shrinkResources false

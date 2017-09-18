@@ -174,8 +174,7 @@
             android:id="@+id/iv_is_follow"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_focus"/>
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 

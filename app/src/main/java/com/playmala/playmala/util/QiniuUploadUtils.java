@@ -20,7 +20,7 @@ import com.qiniu.android.storage.UploadOptions;
 public class QiniuUploadUtils {
 
     /** 你所创建的空间的名称*/
-	private static final String bucketName = "om6ypv6j0.bkt";
+//	private static final String bucketName = "om6ypv6j0.bkt";
 
 	private int maxWidth = 720;
 	private int maxHeight = 1080;
@@ -114,7 +114,8 @@ public class QiniuUploadUtils {
 	}
 	
 	private String getRealUrl(String fileUrlUUID){
-		return "http://"+ bucketName +".clouddn.com/"+ fileUrlUUID;
+//		return "http://"+ bucketName +".clouddn.com/"+ fileUrlUUID;
+		return "http://bucket.playmala.com/" + fileUrlUUID;
 	}
 
 	/**

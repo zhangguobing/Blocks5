@@ -2,6 +2,7 @@ package com.playmala.playmala.api;
 
 import com.playmala.playmala.AppConfig;
 import com.playmala.playmala.Blocks5App;
+import com.playmala.playmala.BuildConfig;
 import com.playmala.playmala.Constants;
 import com.playmala.playmala.api.service.ActivityService;
 import com.playmala.playmala.api.service.ActivityUserService;
@@ -86,7 +87,7 @@ public class ApiClient {
         if(mRetrofit == null) {
             Retrofit.Builder builder = new Retrofit.Builder();
             builder.client(newRetrofitClient());
-            builder.baseUrl(AppConfig.BASE_URL);
+            builder.baseUrl(BuildConfig.BASE_URL);
             builder.addConverterFactory(CustomConverterFactory.create(GsonHelper.builderGson()));
             builder.addCallAdapterFactory(RxJavaCallAdapterFactory.create());
             mRetrofit = builder.build();

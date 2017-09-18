@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
+import com.playmala.playmala.AppConfig;
 import com.playmala.playmala.R;
 import com.playmala.playmala.base.BaseController;
 import com.playmala.playmala.base.BasePresenterActivity;
 import com.playmala.playmala.base.ContentView;
+import com.playmala.playmala.base.WebActivity;
 import com.playmala.playmala.controller.LoginAuthController;
 import com.playmala.playmala.model.LoginBean;
 import com.playmala.playmala.util.CountDownTimerUtils;
@@ -32,6 +37,8 @@ public class RegisterActivity extends BasePresenterActivity<LoginAuthController.
     EditText mCodeEditText;
     @Bind(R.id.btn_fetch_code)
     Button mFetchCodeBtn;
+    @Bind(R.id.rb_protocol)
+    CheckBox mProtocolRadio;
 
     private CountDownTimerUtils countDownTimerUtils;
 
@@ -59,16 +66,22 @@ public class RegisterActivity extends BasePresenterActivity<LoginAuthController.
         getCallbacks().captcha(code,"register");
     }
 
-    @OnClick({R.id.btn_next,R.id.btn_fetch_code})
+    @OnClick({R.id.btn_next,R.id.btn_fetch_code,R.id.tv_protocol})
     public void onClick(View view){
         if(view.getId() == R.id.btn_fetch_code){
             fetchCode(view);
         }else if(view.getId() == R.id.btn_next){
             next();
+        }else if(view.getId() == R.id.tv_protocol){
+            WebActivity.create(this, AppConfig.PROTOCOL_URL);
         }
     }
 
     private void next() {
+        if(!mProtocolRadio.isChecked()){
+            ToastUtil.showText("请先同意玩转麻辣用户协议");
+            return;
+        }
         String phone = mPhoneEditText.getText().toString().trim();
         if(phone.length() == 0){
             ToastUtil.showText("请输入手机号码");

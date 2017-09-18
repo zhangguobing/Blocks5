@@ -2,6 +2,7 @@ package com.playmala.playmala.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.playmala.playmala.AppConfig;
 import com.playmala.playmala.AppCookie;
 import com.playmala.playmala.api.ResponseError;
 import com.playmala.playmala.model.Comment;
@@ -269,6 +271,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
         menuItems.add(new MenuItem(R.mipmap.ic_join_6dp, mActivity.getIs_join() == 0 ? "加入活动" : "退出活动"));
         menuItems.add(new MenuItem(R.mipmap.ic_report_6dp, "举报活动"));
+        int xoff = -DensityUtil.dp2px(this,70);
         topRightMenu
                 .setHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
                 .setWidth(DensityUtil.dp2px(this,110))
@@ -309,7 +312,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                         showSelectReportContentDialog();
                     }
                 })
-                .showAsDropDown(view, -205, 0);
+                .showAsDropDown(view, xoff, 0);
     }
 
     private void showNeedIdentityDialog(){
@@ -336,24 +339,25 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
 
     private void showShareDialog(){
         new BottomShareDialog(this)
-                .layout(BottomShareDialog.GRID)
-                .orientation(BottomShareDialog.VERTICAL)
+                .layout(BottomShareDialog.LINEAR)
+                .orientation(BottomShareDialog.HORIZONTAL)
                 .inflateMenu(R.menu.share, null)
                 .itemClick(item -> {
                      ShareInfo info = new ShareInfo();
-                     info.setTitle(mActivity.getTitle());
-                     info.setImage_url(mActivity.getCover_url());
-                     info.setText(mActivity.getContent());
-                     info.setUrl("http://www.baidu.com");
+                     info.setTitle("玩转麻辣，等你参加");
+                     info.setBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher));
+                     info.setText(mActivity.getTitle());
+                     info.setUrl(AppConfig.ACTIVITY_SHARE_URL + mActivity.getId());
                      if(item.getId() == R.id.wechat){
                          ShareUtil.shareWechat(info);
                      }else if(item.getId() == R.id.moments){
                          ShareUtil.shareWechatMoments(info);
-                     }else if(item.getId() == R.id.qq){
-                         ShareUtil.shareQQ(info);
-                     }else if(item.getId() == R.id.qzone){
-                         ShareUtil.shareQzone(info);
                      }
+//                     else if(item.getId() == R.id.qq){
+//                         ShareUtil.shareQQ(info);
+//                     }else if(item.getId() == R.id.qzone){
+//                         ShareUtil.shareQzone(info);
+//                     }
                 }).show();
     }
 

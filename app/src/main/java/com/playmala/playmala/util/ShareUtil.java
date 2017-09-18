@@ -1,5 +1,7 @@
 package com.playmala.playmala.util;
 
+import android.support.v4.content.ContextCompat;
+
 import com.playmala.playmala.model.ShareInfo;
 
 import java.util.HashMap;
@@ -42,7 +44,7 @@ public class ShareUtil {
         Wechat.ShareParams sp = new Wechat.ShareParams();
         sp.setTitle(shareInfo.getTitle());
         sp.setText(shareInfo.getText());
-        sp.setImageUrl(shareInfo.getImage_url());
+        sp.setImageData(shareInfo.getBitmap());
         sp.setUrl(shareInfo.getUrl());
         sp.setShareType(Platform.SHARE_WEBPAGE);
         plat.setPlatformActionListener(platformActionListener);
@@ -54,7 +56,7 @@ public class ShareUtil {
         Platform plat = ShareSDK.getPlatform(WechatMoments.NAME);
         WechatMoments.ShareParams sp = new WechatMoments.ShareParams();
         sp.setTitle(shareInfo.getTitle());
-        sp.setImageUrl(shareInfo.getImage_url());
+        sp.setImageData(shareInfo.getBitmap());
         sp.setUrl(shareInfo.getUrl());
         sp.setShareType(Platform.SHARE_WEBPAGE);
         plat.setPlatformActionListener(platformActionListener);
@@ -68,7 +70,7 @@ public class ShareUtil {
         QQ.ShareParams sp = new QQ.ShareParams();
         sp.setTitle(shareInfo.getTitle());
         sp.setText(shareInfo.getText());
-        sp.setImageUrl(shareInfo.getImage_url());
+        sp.setImageData(shareInfo.getBitmap());
         sp.setTitleUrl(shareInfo.getUrl());
         sp.setShareType(QQ.SHARE_WEBPAGE);
         plat.setPlatformActionListener(platformActionListener);
@@ -81,7 +83,7 @@ public class ShareUtil {
         QZone.ShareParams sp = new QZone.ShareParams();
         sp.setTitle(shareInfo.getTitle());
         sp.setText(shareInfo.getText());
-        sp.setImageUrl(shareInfo.getImage_url());
+        sp.setImageData(shareInfo.getBitmap());
         sp.setTitleUrl(shareInfo.getUrl());
         sp.setShareType(QZone.SHARE_WEBPAGE);
         plat.setPlatformActionListener(platformActionListener);

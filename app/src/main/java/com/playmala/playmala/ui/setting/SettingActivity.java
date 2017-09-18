@@ -47,7 +47,7 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        mVersionTv.setText("当前版本(v" + AppUtil.getVersionName(this) + ")");
+        mVersionTv.setText("当前版本（v" + AppUtil.getVersionName(this) + "）");
     }
 
     @Override
@@ -92,6 +92,7 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
             AppCookie.saveToken(null);
             ApiClient.getInstance().setToken(null);
             SplashActivity.create(SettingActivity.this);
+            overridePendingTransition(R.anim.slide_in_top, R.anim.activity_stay);
             ActivityStack.create().finishAll();
         });
     }
@@ -106,6 +107,6 @@ public class SettingActivity extends BasePresenterActivity<UserController.UserUi
         cancelLoading();
         mUser = user;
         String identityState = ActivityDataConvert.getIdentityStateById(user.getIdentity_state()+"");
-        mCertTv.setText("实名认证("+ identityState +")");
+        mCertTv.setText("实名认证（"+ identityState +"）");
     }
 }

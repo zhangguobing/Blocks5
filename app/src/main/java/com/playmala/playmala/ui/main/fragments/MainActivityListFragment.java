@@ -69,7 +69,7 @@ public class MainActivityListFragment extends BaseListFragment<Activity,Activity
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         mainActivityListParams.activity_type_id = getArguments().getInt(KEY_TYPE_ID);
-        mRecyclerView.addItemDecoration(new BottomSpaceItemDecoration(DensityUtil.dp2px(getContext(),20)));
+        mRecyclerView.addItemDecoration(new BottomSpaceItemDecoration(DensityUtil.dp2px(getContext(),10)));
         mInit = true;
         lazyLoad();
     }
