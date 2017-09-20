@@ -8,26 +8,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
-import com.playmala.playmala.AppCookie;
 import com.playmala.playmala.R;
 import com.playmala.playmala.base.BaseActivity;
 import com.playmala.playmala.base.ContentView;
 import com.playmala.playmala.model.Config;
-import com.playmala.playmala.model.event.MainActivityListFilterEvent;
 import com.playmala.playmala.model.request.MainActivityListParams;
 import com.playmala.playmala.ui.activity.AddActivityActivity;
 import com.playmala.playmala.ui.main.adapter.FragmentAdapter;
 import com.playmala.playmala.ui.main.fragments.MainActivityListFragment;
-import com.playmala.playmala.util.EventUtil;
+import com.playmala.playmala.ui.main.view.MainPickerView;
 import com.playmala.playmala.util.ImageLoadUtil;
-import com.playmala.playmala.util.TimeUtil;
 import com.playmala.playmala.widget.DropDownView;
 import com.playmala.playmala.widget.FlowRadioButton;
 import com.playmala.playmala.widget.FlowRadioGroup;
@@ -63,14 +58,14 @@ public class CategoryActivity extends BaseActivity
     @Bind(R.id.drop_down_view)
     DropDownView mDropDownView;
 
-    private FlowRadioGroup mSortRadioGroup;
-    private FlowRadioGroup mProprotyRadioGroup;
-    private FlowRadioGroup mAreaRadioGroup;
-    private FlowRadioGroup mTimeRadioGroup;
-    private TextView mCityTextView;
-
-    //系统当前的城市
-    private String mCurrentCity = AppCookie.getCity();
+//    private FlowRadioGroup mSortRadioGroup;
+//    private FlowRadioGroup mProprotyRadioGroup;
+//    private FlowRadioGroup mAreaRadioGroup;
+//    private FlowRadioGroup mTimeRadioGroup;
+//    private TextView mCityTextView;
+//
+//    //系统当前的城市
+//    private String mCurrentCity = AppCookie.getCity();
 
     private List<String> areaOptions = new ArrayList<>();
     private ArrayList<Config.ActivityAreasBean> activityAreasList;
@@ -95,10 +90,10 @@ public class CategoryActivity extends BaseActivity
         activityAreasList = intent.getParcelableArrayListExtra(EXTRA_AREA_LIST);
         initViewPager(intent.getParcelableArrayListExtra(EXTRA_TYPE_LIST));
 
-        View collapsedView = LayoutInflater.from(this).inflate(R.layout.layout_title_bar, null, false);
-        View expandedView = LayoutInflater.from(this).inflate(R.layout.view_my_drop_down_expanded, null, false);
+//        View collapsedView = LayoutInflater.from(this).inflate(R.layout.layout_title_bar, null, false);
+//        View expandedView = LayoutInflater.from(this).inflate(R.layout.view_my_drop_down_expanded, null, false);
 
-        TitleBar titleBar = (TitleBar) collapsedView.findViewById(R.id.title_bar);
+        TitleBar titleBar = getTitleBar();
         titleBar.setLeftImageResource(R.mipmap.ic_navigate_back);
         titleBar.setLeftClickListener(view -> finish());
         titleBar.setActionTextColor(ContextCompat.getColor(this,R.color.white));
@@ -124,30 +119,31 @@ public class CategoryActivity extends BaseActivity
                 }
             }
         });
+        MainPickerView.getInstance(this).bindViews(mDropDownView,titleBar);
 
-        expandedView.findViewById(R.id.tv_other_city).setOnClickListener(this);
-        expandedView.findViewById(R.id.btn_ok).setOnClickListener(this);
-
-        mSortRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_sort);
-        mProprotyRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_property);
-        mAreaRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_activity_area);
-        mTimeRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_activity_time);
-
-        List<String> dates = TimeUtil.getFutureDate(8,"MM-dd");
-        List<String> weeks = TimeUtil.getFutureWeeks(8);
-        List<String> timeOptions = new ArrayList<>();
-        timeOptions.add("一周内");
-        for (int i = 0; i < dates.size(); i++) {
-            timeOptions.add(weeks.get(i) + " " + dates.get(i));
-        }
-        addChildOptionToRadioGroup(mTimeRadioGroup,timeOptions,0);
-
-        mCityTextView = (TextView) expandedView.findViewById(R.id.tv_city);
-        mCityTextView.setText(mCurrentCity);
-
-        mDropDownView.setHeaderView(collapsedView);
-        mDropDownView.setExpandedView(expandedView);
-        collapsedView.setOnClickListener(null);
+//        expandedView.findViewById(R.id.tv_other_city).setOnClickListener(this);
+//        expandedView.findViewById(R.id.btn_ok).setOnClickListener(this);
+//
+//        mSortRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_sort);
+//        mProprotyRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_property);
+//        mAreaRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_activity_area);
+//        mTimeRadioGroup = (FlowRadioGroup) expandedView.findViewById(R.id.rg_activity_time);
+//
+//        List<String> dates = TimeUtil.getFutureDate(8,"MM-dd");
+//        List<String> weeks = TimeUtil.getFutureWeeks(8);
+//        List<String> timeOptions = new ArrayList<>();
+//        timeOptions.add("一周内");
+//        for (int i = 0; i < dates.size(); i++) {
+//            timeOptions.add(weeks.get(i) + " " + dates.get(i));
+//        }
+//        addChildOptionToRadioGroup(mTimeRadioGroup,timeOptions,0);
+//
+//        mCityTextView = (TextView) expandedView.findViewById(R.id.tv_city);
+//        mCityTextView.setText(mCurrentCity);
+//
+//        mDropDownView.setHeaderView(collapsedView);
+//        mDropDownView.setExpandedView(expandedView);
+//        collapsedView.setOnClickListener(null);
 //        mDropDownView.setDropDownListener(dropDownListener);
     }
 
@@ -180,25 +176,25 @@ public class CategoryActivity extends BaseActivity
             case R.id.tv_other_city:
                 OtherCityActivity.create(this, REQUEST_CODE_SELECT_CITY);
                 break;
-            case R.id.btn_ok:
-                mDropDownView.collapseDropDown();
-                params.city = mCityTextView.getText().toString();
-                AppCookie.saveCity(params.city);
-                params.sort_type = mSortRadioGroup.getCheckedRadioButtonId() == R.id.rb_newest_time ? null : "credit";
-                params.state = mProprotyRadioGroup.getCheckedRadioButtonId() == R.id.rb_concentration ? "1":"2";
-                if(areaOptions != null && areaOptions.size() > 0){
-                    params.area = areaOptions.get(mAreaRadioGroup.getCheckedRadioButtonId());
-                }
-                if(mTimeRadioGroup.getCheckedRadioButtonId() == 0){
-                    params.end_at = TimeUtil.getEndTime(7);
-                    params.begin_at = TimeUtil.getStartTime(0);
-                }else{
-                    int offset = mTimeRadioGroup.getCheckedRadioButtonId()-1;
-                    params.end_at = TimeUtil.getEndTime(offset);
-                    params.begin_at = TimeUtil.getStartTime(offset);
-                }
-                EventUtil.sendEvent(new MainActivityListFilterEvent(params));
-                break;
+//            case R.id.btn_ok:
+//                mDropDownView.collapseDropDown();
+//                params.city = mCityTextView.getText().toString();
+//                AppCookie.saveCity(params.city);
+//                params.sort_type = mSortRadioGroup.getCheckedRadioButtonId() == R.id.rb_newest_time ? null : "credit";
+//                params.state = mProprotyRadioGroup.getCheckedRadioButtonId() == R.id.rb_concentration ? "1":"2";
+//                if(areaOptions != null && areaOptions.size() > 0){
+//                    params.area = areaOptions.get(mAreaRadioGroup.getCheckedRadioButtonId());
+//                }
+//                if(mTimeRadioGroup.getCheckedRadioButtonId() == 0){
+//                    params.end_at = TimeUtil.getEndTime(7);
+//                    params.begin_at = TimeUtil.getStartTime(0);
+//                }else{
+//                    int offset = mTimeRadioGroup.getCheckedRadioButtonId()-1;
+//                    params.end_at = TimeUtil.getEndTime(offset);
+//                    params.begin_at = TimeUtil.getStartTime(offset);
+//                }
+//                EventUtil.sendEvent(new MainActivityListFilterEvent(params));
+//                break;
             case R.id.rl_add_activity:
                 AddActivityActivity.create(this);
                 break;
@@ -212,26 +208,26 @@ public class CategoryActivity extends BaseActivity
             switch (requestCode){
                 case REQUEST_CODE_SELECT_CITY:
                     String selectCity = data.getStringExtra(OtherCityActivity.EXTRA_RESULT);
-                    mCityTextView.setText(selectCity);
-                    changeActivityAreaByCity(selectCity);
+//                    mCityTextView.setText(selectCity);
+//                    changeActivityAreaByCity(selectCity);
                     break;
             }
         }
     }
 
-    private void changeActivityAreaByCity(String city) {
-        areaOptions.clear();
-        areaOptions.add("所有地区");
-        if(activityAreasList != null && activityAreasList.size() > 0){
-            for (Config.ActivityAreasBean activityArea: activityAreasList){
-                if(activityArea.getCity().equals(city)){
-                    areaOptions.addAll(activityArea.getAreas());
-                    break;
-                }
-            }
-        }
-        addChildOptionToRadioGroup(mAreaRadioGroup, areaOptions,0);
-    }
+//    private void changeActivityAreaByCity(String city) {
+//        areaOptions.clear();
+//        areaOptions.add("所有地区");
+//        if(activityAreasList != null && activityAreasList.size() > 0){
+//            for (Config.ActivityAreasBean activityArea: activityAreasList){
+//                if(activityArea.getCity().equals(city)){
+//                    areaOptions.addAll(activityArea.getAreas());
+//                    break;
+//                }
+//            }
+//        }
+//        addChildOptionToRadioGroup(mAreaRadioGroup, areaOptions,0);
+//    }
 
     /**
      * 添加子选项到RadioGroup中

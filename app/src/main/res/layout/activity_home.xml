@@ -4,52 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <include layout="@layout/layout_title_bar"/>
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginTop="48dp"
+        app:tr_pureScrollMode_on="true">
 
-        <include layout="@layout/layout_title_bar"/>
-
-        <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:tr_pureScrollMode_on="true">
+            android:overScrollMode="never">
 
-            <android.support.v4.widget.NestedScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <com.playmala.playmala.widget.HomeBanner
+                    android:id="@+id/banner"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="150dp"
+                    app:delay_time="5000"
+                    app:image_scale_type="center_crop"
+                    app:layout_scrollFlags="scroll"
+                    android:background="?android:windowBackground"
+                    app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected" />
 
-                    <com.playmala.playmala.widget.HomeBanner
-                        android:id="@+id/banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        app:delay_time="5000"
-                        app:image_scale_type="center_crop"
-                        app:layout_scrollFlags="scroll"
-                        android:background="?android:windowBackground"
-                        app:indicator_drawable_selected="@drawable/shape_banner_indicator_drawable_selected" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/category_list"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"/>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/category_list"
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="15dp"
-                        android:layout_height="wrap_content"
-                        android:overScrollMode="never"/>
+            </LinearLayout>
 
-                </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-            </android.support.v4.widget.NestedScrollView>
-
-        </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
-
-    </LinearLayout>
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -85,6 +79,7 @@
             android:src="@mipmap/ic_home_add" />
 
     </LinearLayout>
+
 
     <com.playmala.playmala.widget.DropDownView
         android:id="@+id/drop_down_view"

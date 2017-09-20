@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,6 +28,7 @@ import com.playmala.playmala.model.event.UserInfoRefreshEvent;
 import com.playmala.playmala.ui.activity.AddActivityActivity;
 import com.playmala.playmala.ui.main.adapter.CategoryAdapter;
 import com.playmala.playmala.ui.main.fragments.DrawerMenuFragment;
+import com.playmala.playmala.ui.main.view.MainPickerView;
 import com.playmala.playmala.ui.search.SearchActivity;
 import com.playmala.playmala.ui.user.ProfileActivity;
 import com.playmala.playmala.util.AMapLocationUtil;
@@ -78,7 +78,6 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
 
     private ArrayList<Config.ActivityAreasBean> ActivityAreasList;
     private ArrayList<Config.ActivityTypesBean> activityTypesList;
-    private List<String> areaOptions = new ArrayList<>();
 
     //是否已经获取到全局配置
     private boolean isRecievedConfig = false;
@@ -165,9 +164,15 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
 
             @Override
             public void performAction(View view) {
-
+                if(mDropDownView.isExpanded()){
+                    mDropDownView.collapseDropDown();
+                }else{
+                    mDropDownView.expandDropDown();
+                }
             }
         });
+
+        MainPickerView.getInstance(HomeActivity.this).bindViews(mDropDownView,mTitleBar);
 
         mCategoryAdapter.setViewEventListener((item, position, view) -> {
             CategoryActivity.create(this,item.getName(),item.getImage_url(),ActivityAreasList,findActivityTypesByParentId(item.getId()));
@@ -181,6 +186,12 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
         AMapLocationUtil.getInstance().setAMapLocationUtilListener(locationListener).startLocation();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainPickerView.getInstance(this).bindViews(mDropDownView,mTitleBar);
+    }
 
     private ArrayList<Config.ActivityTypesBean> findActivityTypesByParentId(int parentId){
         ArrayList<Config.ActivityTypesBean> list = new ArrayList<>();
@@ -314,26 +325,25 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
         cancelLoading();
         initBanner(config.getBanners());
         initCategoryList(config.getActivity_types());
-//        initViewPager(config.getActivity_types());
+        MainPickerView.getInstance(this).bindData(config.getActivity_areas());
         ActivityAreasList = config.getActivity_areas();
         activityTypesList = config.getActivity_types();
         isRecievedConfig = true;
-        changeActivityAreaByCity(mCurrentCity);
+        MainPickerView.getInstance(this).changeActivityAreaByCity(mCurrentCity);
         checkVersion(config.getAndroid_update());
     }
 
 
-    private void changeActivityAreaByCity(String city) {
-        if(isRecievedConfig){
-            areaOptions.clear();
-            areaOptions.add("所有地区");
-            for (Config.ActivityAreasBean activityArea: ActivityAreasList){
-                if(activityArea.getCity().equals(city)){
-                    areaOptions.addAll(activityArea.getAreas());
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case MainPickerView.REQUEST_CODE_SELECT_CITY:
+                    String selectCity = data.getStringExtra(OtherCityActivity.EXTRA_RESULT);
+                    MainPickerView.getInstance(this).changeActivityAreaByCity(selectCity);
                     break;
-                }
             }
-//            addChildOptionToRadioGroup(mAreaRadioGroup, areaOptions,0);
         }
     }
 
@@ -439,7 +449,8 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
             dialog.dismiss();
             AppCookie.saveCity(locationCity);
             mCurrentCity = locationCity;
-            changeActivityAreaByCity(mCurrentCity);
+//            changeActivityAreaByCity(mCurrentCity);
+            MainPickerView.getInstance(this).changeActivityAreaByCity(mCurrentCity);
         });
     }
 

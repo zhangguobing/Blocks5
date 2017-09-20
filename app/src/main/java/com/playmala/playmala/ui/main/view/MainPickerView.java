@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 import com.playmala.playmala.AppCookie;
 import com.playmala.playmala.R;
+import com.playmala.playmala.model.Config;
 import com.playmala.playmala.model.event.MainActivityListFilterEvent;
 import com.playmala.playmala.model.request.MainActivityListParams;
+import com.playmala.playmala.repository.ConfigManager;
 import com.playmala.playmala.ui.main.OtherCityActivity;
 import com.playmala.playmala.util.EventUtil;
 import com.playmala.playmala.util.TimeUtil;
@@ -35,7 +37,7 @@ public class MainPickerView implements View.OnClickListener{
     
     private Activity mActivity;
 
-    private View mCollapsedView;
+//    private View mCollapsedView;
     private View mExpandedView;
     private DropDownView mDropDownView;
 
@@ -44,12 +46,15 @@ public class MainPickerView implements View.OnClickListener{
     private FlowRadioGroup mAreaRadioGroup;
     private FlowRadioGroup mTimeRadioGroup;
     private TextView mCityTextView;
+    private TextView mNoCityTipTv;
 
     private MainActivityListParams params = MainActivityListParams.getDefault();
 
     private List<String> areaOptions = new ArrayList<>();
 
-    private static final int REQUEST_CODE_SELECT_CITY = 1001;
+    public static final int REQUEST_CODE_SELECT_CITY = 1001;
+
+    private ArrayList<Config.ActivityAreasBean> mActivityAreasList;
 
     //系统当前的城市
     private String mCurrentCity = AppCookie.getCity();
@@ -71,7 +76,6 @@ public class MainPickerView implements View.OnClickListener{
     }
     
     private void init(){
-        mCollapsedView = LayoutInflater.from(mActivity).inflate(R.layout.layout_title_bar, null, false);
         mExpandedView = LayoutInflater.from(mActivity).inflate(R.layout.view_my_drop_down_expanded, null, false);
         mExpandedView.findViewById(R.id.tv_other_city).setOnClickListener(this);
         mExpandedView.findViewById(R.id.btn_ok).setOnClickListener(this);
@@ -80,6 +84,7 @@ public class MainPickerView implements View.OnClickListener{
         mPropertyRadioGroup = (FlowRadioGroup) mExpandedView.findViewById(R.id.rg_property);
         mAreaRadioGroup = (FlowRadioGroup) mExpandedView.findViewById(R.id.rg_activity_area);
         mTimeRadioGroup = (FlowRadioGroup) mExpandedView.findViewById(R.id.rg_activity_time);
+        mNoCityTipTv = (TextView) mExpandedView.findViewById(R.id.tv_city_no_support_tip);
 
         List<String> dates = TimeUtil.getFutureDate(8,"MM-dd");
         List<String> weeks = TimeUtil.getFutureWeeks(8);
@@ -93,14 +98,27 @@ public class MainPickerView implements View.OnClickListener{
         mCityTextView = (TextView) mExpandedView.findViewById(R.id.tv_city);
         mCityTextView.setText(mCurrentCity);
 
-        mCollapsedView.setOnClickListener(null);
+//        mCollapsedView.setOnClickListener(null);
     }
 
 
-    public void setDropDownView(DropDownView dropDownView){
+    public void bindViews(DropDownView dropDownView, View collapsedView){
         mDropDownView = dropDownView;
-        mDropDownView.setHeaderView(mCollapsedView);
+        ViewGroup parent = (ViewGroup) collapsedView.getParent();
+        if (parent != null) {
+            parent.removeView(collapsedView);
+        }
+        mDropDownView.setHeaderView(collapsedView);
+        ViewGroup expandParent = (ViewGroup) mExpandedView.getParent();
+        if (expandParent != null) {
+            expandParent.removeView(mExpandedView);
+        }
         mDropDownView.setExpandedView(mExpandedView);
+    }
+
+
+    public void bindData(ArrayList<Config.ActivityAreasBean> activityAreasBeen){
+        mActivityAreasList = activityAreasBeen;
     }
 
     @Override
@@ -157,5 +175,31 @@ public class MainPickerView implements View.OnClickListener{
             flowRadioButton.setChecked(defaultCheckedPosition == i);
             flowRadioGroup.addView(flowRadioButton);
         }
+    }
+
+
+    public void changeActivityAreaByCity(String city) {
+        mCityTextView.setText(city);
+        if(mActivityAreasList != null){
+            areaOptions.clear();
+            areaOptions.add("所有地区");
+            for (Config.ActivityAreasBean activityArea: mActivityAreasList){
+                if(activityArea.getCity().equals(city)){
+                    areaOptions.addAll(activityArea.getAreas());
+                    break;
+                }
+            }
+            addChildOptionToRadioGroup(mAreaRadioGroup, areaOptions,0);
+        }
+        List<Config.ActivityAreasBean> activityAreas = ConfigManager.getInstance().getConfig().getActivity_areas();
+        boolean isHasThisCity = false;
+        for (int i = 0; i < activityAreas.size(); i++) {
+            Config.ActivityAreasBean area = activityAreas.get(i);
+            if(city.equals(area.getCity())){
+                isHasThisCity = true;
+                break;
+            }
+        }
+        mNoCityTipTv.setVisibility(isHasThisCity ? View.GONE : View.VISIBLE);
     }
 }

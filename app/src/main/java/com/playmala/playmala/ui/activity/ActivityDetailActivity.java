@@ -266,6 +266,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(mActivity.getIs_collect() == 0 ? R.mipmap.ic_favourite_6dp : R.mipmap.ic_favorite_2_6dp,
                 mActivity.getIs_collect() == 0 ? "收藏" : "取消收藏"));
+        menuItems.add(new MenuItem(R.mipmap.ic_message_6dp,"留言"));
         menuItems.add(new MenuItem(R.mipmap.ic_baoming_list_6dp, "报名列表"));
         menuItems.add(new MenuItem(R.mipmap.ic_scan_6dp, "扫一扫"));
         menuItems.add(new MenuItem(R.mipmap.ic_share_6dp, "分享"));
@@ -290,12 +291,14 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                             getCallbacks().cancelCollectActivity(Integer.valueOf(mActivityId));
                         }
                     }else if(position == 1){
-                        SignUpListActivity.create(this,mActivity);
+                        ActivityMessageActivity.create(this,mActivity);
                     }else if(position == 2){
-                        ScanBarCodeActivity.create(this, AppCookie.getUserInfo().getId() != mActivity.getCreator().getId());
+                        SignUpListActivity.create(this,mActivity);
                     }else if(position == 3){
-                        showShareDialog();
+                        ScanBarCodeActivity.create(this, AppCookie.getUserInfo().getId() != mActivity.getCreator().getId());
                     }else if(position == 4){
+                        showShareDialog();
+                    }else if(position == 5){
 //                        if("1".equals(mActivity.getNeed_identity())
 //                                && AppCookie.getUserInfo().getIdentity_state() == 0){
 //                            showNeedIdentityDialog();
@@ -308,7 +311,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                             getCallbacks().cancelJoin(Integer.valueOf(mActivityId));
                         }
 
-                    }else if(position == 5){
+                    }else if(position == 6){
                         showSelectReportContentDialog();
                     }
                 })
