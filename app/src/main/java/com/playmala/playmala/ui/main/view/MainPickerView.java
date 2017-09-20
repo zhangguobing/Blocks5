@@ -103,6 +103,7 @@ public class MainPickerView implements View.OnClickListener{
 
 
     public void bindViews(DropDownView dropDownView, View collapsedView){
+        mDropDownView = null;
         mDropDownView = dropDownView;
         ViewGroup parent = (ViewGroup) collapsedView.getParent();
         if (parent != null) {
