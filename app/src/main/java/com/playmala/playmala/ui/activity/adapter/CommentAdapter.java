@@ -156,14 +156,4 @@ public class CommentAdapter extends BaseAdapter<Comment,RecyclerView.ViewHolder>
             text_content = (TextView) view.findViewById(R.id.text_content);
         }
     }
-
-    @Override
-    protected boolean areItemsTheSame(Comment oldItem, Comment newItem) {
-        return oldItem.getId() == newItem.getId();
-    }
-
-    @Override
-    protected boolean areContentsTheSame(Comment oldItem, Comment newItem) {
-        return Objects.equals(oldItem,newItem);
-    }
 }

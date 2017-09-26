@@ -130,10 +130,8 @@ public class ScanBarCodeActivity extends BasePresenterActivity<ActivityUserContr
     public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
         String result = ResultParser.parseResult(rawResult).toString();
 
-        if(result.startsWith("http://www.blocks5.com?activityId=")
-                || result.startsWith("https://www.blocks5.com?activityId=")){
-            Uri uri = Uri.parse(result);
-            String activityId = uri.getQueryParameter("activityId");
+        if(result.startsWith("http://app.playmala.com/mb/share/")){
+            String activityId = result.replace("http://app.playmala.com/mb/share/","");
             showLoading(R.string.label_being_something);
             getCallbacks().sign(Integer.parseInt(activityId));
         }else{

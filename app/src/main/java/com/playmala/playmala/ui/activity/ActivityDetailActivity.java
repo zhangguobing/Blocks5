@@ -588,7 +588,7 @@ public class ActivityDetailActivity extends BasePresenterActivity<ActivityContro
                 }
                 break;
             case R.id.iv_barcode:
-                HowSignInActivity.create(this,mActivity, HowSignInActivity.PAGE_FROM_ACTIVITY_DETAIL);
+                HowSignInActivity.create(this,mActivity, HowSignInActivity.PAGE_FROM_ACTIVITY_DETAIL,false);
                 break;
             case R.id.iv_user_avatar:
                 UserDetailActivity.create(this,mUserId);

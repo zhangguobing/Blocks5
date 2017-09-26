@@ -30,14 +30,4 @@ public class StringAdapter extends BaseAdapter<String,StringViewHolder> {
     public void bindViewHolder(StringViewHolder holder, String item, int position) {
         holder.bind(item);
     }
-
-    @Override
-    protected boolean areItemsTheSame(String oldItem, String newItem) {
-        return false;
-    }
-
-    @Override
-    protected boolean areContentsTheSame(String oldItem, String newItem) {
-        return false;
-    }
 }

@@ -1,10 +1,14 @@
 package com.playmala.playmala.controller;
 
+import android.text.TextUtils;
+
+import com.playmala.playmala.AppCookie;
 import com.playmala.playmala.api.ApiResponse;
 import com.playmala.playmala.api.RequestCallback;
 import com.playmala.playmala.api.ResponseError;
 import com.playmala.playmala.base.BaseController;
 import com.playmala.playmala.model.FeedBack;
+import com.playmala.playmala.model.UploadToken;
 import com.playmala.playmala.model.User;
 import com.playmala.playmala.model.event.UserInfoChangeEvent;
 import com.playmala.playmala.util.EventUtil;
@@ -26,7 +30,12 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
         return new UserUiCallbacks() {
             @Override
             public void register(String token,String nickName,String sex,String password,String avatar) {
-                doRegister(getId(ui),token,nickName,sex,password,avatar);
+                if(TextUtils.isEmpty(avatar)){
+                    doRegister(getId(ui),token,nickName,sex,password);
+                }else{
+                    doRegister(getId(ui),token,nickName,sex,password,avatar);
+                }
+
             }
 
             @Override
@@ -50,8 +59,10 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
             }
 
             @Override
-            public void updateUser(int age, String job, String address, String avatar, String content, String image_url_1, String image_url_2, String image_url_3) {
-                doUpdateUser(getId(ui),age,job,address,avatar,content,image_url_1,image_url_2,image_url_3);
+            public void updateUser(int age, String job, String address, String avatar,
+                                   String content, String image_url_1, String image_url_2,
+                                   String image_url_3,String nick_name) {
+                doUpdateUser(getId(ui),age,job,address,avatar,content,image_url_1,image_url_2,image_url_3,nick_name);
             }
 
             @Override
@@ -63,12 +74,37 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
             public void addFeedBack(String content) {
                 doAddFeedBack(getId(ui), content);
             }
+            @Override
+            public void getUploadToken() {
+                doGetUploadToken(getId(ui));
+            }
         };
     }
 
     private void doRegister(final int callingId,String token,String nickName,String sex,String password,String avatar){
         mApiClient.userService()
                 .register(token, nickName, sex, password, avatar)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse>() {
+                    @Override
+                    public void onResponse(ApiResponse response) {
+                        UserUi ui = findUi(callingId);
+                        if(ui instanceof LoginNextUi){
+                            ((LoginNextUi)ui).registerSuccess(response.message);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
+    private void doRegister(final int callingId,String token,String nickName,String sex,String password){
+        mApiClient.userService()
+                .register(token, nickName, sex, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse>() {
@@ -185,9 +221,9 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
      */
     private void doUpdateUser(final int callingId, int age, String job,String address,
                               String avatar,String content,String image_url_1,
-                              String image_url_2,String image_url_3){
+                              String image_url_2,String image_url_3,String nick_name){
         mApiClient.userService()
-                .updateUser(mToken,age,job,address,avatar,content,image_url_1,image_url_2,image_url_3)
+                .updateUser(mToken,age,job,address,avatar,content,image_url_1,image_url_2,image_url_3,nick_name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new RequestCallback<ApiResponse<User>>() {
@@ -253,6 +289,26 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
                 });
     }
 
+    private void doGetUploadToken(final int callingId){
+        mApiClient.loginAuthService()
+                .getUploadToken(mToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RequestCallback<ApiResponse<UploadToken>>() {
+                    @Override
+                    public void onResponse(ApiResponse<UploadToken> response) {
+                        if(response.data != null){
+                            AppCookie.saveUploadToken(response.data.getToken());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ResponseError error) {
+                        findUi(callingId).onResponseError(error);
+                    }
+                });
+    }
+
     public interface UserUi extends BaseController.Ui<UserController.UserUiCallbacks>{
 
     }
@@ -299,9 +355,10 @@ public class UserController extends BaseController<UserController.UserUi,UserCon
         void getUserById(int user_id);
         void updateUser(int age, String job,String address,
                         String avatar,String content,String image_url_1,
-                        String image_url_2,String image_url_3);
+                        String image_url_2,String image_url_3,String nick_name);
         void getFeedBack(int page_index);
         void addFeedBack(String content);
+        void getUploadToken();
     }
 
 

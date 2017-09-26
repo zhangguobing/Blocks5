@@ -7,7 +7,6 @@ import com.playmala.playmala.R;
 import com.playmala.playmala.base.BaseAdapter;
 import com.playmala.playmala.model.Activity;
 import com.playmala.playmala.ui.search.adapter.holder.ActivityViewHolder;
-import com.playmala.playmala.util.Objects;
 
 /**
  * author：zhangguobing on 2017/7/2 14:11
@@ -28,15 +27,5 @@ public class ActivityListAdapter extends BaseAdapter<Activity,ActivityViewHolder
     @Override
     public void bindViewHolder(ActivityViewHolder holder, Activity item, int position) {
         holder.bind(item);
-    }
-
-    @Override
-    protected boolean areItemsTheSame(Activity oldItem, Activity newItem) {
-        return oldItem.getId() == newItem.getId();
-    }
-
-    @Override
-    protected boolean areContentsTheSame(Activity oldItem, Activity newItem) {
-        return Objects.equals(oldItem,newItem);
     }
 }

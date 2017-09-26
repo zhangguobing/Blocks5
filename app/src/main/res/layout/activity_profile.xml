@@ -67,7 +67,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="15sp" />
 
-                    <TextView
+                    <com.playmala.playmala.widget.LastInputEditText
                         android:id="@+id/tv_nick_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

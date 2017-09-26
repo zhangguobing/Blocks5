@@ -137,37 +137,4 @@ public class ActivityUser {
             this.identity_state = identity_state;
         }
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ActivityUser that = (ActivityUser) o;
-
-        if (id != that.id) return false;
-        if (activity_id != that.activity_id) return false;
-        if (user_id != that.user_id) return false;
-        if (state != that.state) return false;
-        if (is_sign != null ? !is_sign.equals(that.is_sign) : that.is_sign != null) return false;
-        if (signed_at != null ? !signed_at.equals(that.signed_at) : that.signed_at != null)
-            return false;
-        if (created_at != null ? !created_at.equals(that.created_at) : that.created_at != null)
-            return false;
-        return creator != null ? creator.equals(that.creator) : that.creator == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + activity_id;
-        result = 31 * result + user_id;
-        result = 31 * result + state;
-        result = 31 * result + (is_sign != null ? is_sign.hashCode() : 0);
-        result = 31 * result + (signed_at != null ? signed_at.hashCode() : 0);
-        result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-        return result;
-    }
 }

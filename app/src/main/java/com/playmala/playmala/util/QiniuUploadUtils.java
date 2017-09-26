@@ -58,7 +58,7 @@ public class QiniuUploadUtils {
 		String token = getToken();
 		if (token == null) {
 			if(listener != null){
-				listener.onError(-1, "token is null");
+				listener.onError(-1, "没有获取到upload token");
 			}
 			return;
 		}

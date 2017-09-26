@@ -40,15 +40,4 @@ public class UserListAdapter extends BaseAdapter<User,UserViewHolder> {
         holder.bind(item);
     }
 
-    @Override
-    protected boolean areItemsTheSame(User oldItem, User newItem) {
-        return oldItem.getId() == newItem.getId();
-    }
-
-    @Override
-    protected boolean areContentsTheSame(User oldItem, User newItem) {
-        return Objects.equals(oldItem,newItem);
-    }
-
-
 }

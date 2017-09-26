@@ -261,21 +261,6 @@ public class Config {
             return name;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            ActivityTypesBean that = (ActivityTypesBean) o;
-
-            return image_url.equals(that.image_url);
-
-        }
-
-        @Override
-        public int hashCode() {
-            return image_url.hashCode();
-        }
 
         @Override
         public int describeContents() {

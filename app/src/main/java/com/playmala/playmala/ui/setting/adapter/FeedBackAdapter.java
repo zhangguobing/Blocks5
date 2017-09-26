@@ -149,14 +149,4 @@ public class FeedBackAdapter extends BaseAdapter<FeedBack,RecyclerView.ViewHolde
             text_content = (TextView) view.findViewById(R.id.text_content);
         }
     }
-
-    @Override
-    protected boolean areItemsTheSame(FeedBack oldItem, FeedBack newItem) {
-        return oldItem.getId() == newItem.getId();
-    }
-
-    @Override
-    protected boolean areContentsTheSame(FeedBack oldItem, FeedBack newItem) {
-        return Objects.equals(oldItem,newItem);
-    }
 }

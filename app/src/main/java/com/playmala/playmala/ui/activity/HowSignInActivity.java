@@ -26,6 +26,7 @@ import butterknife.Bind;
 public class HowSignInActivity extends BaseActivity {
     private static final String EXTRA_ACTIVITY = HowSignInActivity.class.getName() + ".activity";
     private static final String EXTRA_PAGE_FROM = HowSignInActivity.class.getName() + ".pageFrom";
+    private static final String EXTRA_IS_SHOW_RIGHT = HowSignInActivity.class.getName() + ".isShowRight";
 
     public static final int PAGE_FROM_ACTIVITY_DETAIL = 0;
     public static final int PAGE_FROM_SIGN_IN = 1;
@@ -35,10 +36,11 @@ public class HowSignInActivity extends BaseActivity {
     @Bind(R.id.tv_intro)
     TextView mIntroTv;
 
-    public static void create(Context context,Activity activity, int pageFrom){
+    public static void create(Context context,Activity activity, int pageFrom, boolean isShowRight){
         Intent intent = new Intent(context,HowSignInActivity.class);
         intent.putExtra(EXTRA_ACTIVITY, activity);
         intent.putExtra(EXTRA_PAGE_FROM, pageFrom);
+        intent.putExtra(EXTRA_IS_SHOW_RIGHT,isShowRight);
         context.startActivity(intent);
     }
 
@@ -47,31 +49,32 @@ public class HowSignInActivity extends BaseActivity {
         Activity activity = getIntent().getParcelableExtra(EXTRA_ACTIVITY);
         int page_from = getIntent().getIntExtra(EXTRA_PAGE_FROM, 0);
 
-
-        getTitleBar().addAction(new TitleBar.Action() {
-            @Override
-            public String getText() {
-                return page_from == PAGE_FROM_ACTIVITY_DETAIL ? "签到": "扫一扫";
-            }
-
-            @Override
-            public int getDrawable() {
-                return 0;
-            }
-
-            @Override
-            public void performAction(View view) {
-                if(page_from == PAGE_FROM_ACTIVITY_DETAIL){
-                    SignInActivity.create(HowSignInActivity.this, activity);
-                }else{
-                    ScanBarCodeActivity.create(HowSignInActivity.this);
+        if(getIntent().getBooleanExtra(EXTRA_IS_SHOW_RIGHT,false)){
+            getTitleBar().addAction(new TitleBar.Action() {
+                @Override
+                public String getText() {
+                    return page_from == PAGE_FROM_ACTIVITY_DETAIL ? "签到": "扫一扫";
                 }
-            }
-        });
+
+                @Override
+                public int getDrawable() {
+                    return 0;
+                }
+
+                @Override
+                public void performAction(View view) {
+                    if(page_from == PAGE_FROM_ACTIVITY_DETAIL){
+                        SignInActivity.create(HowSignInActivity.this, activity);
+                    }else{
+                        ScanBarCodeActivity.create(HowSignInActivity.this);
+                    }
+                }
+            });
+        }
 
         final Bitmap bitmap = QREncode.encodeQRWithoutWhite(new QREncode.Builder(this)
                 .setColor(getResources().getColor(R.color.black))
-                .setContents("http://www.blocks5.com?activityId="+ activity.getId())
+                .setContents("http://app.playmala.com/mb/share/"+ activity.getId())
                 .build());
         mBarcodeImg.setImageBitmap(bitmap);
         mIntroTv.setText(R.string.label_activity_barcode_intro);

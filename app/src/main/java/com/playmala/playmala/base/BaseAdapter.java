@@ -1,7 +1,5 @@
 package com.playmala.playmala.base;
 
-import android.os.AsyncTask;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,66 +16,11 @@ public abstract class BaseAdapter<T,VH extends RecyclerView.ViewHolder> extends 
     private List<T> mItems = new ArrayList<>();
     private ViewEventListener<T> mViewEventListener;
 
-    private int dataVersion = 0;
 
     @Override
     public void setItems(final List<T> update) {
-        dataVersion ++;
-        if(mItems.isEmpty()){
-            if(update == null){
-                return;
-            }
-            mItems = update;
-            notifyDataSetChanged();
-        }else if(update == null){
-            int oldSize = mItems.size();
-            mItems = null;
-            notifyItemRangeRemoved(0, oldSize);
-        }else {
-            final int startVersion = dataVersion;
-            final List<T> oldItems = mItems;
-            new AsyncTask<Void, Void, DiffUtil.DiffResult>() {
-                @Override
-                protected DiffUtil.DiffResult doInBackground(Void... voids) {
-                    return DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                        @Override
-                        public int getOldListSize() {
-                            return oldItems.size();
-                        }
-
-                        @Override
-                        public int getNewListSize() {
-                            return update.size();
-                        }
-
-                        @Override
-                        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                            T oldItem = oldItems.get(oldItemPosition);
-                            T newItem = update.get(newItemPosition);
-                            return BaseAdapter.this.areItemsTheSame(oldItem, newItem);
-                        }
-
-                        @Override
-                        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                            T oldItem = oldItems.get(oldItemPosition);
-                            T newItem = update.get(newItemPosition);
-                            return BaseAdapter.this.areContentsTheSame(oldItem, newItem);
-                        }
-                    });
-                }
-
-                @Override
-                protected void onPostExecute(DiffUtil.DiffResult diffResult) {
-                    if (startVersion != dataVersion) {
-                        // ignore update
-                        return;
-                    }
-                    mItems = update;
-                    diffResult.dispatchUpdatesTo(BaseAdapter.this);
-
-                }
-            }.execute();
-        }
+       mItems = update;
+       notifyDataSetChanged();
     }
 
     @Override
@@ -169,9 +112,5 @@ public abstract class BaseAdapter<T,VH extends RecyclerView.ViewHolder> extends 
     public abstract RecyclerView.ViewHolder createViewHolder(View view, int viewType);
 
     public abstract void bindViewHolder(VH holder, T item, int position);
-
-    protected abstract boolean areItemsTheSame(T oldItem, T newItem);
-
-    protected abstract boolean areContentsTheSame(T oldItem, T newItem);
 
 }

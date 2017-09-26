@@ -76,10 +76,13 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
                     public void onResponse(ApiResponse<LoginBean> response) {
                         LoginAuthUi ui = findUi(callingId);
                         if(ui instanceof LoginUi){
+                            if(response.data != null){
+                                AppCookie.saveToken(response.data.getToken());
+                                mApiClient.setToken(response.data.getToken());
+                                AppCookie.saveLastPhone(response.data.getUser().getPhone());
+                            }
                             ((LoginUi) ui).loginFinish(response.data);
                         }
-                        // 发送用户账户改变的事件
-                        EventUtil.sendEvent(new UserChangeEvent(response.data));
                     }
 
                     @Override
@@ -163,8 +166,8 @@ public class LoginAuthController extends BaseController<LoginAuthController.Logi
                     public void onResponse(ApiResponse<Config> response) {
                         LoginAuthUi ui = findUi(callingId);
                         if(ui instanceof HomeUi){
-                            ((HomeUi)ui).receiveConfig(response.data);
                             ConfigManager.getInstance().saveOrUpdateConfig(response.data);
+                            ((HomeUi)ui).receiveConfig(response.data);
                         }
                     }
 

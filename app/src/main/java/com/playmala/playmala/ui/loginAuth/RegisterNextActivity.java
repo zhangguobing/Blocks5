@@ -21,6 +21,7 @@ import com.playmala.playmala.base.ContentView;
 import com.playmala.playmala.controller.UserController;
 import com.playmala.playmala.ui.main.HomeActivity;
 import com.playmala.playmala.util.ActivityStack;
+import com.playmala.playmala.util.AsyncRun;
 import com.playmala.playmala.util.ImageLoadUtil;
 import com.playmala.playmala.util.QiniuUploadUtils;
 import com.playmala.playmala.util.ToastUtil;
@@ -107,8 +108,9 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
     public void registerSuccess(String message) {
         cancelLoading();
         ToastUtil.showText(message);
-        HomeActivity.create(this);
-        ActivityStack.create().appLogin();
+//        HomeActivity.create(this);
+//        ActivityStack.create().appLogin();
+         LoginActivity.create(this);
     }
 
     @OnClick({R.id.btn_complete_register,R.id.iv_avatar})
@@ -159,25 +161,31 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
                     QiniuUploadUtils.getInstance().uploadImage(filePath, new QiniuUploadUtils.QiniuUploadUtilsListener() {
                         @Override
                         public void onStart() {
-                            mUploadProgressDialog.show();
+                            AsyncRun.runInMain(() -> mUploadProgressDialog.show());
+
                         }
 
                         @Override
                         public void onSuccess(String filePath,String destUrl) {
-                            mUploadProgressDialog.dismiss();
-                            ImageLoadUtil.loadAvatar(mAvatarImage,filePath,RegisterNextActivity.this);
-                            mAvatarUrl = destUrl;
+                            AsyncRun.runInMain(() -> {
+                                mUploadProgressDialog.dismiss();
+                                ImageLoadUtil.loadAvatar(mAvatarImage,filePath,RegisterNextActivity.this);
+                                mAvatarUrl = destUrl;
+                            });
                         }
 
                         @Override
                         public void onError(int errorCode, String msg) {
-                            mUploadProgressDialog.dismiss();
-                            ToastUtil.showText("上传异常");
+                            AsyncRun.runInMain(() -> {
+                                mUploadProgressDialog.dismiss();
+                                ToastUtil.showText("上传失败," + msg);
+                            });
+
                         }
 
                         @Override
                         public void onProgress(int progress) {
-                            mUploadProgressDialog.setProgress(progress);
+                            AsyncRun.runInMain(() -> mUploadProgressDialog.setProgress(progress));
                         }
                     });
                 }
@@ -236,6 +244,7 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
                 .widthScale(0.75f)
                 .show();
         dialog.setOnBtnClickL(dialog::dismiss, () -> {
+            dialog.dismiss();
             showLoading(R.string.label_being_something);
             String sex = mRadioGroup.getCheckedRadioButtonId() == R.id.rb_male ? "男" : "女";
             getCallbacks().register(AppCookie.getToken(),mNickNameEt.getText().toString().trim(),

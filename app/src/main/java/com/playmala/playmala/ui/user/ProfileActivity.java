@@ -71,7 +71,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
     @Bind(R.id.tv_select_area)
     TextView mSelectAreaTv;
     @Bind(R.id.tv_nick_name)
-    TextView mNickNameTv;
+    EditText mNickNameEt;
     @Bind(R.id.tv_sex)
     TextView mSexTv;
     @Bind(R.id.tv_age)
@@ -200,6 +200,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         String job = mJobEt.getText().toString().trim();
         String address = mSelectAreaTv.getText().toString();
         String content = mContentEt.getText().toString().trim();
+        String nick_name = mNickNameEt.getText().toString().trim();
         String image_url_1 = "";
         String image_url_2 = "";
         String image_url_3 = "";
@@ -216,7 +217,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                 }
             }
         }
-        getCallbacks().updateUser(age,job,address,mAvatarUrl,content,image_url_1,image_url_2,image_url_3);
+        getCallbacks().updateUser(age,job,address,mAvatarUrl,content,image_url_1,image_url_2,image_url_3,nick_name);
     }
 
     /**
@@ -281,7 +282,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                             @Override
                             public void onError(int errorCode, String msg) {
                                 mUploadProgressDialog.dismiss();
-                                ToastUtil.showText("上传异常");
+                                ToastUtil.showText("上传失败," + msg);
                             }
 
                             @Override
@@ -314,7 +315,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
                             public void onError(int errorCode, String msg) {
                                 AsyncRun.runInMain(() -> {
                                     mUploadProgressDialog.dismiss();
-                                    ToastUtil.showText("上传异常");
+                                    ToastUtil.showText("上传失败," + msg);
                                 });
 
                             }
@@ -421,7 +422,7 @@ public class ProfileActivity extends BasePresenterActivity<UserController.UserUi
         mAvatarUrl = user.getAvatar();
         ImageLoadUtil.loadAvatar(mAvatarImg,user.getAvatar(),this);
         initAlbum(user);
-        mNickNameTv.setText(user.getNick_name());
+        mNickNameEt.setText(user.getNick_name());
         mSexTv.setText(user.getSex());
         mAgeTv.setText(user.getAge()+"");
         mSelectAreaTv.setText(user.getAddr());

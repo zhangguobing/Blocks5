@@ -20,9 +20,11 @@ import com.playmala.playmala.base.BasePresenterActivity;
 import com.playmala.playmala.base.ContentView;
 import com.playmala.playmala.controller.LoginAuthController;
 import com.playmala.playmala.model.LoginBean;
+import com.playmala.playmala.model.event.UserChangeEvent;
 import com.playmala.playmala.ui.main.HomeActivity;
 import com.playmala.playmala.util.ActivityStack;
 import com.playmala.playmala.util.CountDownTimerUtils;
+import com.playmala.playmala.util.EventUtil;
 import com.playmala.playmala.util.ToastUtil;
 import com.flyco.dialog.widget.NormalDialog;
 
@@ -231,12 +233,14 @@ public class LoginActivity extends BasePresenterActivity<LoginAuthController.Log
                    .btnText("取消","确定")
                    .show();
            dialog.setOnBtnClickL(dialog::dismiss, () -> {
-               RegisterNextActivity.create(this);
+               RegisterActivity.create(this);
                dialog.dismiss();
            });
        }else{
            HomeActivity.create(this);
            ActivityStack.create().appLogin();
+           // 发送用户账户改变的事件
+           EventUtil.sendEvent(new UserChangeEvent(loginBean));
        }
     }
 

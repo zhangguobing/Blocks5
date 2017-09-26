@@ -18,37 +18,6 @@ public class Comment implements Parcelable {
     private CreatorBean creator;
     private int send_state;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Comment comment = (Comment) o;
-
-        if (id != comment.id) return false;
-        if (activity_id != comment.activity_id) return false;
-        if (user_id != comment.user_id) return false;
-        if (is_team != comment.is_team) return false;
-        if (content != null ? !content.equals(comment.content) : comment.content != null)
-            return false;
-        if (created_at != null ? !created_at.equals(comment.created_at) : comment.created_at != null)
-            return false;
-        return creator != null ? creator.equals(comment.creator) : comment.creator == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + activity_id;
-        result = 31 * result + user_id;
-        result = 31 * result + (content != null ? content.hashCode() : 0);
-        result = 31 * result + is_team;
-        result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-        return result;
-    }
-
     public int getId() {
         return id;
     }

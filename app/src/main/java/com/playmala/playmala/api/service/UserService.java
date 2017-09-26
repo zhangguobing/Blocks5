@@ -26,6 +26,11 @@ public interface UserService {
     Observable<ApiResponse> register(@Query("token") String token, @Field("nick_name") String nickName,
                                      @Field("sex") String sex,@Field("password") String password,
                                      @Field("avatar") String avatar);
+
+    @FormUrlEncoded
+    @POST("user/register")
+    Observable<ApiResponse> register(@Query("token") String token, @Field("nick_name") String nickName,
+                                     @Field("sex") String sex,@Field("password") String password);
     @FormUrlEncoded
     @POST("user/identity")
     Observable<ApiResponse> identity(@Query("token") String token,@Field("identity_name") String identity_name,@Field("identity_code") String identity_code);
@@ -57,7 +62,7 @@ public interface UserService {
     Observable<ApiResponse<User>> updateUser(@Query("token") String token, @Field("age") int age, @Field("job") String job,
                                                        @Field("addr") String address, @Field("avatar") String avatar, @Field("content") String content,
                                                        @Field("img_url_1") String image_url_1, @Field("img_url_2") String image_url_2,
-                                                       @Field("img_url_3") String image_url_3);
+                                                       @Field("img_url_3") String image_url_3, @Field("nick_name") String nick_name);
 
     @GET("feedbacks")
     Observable<ApiResponse<List<FeedBack>>> getFeedBack(@Query("token") String token, @Query("page_index") int page_index,@Query("page_size") String page_size);

@@ -463,7 +463,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                             @Override
                             public void onError(int errorCode, String msg) {
                                 mUploadProgressDialog.dismiss();
-                                ToastUtil.showText("上传异常");
+                                ToastUtil.showText("上传失败," + msg);
                             }
 
                             @Override
@@ -496,7 +496,7 @@ public class AddActivityActivity extends BasePresenterActivity<ActivityControlle
                             public void onError(int errorCode, String msg) {
                                 AsyncRun.runInMain(() -> {
                                     mUploadProgressDialog.dismiss();
-                                    ToastUtil.showText("上传异常");
+                                    ToastUtil.showText("上传失败," + msg);
                                 });
 
                             }

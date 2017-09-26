@@ -77,7 +77,7 @@ public class SignInActivity extends BaseActivity{
                 finish();
                 break;
             case R.id.tv_how_sign_in:
-                HowSignInActivity.create(this, activity, HowSignInActivity.PAGE_FROM_SIGN_IN);
+                HowSignInActivity.create(this, activity, HowSignInActivity.PAGE_FROM_SIGN_IN,true);
                 break;
         }
     }

@@ -401,7 +401,6 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
                             .show();
                     updateDialog.setOnBtnClickL(() -> {
                         AppUtil.openAppInMarket(HomeActivity.this);
-                        updateDialog.dismiss();
                     });
                 }
             }

@@ -8,7 +8,6 @@ import com.playmala.playmala.base.BaseAdapter;
 import com.playmala.playmala.model.Activity;
 import com.playmala.playmala.model.ActivityUser;
 import com.playmala.playmala.ui.activity.adapter.holder.ActivityUserViewHolder;
-import com.playmala.playmala.util.Objects;
 
 /**
  * author：zhangguobing on 2017/7/2 15:31
@@ -39,16 +38,5 @@ public class ActivityUserAdapter extends BaseAdapter<ActivityUser,ActivityUserVi
     public void bindViewHolder(ActivityUserViewHolder holder, ActivityUser item, int position) {
         holder.bind(item);
     }
-
-    @Override
-    protected boolean areItemsTheSame(ActivityUser oldItem, ActivityUser newItem) {
-        return oldItem.getId() == newItem.getId();
-    }
-
-    @Override
-    protected boolean areContentsTheSame(ActivityUser oldItem, ActivityUser newItem) {
-        return Objects.equals(oldItem,newItem);
-    }
-
 
 }
