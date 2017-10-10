@@ -67,8 +67,8 @@ public class CategoryActivity extends BaseActivity
 //    //系统当前的城市
 //    private String mCurrentCity = AppCookie.getCity();
 
-    private List<String> areaOptions = new ArrayList<>();
-    private ArrayList<Config.ActivityAreasBean> activityAreasList;
+//    private List<String> areaOptions = new ArrayList<>();
+//    private ArrayList<Config.ActivityAreasBean> activityAreasList;
 
     private MainActivityListParams params = MainActivityListParams.getDefault();
 
@@ -87,7 +87,7 @@ public class CategoryActivity extends BaseActivity
         Intent intent = getIntent();
 
         ImageLoadUtil.loadImage(mActivityCategoryImg,intent.getStringExtra(EXTRA_CATEGORY_URL),this);
-        activityAreasList = intent.getParcelableArrayListExtra(EXTRA_AREA_LIST);
+//        activityAreasList = intent.getParcelableArrayListExtra(EXTRA_AREA_LIST);
         initViewPager(intent.getParcelableArrayListExtra(EXTRA_TYPE_LIST));
 
 //        View collapsedView = LayoutInflater.from(this).inflate(R.layout.layout_title_bar, null, false);
@@ -234,25 +234,25 @@ public class CategoryActivity extends BaseActivity
      * @param flowRadioGroup
      * @param options
      */
-    private void addChildOptionToRadioGroup(FlowRadioGroup flowRadioGroup,List<String> options, int defaultCheckedPosition){
-        flowRadioGroup.removeAllViews();
-        for (int i = 0; i < options.size(); i++) {
-            FlowRadioButton flowRadioButton = new FlowRadioButton(this);
-            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            int margin = DensityUtil.dp2px(this,3);
-            layoutParams.setMargins(margin,margin,margin,margin);
-            flowRadioButton.setLayoutParams(layoutParams);
-            int padding = DensityUtil.dp2px(this,7);
-            flowRadioButton.setId(i);
-            flowRadioButton.setPadding(padding,padding,padding,padding);
-            flowRadioButton.setButtonDrawable(null);
-            flowRadioButton.setText(options.get(i));
-            flowRadioButton.setGravity(Gravity.CENTER);
-            flowRadioButton.setBackgroundResource(R.drawable.bg_radio_button_3);
-            flowRadioButton.setTextColor(ContextCompat.getColorStateList(this,R.color.select_color_white));
-            flowRadioButton.setChecked(defaultCheckedPosition == i);
-            flowRadioGroup.addView(flowRadioButton);
-        }
-    }
+//    private void addChildOptionToRadioGroup(FlowRadioGroup flowRadioGroup,List<String> options, int defaultCheckedPosition){
+//        flowRadioGroup.removeAllViews();
+//        for (int i = 0; i < options.size(); i++) {
+//            FlowRadioButton flowRadioButton = new FlowRadioButton(this);
+//            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT);
+//            int margin = DensityUtil.dp2px(this,3);
+//            layoutParams.setMargins(margin,margin,margin,margin);
+//            flowRadioButton.setLayoutParams(layoutParams);
+//            int padding = DensityUtil.dp2px(this,7);
+//            flowRadioButton.setId(i);
+//            flowRadioButton.setPadding(padding,padding,padding,padding);
+//            flowRadioButton.setButtonDrawable(null);
+//            flowRadioButton.setText(options.get(i));
+//            flowRadioButton.setGravity(Gravity.CENTER);
+//            flowRadioButton.setBackgroundResource(R.drawable.bg_radio_button_3);
+//            flowRadioButton.setTextColor(ContextCompat.getColorStateList(this,R.color.select_color_white));
+//            flowRadioButton.setChecked(defaultCheckedPosition == i);
+//            flowRadioGroup.addView(flowRadioButton);
+//        }
+//    }
 }
