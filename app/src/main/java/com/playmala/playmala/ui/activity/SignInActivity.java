@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.playmala.playmala.AppCookie;
 import com.playmala.playmala.R;
 import com.playmala.playmala.base.BaseActivity;
 import com.playmala.playmala.base.ContentView;
@@ -77,7 +78,7 @@ public class SignInActivity extends BaseActivity{
                 finish();
                 break;
             case R.id.tv_how_sign_in:
-                HowSignInActivity.create(this, activity, HowSignInActivity.PAGE_FROM_SIGN_IN,true);
+                HowSignInActivity.create(this, activity, HowSignInActivity.PAGE_FROM_SIGN_IN, !(AppCookie.getUserInfo().getId() == activity.getCreator().getId()));
                 break;
         }
     }

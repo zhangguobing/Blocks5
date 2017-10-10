@@ -386,6 +386,7 @@ public class HomeActivity extends BasePresenterActivity<LoginAuthController.Logi
                     int color = ContextCompat.getColor(this,R.color.primary_text);
                     int redColor = ContextCompat.getColor(this,R.color.red);
                     updateDialog.setCanceledOnTouchOutside(false);
+                    updateDialog.setCancelable(false);  //禁止点击返回实体按键关闭对话框
                     updateDialog.title("发现新版本")
                             .cornerRadius(5)
                             .content(android_update.getContent())

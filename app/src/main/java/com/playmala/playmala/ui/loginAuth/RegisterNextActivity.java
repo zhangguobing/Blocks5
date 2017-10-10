@@ -108,9 +108,9 @@ public class RegisterNextActivity extends BasePresenterActivity<UserController.U
     public void registerSuccess(String message) {
         cancelLoading();
         ToastUtil.showText(message);
-//        HomeActivity.create(this);
-//        ActivityStack.create().appLogin();
-         LoginActivity.create(this);
+        HomeActivity.create(this);
+        ActivityStack.create().appLogin();
+//         LoginActivity.create(this);
     }
 
     @OnClick({R.id.btn_complete_register,R.id.iv_avatar})
